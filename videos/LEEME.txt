@@ -1,0 +1,32 @@
+QUÉ HAY AQUÍ
+
+   blues.mp3           · el audio de tu vídeo "ejemplo blues"                  (1.4)
+   africa.mp3          · "1-Canto de trabajo", de VÍDEOS 2GP / UNIDAD 6 / JAZZ (1.1)
+   responsorial.mp3    · "2-Espiritual + Responsorial", de la misma carpeta     (1.3)
+
+   africa.mp4          · tu vídeo (era "worksong + responsorial.mp4")     manda sobre el mp3
+   vaudeville.mp4      · tu vídeo                                              (1.1)
+
+La tarjeta de Europa no lleva ejemplo a propósito.
+
+CÓMO CAMBIARLOS
+
+Cada botón busca PRIMERO el vídeo y LUEGO el audio, en este orden:
+
+   nombre.mp4 · nombre.webm · nombre.mov · nombre.m4v
+   nombre.mp3 · nombre.m4a  · nombre.ogg · nombre.wav
+
+Así que para sustituir cualquiera basta con dejar el archivo nuevo con el mismo
+nombre. Si algún día tienes un vídeo para el blues, déjalo como blues.mp4 y
+mandará sobre blues.mp3 sin tocar una línea de código.
+
+Cuando lo que suena es un audio, en vez de un cuadro negro se ve el espectro en
+vivo mientras suena.
+
+Para recortar un trozo de vídeo sin recomprimir (conserva la calidad):
+
+   ffmpeg -ss 00:01:12 -i original.mp4 -t 70 -c copy -movflags +faststart vaudeville.mp4
+
+Para sacar solo el audio de un vídeo:
+
+   ffmpeg -i original.mp4 -vn -c:a libmp3lame -b:a 128k nombre.mp3
