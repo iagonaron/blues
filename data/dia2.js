@@ -795,6 +795,79 @@ BLUES.dia(2, {
    }
   },
   {
+   "id": "P2.6m",
+   "nombre": "Mapa del tren: Nueva Orleans → Washington",
+   "desc": "Mapa ferroviario antiguo: la vía se dibuja de Nueva Orleans a Washington, con la locomotora echando humo.",
+   "img": "img/d2/mapa_tren.webp",
+   "pal": "tren",
+   "amb": [
+    {
+     "src": "sfx/d2/tren_marcha.mp3",
+     "vol": 0.5
+    }
+   ],
+   "espera": 9.5,
+   "hechos": [],
+   "personajes": [],
+   "mapa": {
+    "tipo": "tren",
+    "ruta": [
+     [
+      0.265,
+      0.75
+     ],
+     [
+      0.32,
+      0.66
+     ],
+     [
+      0.38,
+      0.595
+     ],
+     [
+      0.445,
+      0.6
+     ],
+     [
+      0.51,
+      0.56
+     ],
+     [
+      0.555,
+      0.53
+     ],
+     [
+      0.6,
+      0.465
+     ],
+     [
+      0.625,
+      0.43
+     ],
+     [
+      0.685,
+      0.37
+     ]
+    ],
+    "desde": "Nueva Orleans",
+    "hasta": "Washington",
+    "sub": "Treinta horas de vía después · cambio de vagón",
+    "dur": 6.5,
+    "silbato": "sfx/d2/silbato_vapor.mp3",
+    "etiq": {
+     "desde": [
+      -13.5,
+      3.2
+     ],
+     "hasta": [
+      1.6,
+      1.0
+     ]
+    },
+    "volSilbato": 0.5
+   }
+  },
+  {
    "id": "P2.7",
    "desc": "Por la puerta corredera abierta del vagón, el andén de Washington: viajeros que se cambian de vagón. La cuadrilla, en su rincón, no se mueve.",
    "img": "img/d2/p2_7.webp",
@@ -883,6 +956,72 @@ BLUES.dia(2, {
      0.53,
      0.43
     ]
+   }
+  },
+  {
+   "id": "P2.7m",
+   "nombre": "Mapa del tren: Washington → Nueva York",
+   "desc": "El mapa ferroviario, más cerca: la vía sigue de Washington a Nueva York por Baltimore y Filadelfia.",
+   "img": "img/d2/mapa_tren.webp",
+   "pal": "tren",
+   "amb": [
+    {
+     "src": "sfx/d2/tren_marcha.mp3",
+     "vol": 0.5
+    }
+   ],
+   "espera": 9,
+   "hechos": [],
+   "personajes": [],
+   "mapa": {
+    "tipo": "tren",
+    "ruta": [
+     [
+      0.685,
+      0.37
+     ],
+     [
+      0.7,
+      0.34
+     ],
+     [
+      0.715,
+      0.31
+     ],
+     [
+      0.727,
+      0.29
+     ],
+     [
+      0.74,
+      0.255
+     ],
+     [
+      0.755,
+      0.222
+     ]
+    ],
+    "desde": "Washington",
+    "hasta": "Nueva York",
+    "sub": "Manhattan, al atardecer",
+    "dur": 5.5,
+    "silbato": "sfx/d2/silbato_vapor.mp3",
+    "encuadre": [
+     2.3,
+     0.72,
+     0.3
+    ],
+    "etiq": {
+     "desde": [
+      1.4,
+      1.2
+     ],
+     "hasta": [
+      -11.5,
+      -1.6
+     ]
+    },
+    "volSilbato": 0.5
    }
   },
   {

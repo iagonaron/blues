@@ -737,7 +737,7 @@ BLUES.dia(1, {
    ],
    "inter": {
     "tipo": "caldera",
-    "desc": "1) Arrastrar para abrir la puerta de hierro de la caldera. 2) Canto de trabajo: Amos canta la llamada en los pulsos 1-2 y el alumno da la palada en el 3, con los fogoneros («¡Ho!»). Ocho compases.",
+    "desc": "1) Arrastrar para abrir la puerta de hierro de la caldera. 2) Canto de trabajo (Suno): Amos canta y el coro repite; el alumno mantiene pulsado mientras canta el coro (fila de pulsos con los del coro en amarillo, tipo Guitar Hero de un botón). Ocho frases.",
     "lineas": {
      "abierta": [
       {
@@ -859,8 +859,18 @@ BLUES.dia(1, {
        "texto": "Así se aguantan doce horas aquí abajo: cantando.",
        "voz": "voz/d1/d1_r015.mp3"
       }
-     ]
-    }
+     ],
+     "cancion": {
+      "id": "d1_099",
+      "quien": "AMOS",
+      "texto": "Boy, ahora canto yo… y tú das el palazo al ritmo del coro.",
+      "voz": "voz/d1/d1_099.mp3"
+     }
+    },
+    "recursos": [
+     "mus/canto_amos.mp3",
+     "sfx/d1/vapor_escape.mp3"
+    ]
    },
    "despues": [
     {
@@ -1408,7 +1418,7 @@ BLUES.dia(1, {
     }
    ],
    "mus": {
-    "src": "mus/trio_club.mp3",
+    "src": "mus/jazz_nueva_orleans.mp3",
     "vol": 0.5,
     "bucle": true
    },
@@ -1545,8 +1555,8 @@ BLUES.dia(1, {
     ]
    },
    "mus": {
-    "src": "mus/trio_club.mp3",
-    "vol": 0.38,
+    "src": "mus/jazz_nueva_orleans.mp3",
+    "vol": 0.36,
     "bucle": true
    }
   }
