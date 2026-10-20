@@ -95,7 +95,8 @@ BLUES.dia(1, {
     "AVOA_CERCA": "img/d1/p1_1_avoa_cerca.webp",
     "XAN_CERCA": "img/d1/p1_1_xan_cerca.webp",
     "RECURSO_LUME": "img/d1/p1_1_recurso_lume.webp",
-    "RECURSO_LATA": "img/d1/p1_1_recurso_lata.webp"
+    "RECURSO_LATA": "img/d1/p1_1_recurso_lata.webp",
+    "XAN_LATA": "img/d1/p1_1_xan_lata.webp"
    },
    "personajes": [
     "AVOA",
@@ -197,7 +198,8 @@ BLUES.dia(1, {
      "id": "d1_014",
      "quien": "XAN",
      "texto": "E esa lata?",
-     "voz": "voz/d1/d1_014.mp3"
+     "voz": "voz/d1/d1_014.mp3",
+     "var": "XAN_LATA"
     },
     {
      "id": "d1_015",
@@ -205,7 +207,8 @@ BLUES.dia(1, {
      "texto": "Chegou esta mañá. Sen remite… e co teu nome.",
      "voz": "voz/d1/d1_015.mp3",
      "var": "RECURSO_LATA",
-     "espera": 0.8
+     "espera": 0.8,
+     "fijo": true
     }
    ],
    "nombre": "La nana",
@@ -233,8 +236,8 @@ BLUES.dia(1, {
     ],
     "XAN": [
      0.72,
-     0.21,
-     0.15
+     0.2,
+     0.2
     ]
    }
   },
@@ -368,14 +371,14 @@ BLUES.dia(1, {
    },
    "foco": {
     "AVOA": [
-     0.31,
      0.32,
+     0.365,
      0.19
     ],
     "XAN": [
      0.6,
-     0.27,
-     0.17
+     0.345,
+     0.205
     ]
    }
   },
@@ -466,14 +469,14 @@ BLUES.dia(1, {
    },
    "foco": {
     "AVOA": [
-     0.41,
-     0.33,
-     0.11
+     0.42,
+     0.335,
+     0.14
     ],
     "XAN": [
-     0.57,
-     0.13,
-     0.11
+     0.575,
+     0.148,
+     0.16
     ]
    }
   },
@@ -592,13 +595,13 @@ BLUES.dia(1, {
    "foco": {
     "XAN": [
      0.44,
-     0.08,
-     0.09
+     0.105,
+     0.115
     ],
     "SOBRE": [
-     0.82,
-     0.3,
-     0.11
+     0.81,
+     0.337,
+     0.205
     ]
    }
   },
@@ -697,7 +700,7 @@ BLUES.dia(1, {
     "XAN": "img/d1/p1_5_xan.webp",
     "AMOS_CERCA": "img/d1/p1_5_amos_cerca.webp",
     "XAN_CERCA": "img/d1/p1_5_xan_cerca.webp",
-    "RECURSO_CALDERA": "img/d1/p1_5_recurso_caldera.webp",
+    "RECURSO_CALDERA": "img/d1/p1_5_recurso_caldera_cerrada.webp",
     "RECURSO_RATON": "img/d1/p1_6_recurso_raton.webp"
    },
    "personajes": [
@@ -773,7 +776,8 @@ BLUES.dia(1, {
      "quien": "AMOS",
      "texto": "Aquí come caliente el que trabaja. Abre esa puerta. Con cuidado, que muerde.",
      "voz": "voz/d1/d1_052.mp3",
-     "var": "RECURSO_CALDERA"
+     "var": "RECURSO_CALDERA",
+     "fijo": true
     }
    ],
    "inter": {
@@ -993,19 +997,19 @@ BLUES.dia(1, {
    },
    "foco": {
     "XAN": [
-     0.78,
-     0.17,
-     0.08
+     0.767,
+     0.222,
+     0.125
     ],
     "AMOS": [
-     0.46,
-     0.25,
-     0.09
+     0.466,
+     0.264,
+     0.111
     ],
     "FOGONEROS": [
-     0.22,
-     0.19,
-     0.09
+     0.236,
+     0.215,
+     0.13
     ]
    }
   },
@@ -1220,14 +1224,14 @@ BLUES.dia(1, {
    },
    "foco": {
     "AMOS": [
-     0.28,
-     0.11,
+     0.285,
+     0.177,
      0.19
     ],
     "XAN": [
-     0.72,
-     0.16,
-     0.15
+     0.705,
+     0.19,
+     0.22
     ]
    }
   },
@@ -1299,7 +1303,7 @@ BLUES.dia(1, {
      "quien": "AMOS",
      "texto": "Ve a descansar, boy. Te lo has ganado.",
      "voz": "voz/d1/d1_098.mp3",
-     "espera": 1.0
+     "espera": 1
     }
    ],
    "nombre": "Arriba y abajo",
@@ -1315,9 +1319,9 @@ BLUES.dia(1, {
      0.22
     ],
     "XAN": [
-     0.59,
-     0.42,
-     0.18
+     0.6,
+     0.436,
+     0.235
     ]
    }
   },
@@ -1381,7 +1385,7 @@ BLUES.dia(1, {
     ],
     "desde": "A Coruña",
     "hasta": "La Habana",
-    "sub": "Al amanecer · parada para repostar carbón",
+    "sub": "Parada para repostar carbón",
     "dur": 8,
     "etiq": {
      "desde": [
@@ -1407,7 +1411,11 @@ BLUES.dia(1, {
     ],
     "icono": "img/inter/barco_mapa.webp",
     "proporcionIcono": 0.355,
-    "anchoIcono": 10
+    "anchoIcono": 10,
+    "antes": {
+     "tit": "Rumbo a La Habana",
+     "txt": "Parada en La Habana para repostar carbón: el vapor llena sus carboneras antes de seguir hasta Nueva Orleans."
+    }
    },
    "mus": {
     "src": "mus/charleston_salon.mp3",
@@ -1485,8 +1493,8 @@ BLUES.dia(1, {
    "foco": {
     "AMOS": [
      0.38,
-     0.23,
-     0.2
+     0.233,
+     0.222
     ],
     "XAN": [
      0.65,
@@ -1590,7 +1598,11 @@ BLUES.dia(1, {
     ],
     "icono": "img/inter/barco_mapa.webp",
     "proporcionIcono": 0.355,
-    "anchoIcono": 8.5
+    "anchoIcono": 8.5,
+    "antes": {
+     "tit": "Rumbo a Nueva Orleans",
+     "txt": "Con las carboneras llenas, el vapor cruza el golfo de México y sube por el Misisipi hasta Nueva Orleans, donde acaba el billete de Xan."
+    }
    }
   },
   {
@@ -1667,13 +1679,13 @@ BLUES.dia(1, {
    "foco": {
     "AMOS": [
      0.32,
-     0.15,
-     0.2
+     0.155,
+     0.215
     ],
     "XAN": [
      0.67,
-     0.25,
-     0.15
+     0.266,
+     0.18
     ]
    },
    "mus": {
