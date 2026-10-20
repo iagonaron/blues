@@ -564,3 +564,47 @@ a{color:var(--oro-hi)}
 .mapa-cartel.on{opacity:1;transform:translate(-50%,0)}
 .mapa-cartel .mc-lugar{font-family:var(--f-deco);font-size:calc(var(--u)*3.4);letter-spacing:.08em;line-height:1.05}
 .mapa-cartel .mc-sub{font-family:var(--f-carta);font-style:italic;font-size:calc(var(--u)*1.65);margin-top:calc(var(--u)*.45)}
+/* (Iago, 20-oct) mapas del tren (acto 2): vía con traviesas, locomotora y humo */
+.mapa-traviesas{fill:none;stroke:#3b2414;stroke-linecap:butt;opacity:.85}
+.mapa-rail{fill:none;stroke:#8a2414;stroke-linecap:round;stroke-linejoin:round}
+.mapa-loco path{fill:#1e140e;stroke:#f3e6c8;stroke-width:.14}
+.mapa-loco .rueda{fill:#2a1c12;stroke:#f3e6c8;stroke-width:.12}
+.mapa-humo{fill:rgba(96,86,76,.55);transform-box:fill-box;transform-origin:center;animation:mapaHumo 1.7s ease-out forwards}
+@keyframes mapaHumo{0%{opacity:.8;transform:scale(.5)}100%{opacity:0;transform:scale(2.6) translate(-.6px,-1.2px)}}
+/* (Iago, 20-oct) la caldera con texturas pintadas (img/inter/*.webp): frente de hierro con la boca del fuego, puerta, pala y carbón */
+.cal-horno{width:calc(var(--u)*38);height:calc(var(--u)*29.5);left:31%;top:23%}
+.cal-frente{background:url(../img/inter/caldera_frente.webp) center/100% 100% no-repeat;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 calc(var(--u)*.8) calc(var(--u)*1.6) rgba(0,0,0,.7))}
+.cal-boca{left:28%;right:27%;top:43%;bottom:16%;background:transparent;box-shadow:none;border-radius:calc(var(--u)*.6);overflow:visible}
+.cal-luz{mix-blend-mode:screen;background:radial-gradient(ellipse at 50% 70%,rgba(255,220,140,.85),rgba(245,134,42,.5) 42%,rgba(122,30,10,0) 76%)}
+.cal-puerta{left:23.8%;right:22%;top:38.3%;bottom:11.8%;background:url(../img/inter/caldera_puerta.webp) center/100% 100% no-repeat;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(calc(var(--u)*.3) calc(var(--u)*.4) calc(var(--u)*.6) rgba(0,0,0,.7))}
+.cal-puerta svg{display:none}
+.cal-pestillo{right:2%;top:30%;width:22%;height:36%;background:transparent;box-shadow:none;border-radius:calc(var(--u)*.8)}
+.cal-pestillo.arriba{transform:none}
+.cal-carbon{background:url(../img/inter/carbon.webp) center/contain no-repeat;filter:drop-shadow(0 0 calc(var(--u)*.6) rgba(255,130,50,.35))}
+.cal-carbon svg{display:none}
+.cal-pala{background:url(../img/inter/pala.webp) center/contain no-repeat;height:calc(var(--u)*10.5)}
+.cal-pala svg{display:none}
+.cal-pala::after{content:'';position:absolute;right:3%;top:20%;width:30%;height:58%;background:url(../img/inter/carbon.webp) center/contain no-repeat;opacity:0;transition:opacity .12s}
+.cal-pala.llena::after{opacity:1}
+/* (Iago, 20-oct) caldera: el canto de trabajo como «Guitar Hero» de un botón (letra arriba, fila de pulsos abajo) */
+.gh-l{font-family:var(--f-carta);font-size:calc(var(--u)*2.3);line-height:1.2;opacity:.35;transition:opacity .2s,transform .25s;white-space:nowrap}
+.gh-amos{color:#F6EEDC}
+.gh-coro{color:#F2C14E}
+.gh-l.on{opacity:1;transform:scale(1.06)}
+.gh-pista{position:relative;height:calc(var(--u)*2.6)}
+.gh-fila{position:absolute;inset:0}
+.gh-q{position:absolute;top:50%;width:calc(var(--u)*1.15);height:calc(var(--u)*1.15);transform:translate(-50%,-50%);border:1px solid rgba(243,230,200,.5);border-radius:calc(var(--u)*.2);background:rgba(243,230,200,.07)}
+.gh-barra{position:absolute;top:50%;height:calc(var(--u)*1.7);transform:translateY(-50%);margin-left:calc(var(--u)*-.6);padding-right:calc(var(--u)*1.2);box-sizing:content-box;border-radius:calc(var(--u)*.35);background:linear-gradient(180deg,rgba(242,193,78,.6) 50%,rgba(242,193,78,.12) 50%);border:1px solid rgba(242,193,78,.95);overflow:hidden}
+.gh-barra span{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(255,214,102,.95);box-shadow:0 0 calc(var(--u)*.6) rgba(255,214,102,.8)}
+.gh-barra.ok{border-color:#9be38a;box-shadow:0 0 calc(var(--u)*.8) rgba(155,227,138,.75)}
+.gh-barra.ok span{background:rgba(155,227,138,.9)}
+.gh-barra.mal{border-color:#c9534f;opacity:.55}
+.gh-cursor{position:absolute;top:-15%;bottom:-15%;width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 calc(var(--u)*.7) #fff;border-radius:2px}
+.cal-pala.sube{left:3%;top:58%;transform:rotate(-6deg)}
+/* (Iago, 20-oct) la lata pintada: cerrada → se va la tapa y queda abierta */
+.lt-img{position:absolute;inset:0;background:center/contain no-repeat;filter:drop-shadow(0 calc(var(--u)*.7) calc(var(--u)*1.2) rgba(0,0,0,.6))}
+.lt-abierta{background-image:url(../img/inter/lata_abierta.webp);opacity:0;transition:opacity .25s}
+.lt-cerrada{background-image:url(../img/inter/lata_cerrada.webp);transition:opacity .25s}
+.lt-tapa{position:absolute;left:4%;right:4%;top:-4%;height:66%;background:url(../img/inter/lata_tapa.webp) center/contain no-repeat;opacity:0;transition:transform .9s cubic-bezier(.3,1.3,.5,1),opacity .12s;filter:drop-shadow(0 calc(var(--u)*.6) calc(var(--u)*1) rgba(0,0,0,.55))}
+.abierta .lt-abierta,.abierta .lt-tapa{opacity:1}
+.abierta .lt-cerrada{opacity:0}
