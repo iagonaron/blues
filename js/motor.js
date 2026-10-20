@@ -237,6 +237,7 @@
       Object.keys(p.var || {}).forEach(q => r.push(rutaVar(p, q)));
       B.arr(p.amb).forEach(a => r.push(a.src));
       if (p.mus) r.push(p.mus.src);
+      if (p.mapa && p.mapa.silbato) r.push(p.mapa.silbato);
       B.arr(p.lineas).concat(B.arr(p.despues)).forEach(l => { r.push(l.voz); B.arr(l.sfx).forEach(s => r.push(s.src)); });
       B.arr(p.inter).forEach(it => {
         B.arr(it.recursos).forEach(x => r.push(x));
@@ -370,26 +371,52 @@
       const a = P[i - 1], b = P[i], c0 = P[i - 2] || a, c1 = P[i + 1] || b;
       d += ' C' + (a[0] + (b[0] - c0[0]) / 6).toFixed(2) + ' ' + (a[1] + (b[1] - c0[1]) / 6).toFixed(2) + ' ' + (b[0] - (c1[0] - a[0]) / 6).toFixed(2) + ' ' + (b[1] - (c1[1] - a[1]) / 6).toFixed(2) + ' ' + b[0] + ' ' + b[1];
     }
+    const tren = m.tipo === 'tren';   // (Iago, 20-oct) en el acto 2, mapa «con personalidad de tren»: vía con traviesas, locomotora y humo
     const sombra = mk('path', { d, class: 'mapa-ruta-sombra', 'stroke-width': 1.3 * k }), ruta = mk('path', { d, class: 'mapa-ruta', 'stroke-width': .6 * k });
-    svg.append(sombra, ruta);
+    let mascara = null;
+    if (tren) {
+      const id = 'mm' + Math.random().toString(36).slice(2, 8), defs = mk('defs', {}), mk2 = mk('mask', { id, maskUnits: 'userSpaceOnUse', x: -10, y: -10, width: 120, height: 80 });
+      mascara = mk('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': 3.2 * k, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+      mk2.append(mascara); defs.append(mk2); svg.append(defs);
+      const g = mk('g', { mask: 'url(#' + id + ')' });
+      g.append(sombra, mk('path', { d, class: 'mapa-traviesas', 'stroke-width': 1.5 * k, 'stroke-dasharray': (.24 * k) + ' ' + (.72 * k) }), mk('path', { d, class: 'mapa-rail', 'stroke-width': .42 * k }));
+      svg.append(g); ruta.style.opacity = 0; svg.append(ruta);
+    } else svg.append(sombra, ruta);
     const sitio = (q, txt, cls) => {
       const g = mk('g', { class: 'mapa-sitio ' + cls }), o = (m.etiq && m.etiq[cls]) || [1.6, .7];
       g.append(mk('circle', { cx: q[0], cy: q[1], r: .85 * k }));
       const t = mk('text', { x: q[0] + o[0] * k, y: q[1] + o[1] * k, 'font-size': 2.5 * k }); t.textContent = txt; g.append(t); svg.append(g); return g;
     };
     sitio(P[0], m.desde || '', 'desde'); const gB = sitio(P[P.length - 1], m.hasta || '', 'hasta');
-    const barco = mk('g', { class: 'mapa-barco' });
-    barco.append(mk('circle', { r: 2.2 * k, class: 'onda' }), mk('path', { d: 'M-1.6 0 L1.6 0 L1.1 .8 L-1.1 .8 Z M-.25 -1.2 L.35 -1.2 L.35 0 L-.25 0 Z', transform: 'scale(' + k + ')' }));
+    const barco = mk('g', { class: tren ? 'mapa-barco mapa-loco' : 'mapa-barco' });
+    if (tren) {
+      const cuerpo = mk('g', { transform: 'scale(' + (k * 1.35) + ')' });
+      cuerpo.append(mk('path', { d: 'M-.9 -.55 H1.6 V.35 H-.9 Z M-1.9 -1.05 H-.9 V.35 H-1.9 Z M.85 -1.15 H1.3 V-.55 H.85 Z M1.6 .35 L2.15 .78 H1.6 Z M-2.1 -1.15 H-.7 V-.98 H-2.1 Z' }));
+      [[-1.35, .6, .34], [-.2, .62, .3], [.75, .62, .3]].forEach(w => cuerpo.append(mk('circle', { cx: w[0], cy: w[1], r: w[2], class: 'rueda' })));
+      barco.append(cuerpo);
+    } else barco.append(mk('circle', { r: 2.2 * k, class: 'onda' }), mk('path', { d: 'M-1.6 0 L1.6 0 L1.1 .8 L-1.1 .8 Z M-.25 -1.2 L.35 -1.2 L.35 0 L-.25 0 Z', transform: 'scale(' + k + ')' }));
     svg.append(barco); capa.appendChild(svg); kbEl.appendChild(capa);
+    if (m.silbato && B.buf[m.silbato]) B.suena(m.silbato, { bus: B.bus.sfx, vol: m.volSilbato || .45, t: B.ahora() + .4 });
     const cartel = B.el('div', 'mapa-cartel'); cartel.innerHTML = '<div class="mc-lugar"></div><div class="mc-sub"></div>';
     cartel.firstChild.textContent = m.hasta || ''; cartel.lastChild.textContent = m.sub || ''; kbEl.parentNode.appendChild(cartel);
-    const L = ruta.getTotalLength(); [ruta, sombra].forEach(r => { r.style.strokeDasharray = L; r.style.strokeDashoffset = L; });
+    const L = ruta.getTotalLength(); (tren ? [mascara] : [ruta, sombra]).forEach(r => { r.style.strokeDasharray = L; r.style.strokeDashoffset = L; });
     const t0 = B.ahora() + (m.retraso == null ? 1.2 : m.retraso), T = m.dur || 6;
+    let tHumo = 0;
     const paso = () => {
       if (!capa.isConnected) return;
-      const u = B.clamp((B.ahora() - t0) / T, 0, 1), s = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
-      ruta.style.strokeDashoffset = sombra.style.strokeDashoffset = L * (1 - s);
-      const q = ruta.getPointAtLength(L * s); barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + q.y.toFixed(2) + ')');
+      const ahora = B.ahora(), u = B.clamp((ahora - t0) / T, 0, 1), s = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      if (tren) mascara.style.strokeDashoffset = L * (1 - s); else ruta.style.strokeDashoffset = sombra.style.strokeDashoffset = L * (1 - s);
+      const q = ruta.getPointAtLength(L * s);
+      if (tren) {   // la locomotora mira hacia donde va y echa humo mientras corre
+        const q2 = ruta.getPointAtLength(Math.min(L, L * s + .5)), q1 = ruta.getPointAtLength(Math.max(0, L * s - .5));
+        const ang = Math.atan2(q2.y - q1.y, q2.x - q1.x) * 180 / Math.PI;
+        barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + q.y.toFixed(2) + ') rotate(' + ang.toFixed(1) + ')');
+        if (u > 0 && u < 1 && ahora - tHumo > .22) {
+          tHumo = ahora; const a = ang * Math.PI / 180, cx = 1.07 * k * 1.35, cy = -1.25 * k * 1.35;
+          const h = mk('circle', { cx: (q.x + cx * Math.cos(a) - cy * Math.sin(a)).toFixed(2), cy: (q.y + cx * Math.sin(a) + cy * Math.cos(a)).toFixed(2), r: .8 * k, class: 'mapa-humo' });
+          svg.insertBefore(h, barco); setTimeout(() => h.remove(), 1700);
+        }
+      } else barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + q.y.toFixed(2) + ')');
       gB.classList.toggle('on', u >= .98); cartel.classList.toggle('on', u >= 1);
       requestAnimationFrame(paso);
     };
