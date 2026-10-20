@@ -819,6 +819,9 @@
       let dur = (voz ? voz.dur : durTexto(l.texto)) + (o.extra || 0) + (l.espera || 0);   // l.espera: segundos de más tras la línea (p. ej. mientras suena una música que lanza la propia línea)
       if (o.max) dur = Math.min(dur, o.max);
       let hecho = false;
+      /* (ronda 6b, Iago: «que tarde 3 segundos… para que pueda escucharlo») durante la espera de después de una frase, la música
+         vuelve a su volumen (sin agachar): esa espera es para escucharla */
+      if (voz && l.espera > 0) B.espera(voz.dur + .1, c).then(ok => { if (ok && !hecho) B.agacha(false); });
       const fin = (salto) => {
         if (hecho) return; hecho = true;
         if (saltable === adelanta) saltable = null;
