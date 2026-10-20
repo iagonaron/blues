@@ -12,6 +12,7 @@
   const LLAMADAS = [[50, 53], [53, 55], [50, 48], [55, 53], [50, 53], [57, 55], [53, 50], [50, 43]];
   const SFX = { pestillo: 'sfx/d1/estuche_cierre.mp3', abre: 'sfx/d1/caldera_abrir.mp3', cierra: 'sfx/d1/caldera_cerrar.mp3',
     pala: ['sfx/d1/pala_1.mp3', 'sfx/d1/pala_2.mp3', 'sfx/d1/pala_3.mp3'], fuego: 'sfx/d1/fuego.mp3',
+    coge: ['sfx/d1/pala_coge_1.mp3', 'sfx/d1/pala_coge_2.mp3'], echa: 'sfx/d1/pala_echa.mp3',   // (ronda 4) Splice: más contundentes
     ho: ['sfx/d1/ho_1.mp3', 'sfx/d1/ho_2.mp3', 'sfx/d1/ho_3.mp3'] };   // (Iago, 19-oct) el «¡Ho!» lo contestan HOMBRES, no un acorde
   const u = n => 'calc(var(--u)*' + n + ')';
   const suena = (r, o) => B.suena(r, Object.assign({ bus: B.bus.sfx }, o || {}));
@@ -109,7 +110,7 @@
     pala.classList.add('mano'); if (!suena(SFX.pala[1], { vol: .6 })) B.sint.metal(B.ahora(), .5);
     paso(4, 'Mete la pala en el <b>carbón</b>.');
     await clicEn(carbon); if (ctl.muerto) return;
-    const recarga = async () => { pala.classList.add('carga'); if (!suena(SFX.pala[0], { vol: .75, rate: B.azar ? B.azar(.94, 1.06) : 1 })) B.sint.pala(B.ahora(), .7); await B.espera(.24, ctl); pala.classList.add('llena'); pala.classList.remove('carga'); };
+    const recarga = async () => { pala.classList.add('carga'); if (!suena(SFX.coge[0], { vol: .9, rate: B.azar ? B.azar(.96, 1.04) : 1 }) && !suena(SFX.pala[0], { vol: .75 })) B.sint.pala(B.ahora(), .7); await B.espera(.24, ctl); pala.classList.add('llena'); pala.classList.remove('carga'); };
     await recarga(); if (ctl.muerto) return;
 
     /* 5 · (Iago, 20-oct) EL CANTO DE TRABAJO de Suno, tal cual hasta «¡Y el último, pa' casa!»: Amos canta una frase y el coro la
@@ -137,12 +138,21 @@
         esc.appendChild(t); setTimeout(() => t.remove(), 700);
       }
     };
+    /* (ronda 4, Iago: «que el sonido de coger el carbón y el de soltarlo coincidan con los pulsos que suenan… para que, si
+       el alumno lo hace bien, vaya con golpes de música») cada sonido se cuadra con el pulso más cercano de la canción
+       (hasta 0,22 s antes o después): si llega antes, espera al pulso; si llega un poco tarde, suena ya. */
+    const alPulso = () => {
+      const ahora = B.ahora(); if (!t0) return ahora;
+      let mejor = null; PU.forEach(b => { const tb = t0 + b; if (mejor === null || Math.abs(tb - ahora) < Math.abs(mejor - ahora)) mejor = tb; });
+      return mejor !== null && Math.abs(mejor - ahora) <= .22 ? Math.max(ahora + .004, mejor) : ahora;
+    };
+    const suenaEn = (src, tq, vol) => { if (!B.buf[src]) return false; B.suena(src, { bus: B.bus.sfx, t: tq, vol }); return true; };
     const palada = () => {
-      const t = B.ahora(); golpes.push(t);
-      const llena = pala.classList.contains('llena');
-      pala.classList.add('lanza'); setTimeout(() => pala.classList.remove('lanza'), 170);
-      if (!suena(SFX.pala[2 - (nPal++ % 2)], { vol: .85 })) B.sint.pala(t, .9);
-      if (llena) { pala.classList.remove('llena'); setTimeout(vuela, 90); setTimeout(() => { luz.classList.add('aviva'); if (rug) rug.vol(.5); }, 300); setTimeout(() => { luz.classList.remove('aviva'); if (rug) rug.vol(.35); }, 900); }
+      const t = B.ahora(), tq = alPulso(); golpes.push(t);
+      const llena = pala.classList.contains('llena'), ms = Math.max(0, (tq - t) * 1000);
+      setTimeout(() => { pala.classList.add('lanza'); setTimeout(() => pala.classList.remove('lanza'), 170); }, Math.max(0, ms - 90));
+      if (!suenaEn(SFX.echa, tq, 1) && !suena(SFX.pala[2 - (nPal++ % 2)], { vol: .85 })) B.sint.pala(t, .9);
+      if (llena) { pala.classList.remove('llena'); setTimeout(vuela, ms); setTimeout(() => { luz.classList.add('aviva'); if (rug) rug.vol(.5); }, ms + 160); setTimeout(() => { luz.classList.remove('aviva'); if (rug) rug.vol(.35); }, ms + 800); }
     };
     /* mantener pulsado: al bajar, la pala se hunde en el carbón y sube cargada; al soltar, lanza el carbón al fuego */
     let pulsado = false, hIni = 0, t0 = 0;
@@ -150,7 +160,7 @@
     const baja = () => {
       if (pulsado || !t0) return; pulsado = true; hIni = tc();
       pala.classList.remove('llena'); pala.classList.add('carga');
-      if (!suena(SFX.pala[0], { vol: .7 })) B.sint.pala(B.ahora(), .6);
+      if (!suenaEn(SFX.coge[nPal % 2], alPulso(), 1) && !suena(SFX.pala[0], { vol: .7 })) B.sint.pala(B.ahora(), .6);
       setTimeout(() => { if (pulsado) { pala.classList.remove('carga'); pala.classList.add('llena', 'sube'); } }, 230);
     };
     const sube = () => { if (!pulsado) return; pulsado = false; tramos.push([hIni, tc()]); pala.classList.remove('carga', 'sube'); if (!pala.classList.contains('llena')) pala.classList.add('llena'); palada(); };
@@ -169,7 +179,7 @@
     /* la canción, la claqueta en cada pulso (más fuerte donde entra el coro) y la letra */
     t0 = B.ahora() + .35;
     B.inter.caldera.t0 = t0;
-    if (B.buf[CAN.src]) B.suena(CAN.src, { bus: B.bus.voz, t: t0, vol: .95 });
+    if (B.buf[CAN.src]) { B.suena(CAN.src, { bus: B.bus.voz, t: t0, vol: 1 }); B.enTiempo(t0, () => B.agacha(true), ctl); B.enTiempo(t0 + FIN + .3, () => B.agacha(false), ctl); ctl.alMorir.push(() => B.agacha(false)); }   // (ronda 4) +3,5 dB y el ambiente agachado
     if (B.sint.baqueta) PU.forEach(b => B.sint.baqueta(t0 + b, coros.some(f => Math.abs(f.s - b) < .05) ? .55 : .2));
     FR.forEach(f => B.enTiempo(t0 + f.s - .06, () => {
       lA.textContent = f.texto; lA.className = 'gh-l on ' + (f.quien === 'AMOS' ? 'gh-amos' : 'gh-coro');
@@ -213,6 +223,6 @@
     if (!await U.dice(op, 'fin', ctl)) return;
     await U.seguir(caja, ctl, 'Seguir');
   };
-  B.inter.caldera.voces = [SFX.pestillo, SFX.abre, SFX.cierra, SFX.fuego, CANCION.src, 'sfx/d1/vapor_escape.mp3'].concat(SFX.pala);   // se precargan con el acto
+  B.inter.caldera.voces = [SFX.pestillo, SFX.abre, SFX.cierra, SFX.fuego, CANCION.src, 'sfx/d1/vapor_escape.mp3', SFX.echa].concat(SFX.pala, SFX.coge);   // se precargan con el acto
   B.inter.caldera.claves = ['abierta', 'intro', 'llamada1', 'llamada2', 'llamada3', 'llamada4', 'llamada5', 'llamada6', 'llamada7', 'llamada8', 'respuesta', 'cancion', 'acierto', 'fallo', 'fin'];
 })(window.BLUES);
