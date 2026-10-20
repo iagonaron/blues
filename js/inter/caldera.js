@@ -1,10 +1,10 @@
 /* BLUES · caldera (P1.5) · v2 (19-oct, puntos 13–17 de Iago): la sala de calderas con PASOS de manipulación, dibujados de
    forma conceptual («que no se tienen que ver muy bien»), y cada gesto con su sonido:
-   1) levantar el pestillo (clic) · 2) abrir la puerta de hierro (arrastrar a la derecha: chirrido, luz y rugido del fuego)
+   1) levantar el pestillo (clic) · 2) abrir la puerta de hierro (arrastrar a la izquierda: chirrido, luz y rugido del fuego)
    3) coger la pala (clic) · 4) meterla en el carbón (clic en el montón)
    5) canto de trabajo, 8 compases a ~76 bpm: Amos llama en el 1 y el 2; el alumno echa el carbón al fuego en el 3
       (Espacio o clic, ±150 ms) y la pala vuelve sola al montón en el 4. Cada palada a tiempo aviva el fuego y sube la
-      aguja del manómetro. · 6) cerrar la puerta (arrastrar a la izquierda).
+      aguja del manómetro. · 6) cerrar la puerta (arrastrar a la derecha). · (Iago, 20-oct) la puerta se abre hacia la IZQUIERDA y hay claqueta
    Sonidos: los de sfx/d1 (receta_sfx.json); si alguno falta, el sintetizado de siempre. */
 'use strict';
 (function (B) {
@@ -53,7 +53,7 @@
       const fin = e => { if (e) { e.preventDefault(); e.stopPropagation(); } el.removeEventListener('pointerdown', fin); el.classList.remove('cal-objetivo'); B.ac(); res(); };
       el.addEventListener('pointerdown', fin); B.inter.caldera.hazPaso = () => fin(); ctl.alMorir.push(res);
     });
-    /* arrastrar la puerta: sentido +1 abre (derecha), −1 cierra (izquierda); alAvance(0…1) */
+    /* arrastrar la puerta: sentido −1 abre (izquierda), +1 cierra (derecha); alAvance(0…1) */
     const arrastra = (sentido, alAvance) => new Promise(res => {
       let x0 = null, hecho = false;
       puerta.classList.add('cal-objetivo');
@@ -72,9 +72,9 @@
     pest.classList.add('arriba'); if (!suena(SFX.pestillo, { vol: .9 })) B.sint.metal(B.ahora(), .8);
 
     /* 2 · abrir la puerta */
-    paso(2, 'Arrastra la <b>puerta de hierro</b> hacia la derecha para abrirla.');
+    paso(2, 'Arrastra la <b>puerta de hierro</b> hacia la izquierda para abrirla.');
     let chirrio = false;
-    await arrastra(1, a => {
+    await arrastra(-1, a => {
       ponPuerta(a);
       if (a > .12 && !chirrio) { chirrio = true; if (!suena(SFX.abre, { vol: .8 })) B.sint.puerta(B.ahora(), .9); rug = B.sint.rugido(.1); fuego = suena(SFX.fuego, { bucle: true, vol: 0 }); }
       if (rug) rug.vol(.1 + a * .25); if (fuego) fuego.gan.gain.value = .55 * a;
@@ -123,6 +123,7 @@
     for (let c = 0; c < 8; c++) {
       const tc = t0 + c * 4 * p;
       for (let b = 0; b < 4; b++) B.enTiempo(tc + b * p, () => pls.forEach((x, j) => x.classList.toggle('on', j === b)), ctl);
+      if (B.sint.baqueta) for (let b = 0; b < 4; b++) B.sint.baqueta(tc + b * p, b === 0 ? .95 : .42);   // (Iago, 20-oct) claqueta: otra referencia, con el 1 marcado
       const lc = U.rota(op, 'llamada' + (c + 1));
       const ac = lc && lc.acento != null ? lc.acento : .05;   // (Iago, 20-oct) la SÍLABA FUERTE de la llamada, en el pulso 1 (acento: parches_musica.py)
       if (lc) B.enTiempo(tc - ac, () => U.suelta(lc, ctl, 4 * p - .3), ctl);
@@ -148,9 +149,9 @@
     pala.classList.remove('mano', 'llena'); pala.classList.add('suelta'); if (!suena(SFX.pala[1], { vol: .5 })) B.sint.metal(B.ahora(), .4);
 
     /* 6 · cerrar la puerta */
-    paso(6, 'Cierra la <b>puerta</b>: arrástrala hacia la izquierda.');
+    paso(6, 'Cierra la <b>puerta</b>: arrástrala hacia la derecha.');
     let golpe = false;
-    await arrastra(-1, a => { ponPuerta(1 - a); if (rug) rug.vol(.35 * (1 - a) + .08); if (fuego) fuego.gan.gain.value = .55 * (1 - a); if (a >= .9 && !golpe) { golpe = true; if (!suena(SFX.cierra, { vol: .8 })) B.sint.puerta(B.ahora(), .6); } });
+    await arrastra(1, a => { ponPuerta(1 - a); if (rug) rug.vol(.35 * (1 - a) + .08); if (fuego) fuego.gan.gain.value = .55 * (1 - a); if (a >= .9 && !golpe) { golpe = true; if (!suena(SFX.cierra, { vol: .8 })) B.sint.puerta(B.ahora(), .6); } });
     if (ctl.muerto) return;
     pest.classList.remove('arriba');
     if (fuego) { fuego.parar(1.2); fuego = null; }
