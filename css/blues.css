@@ -488,29 +488,30 @@ a{color:var(--oro-hi)}
 
 .pulsos .pl.golpe{box-shadow:0 0 0 calc(var(--u)*.25) var(--oro-hi),0 0 calc(var(--u)*1.4) var(--oro-hi)}
 
-/* ── bocadillos (punto 28): en escenas de grupo, la frase junto a la cara de quien habla ── */
+/* ── bocadillos (punto 28): la frase junto a la cara de quien habla ──
+   (Iago, 20-oct, ronda 4) sin recuadro negro detrás (chocaba con la clase .burbuja de las interacciones), sin animación
+   (sale y se va de golpe) y el triangulito SIEMPRE fuera de la cara: debajo del mentón o por encima de la frente.
+   El motor calcula --dy (distancia en --u desde el centro de la cara al borde del bocadillo) con el tamaño de cada cara. */
 #subt.burbuja{left:calc(var(--bx)*100%);top:calc(var(--by)*100%);right:auto;bottom:auto;display:block;width:max-content;max-width:38%;
-  transform:translate(calc(var(--ax)*-100%),calc(-100% - var(--u)*6.4))}
-#subt.burbuja.on{transform:translate(calc(var(--ax)*-100%),calc(-100% - var(--u)*7))}   /* (Iago, 20-oct) por encima de la cabeza, sin tapar la cara */
-#subt.burbuja[data-lado=abajo]{transform:translate(calc(var(--ax)*-100%),calc(var(--u)*4.2))}
-#subt.burbuja.on[data-lado=abajo]{transform:translate(calc(var(--ax)*-100%),calc(var(--u)*3.6))}
-#subt.burbuja .subt-caja{max-width:none;position:relative;text-align:left;background:rgba(251,244,228,.96);border-radius:calc(var(--u)*1.1);
+  background:none;border:0;padding:0;border-radius:0;z-index:8;transition:none;
+  transform:translate(calc(var(--ax)*-100%),calc(-100% - var(--u)*var(--dy,7)))}
+#subt.burbuja.on{transform:translate(calc(var(--ax)*-100%),calc(-100% - var(--u)*var(--dy,7)))}
+#subt.burbuja[data-lado=abajo],#subt.burbuja.on[data-lado=abajo]{transform:translate(calc(var(--ax)*-100%),calc(var(--u)*var(--dy,5)))}
+#subt.burbuja .subt-caja{max-width:none;position:relative;text-align:left;background:rgba(251,244,228,.97);border-radius:calc(var(--u)*1.1);
   padding:calc(var(--u)*.65) calc(var(--u)*1.15);box-shadow:0 calc(var(--u)*.3) calc(var(--u)*1.3) rgba(0,0,0,.55)}
 #subt.burbuja .subt-quien{text-shadow:none;color:var(--c);filter:brightness(.62) saturate(1.4);margin-bottom:calc(var(--u)*.2)}
 #subt.burbuja .subt-texto{color:#1E1710;text-shadow:none;font-size:calc(var(--u)*1.75);line-height:1.2}
 #subt.burbuja .subt-caja::after{content:'';position:absolute;left:calc(var(--ax)*100% - var(--u)*.9);bottom:calc(var(--u)*-1.5);
-  border-left:calc(var(--u)*.9) solid transparent;border-right:calc(var(--u)*.9) solid transparent;border-top:calc(var(--u)*1.6) solid rgba(251,244,228,.96)}
-#subt.burbuja[data-lado=abajo] .subt-caja::after{bottom:auto;top:calc(var(--u)*-1.5);border-top:0;border-bottom:calc(var(--u)*1.6) solid rgba(251,244,228,.96)}
+  border-left:calc(var(--u)*.9) solid transparent;border-right:calc(var(--u)*.9) solid transparent;border-top:calc(var(--u)*1.6) solid rgba(251,244,228,.97)}
+#subt.burbuja[data-lado=abajo] .subt-caja::after{bottom:auto;top:calc(var(--u)*-1.5);border-top:0;border-bottom:calc(var(--u)*1.6) solid rgba(251,244,228,.97)}
 
-/* (Iago, 20-oct) bocadillo AL LADO de la cara (cuando encima no cabe): a la derecha o a la izquierda, a la altura de la boca */
-#subt.burbuja[data-lado=der]{transform:translate(calc(var(--u)*6),-58%)}
-#subt.burbuja.on[data-lado=der]{transform:translate(calc(var(--u)*6.6),-58%)}
-#subt.burbuja[data-lado=izq]{transform:translate(calc(-100% - var(--u)*6),-58%)}
-#subt.burbuja.on[data-lado=izq]{transform:translate(calc(-100% - var(--u)*6.6),-58%)}
+/* al lado de la cara (solo si ni debajo ni encima caben): a la altura de la boca, con el pico fuera de la cara */
+#subt.burbuja[data-lado=der],#subt.burbuja.on[data-lado=der]{transform:translate(calc(var(--u)*var(--dx,6.6)),-58%)}
+#subt.burbuja[data-lado=izq],#subt.burbuja.on[data-lado=izq]{transform:translate(calc(-100% - var(--u)*var(--dx,6.6)),-58%)}
 #subt.burbuja[data-lado=der] .subt-caja::after{left:calc(var(--u)*-1.5);bottom:auto;top:calc(58% - var(--u)*.9);border-top:calc(var(--u)*.9) solid transparent;
-  border-bottom:calc(var(--u)*.9) solid transparent;border-left:0;border-right:calc(var(--u)*1.6) solid rgba(251,244,228,.96)}
+  border-bottom:calc(var(--u)*.9) solid transparent;border-left:0;border-right:calc(var(--u)*1.6) solid rgba(251,244,228,.97)}
 #subt.burbuja[data-lado=izq] .subt-caja::after{left:auto;right:calc(var(--u)*-1.5);bottom:auto;top:calc(58% - var(--u)*.9);border-top:calc(var(--u)*.9) solid transparent;
-  border-bottom:calc(var(--u)*.9) solid transparent;border-right:0;border-left:calc(var(--u)*1.6) solid rgba(251,244,228,.96)}
+  border-bottom:calc(var(--u)*.9) solid transparent;border-right:0;border-left:calc(var(--u)*1.6) solid rgba(251,244,228,.97)}
 
 /* ── el atril de Pearl (P3.5): romanos y, en Sol, el cifrado ── */
 .atril{position:absolute;right:4%;top:9%;width:44%;z-index:3;padding:calc(var(--u)*1.2) calc(var(--u)*1.4);border-radius:calc(var(--u)*.5);
@@ -608,3 +609,15 @@ a{color:var(--oro-hi)}
 .lt-tapa{position:absolute;left:4%;right:4%;top:-4%;height:66%;background:url(../img/inter/lata_tapa.webp) center/contain no-repeat;opacity:0;transition:transform .9s cubic-bezier(.3,1.3,.5,1),opacity .12s;filter:drop-shadow(0 calc(var(--u)*.6) calc(var(--u)*1) rgba(0,0,0,.55))}
 .abierta .lt-abierta,.abierta .lt-tapa{opacity:1}
 .abierta .lt-cerrada{opacity:0}
+
+/* ── (ronda 4) portada con fondo pintado y billetes con lámina ── */
+#portada{background:#07060a}
+.port-fondo{position:absolute;inset:0;background:url(../img/portada/fondo.webp) center/cover no-repeat}
+.port-fondo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,9,.62) 0%,rgba(6,5,9,.18) 30%,rgba(6,5,9,.08) 46%,rgba(6,5,9,.42) 64%,rgba(6,5,9,.78) 100%)}
+@media (max-width:1400px){.port-fondo{background-image:url(../img/portada/fondo_1280.webp)}}
+.port-tit{text-shadow:0 calc(var(--u)*.3) calc(var(--u)*2) rgba(0,0,0,.7)}
+.bi-banda.bi-foto{height:40%;background-color:var(--bc);background-position:center;background-size:cover;background-repeat:no-repeat}
+.bi-banda.bi-foto::before{background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.28)),linear-gradient(0deg,var(--bc) 0,var(--bc) calc(var(--u)*.3),transparent calc(var(--u)*.3))}
+.billete .bi-papel{box-shadow:0 calc(var(--u)*.5) calc(var(--u)*1.6) rgba(0,0,0,.6)}
+.billete .bi-perf{top:77%}
+.billete .bi-talon{height:23%}
