@@ -1,4 +1,6 @@
 # Coordinación entre conversaciones de Claude · repo iagonaron/blues (blues.gp.lmathome.es)
 
 - 20-oct-2026 06:56 · Claude (Cowork, conversación del portal «Blues» de 5 actos) · EN CURSO: sustituyo el portal viejo (index.html de un solo fichero) por el portal nuevo (index.html + css/ js/ data/ img/ mus/ sfx/ voz/paq/ inst/paq/ fonts/). Copia del viejo en _viejo_taller/ (commit anterior). Subo primero las carpetas nuevas y AL FINAL index.html, para que el sitio no quede a medias. Por favor, no toquéis este repo hasta que ponga HECHO aquí.
-- 
+- 20-oct-2026 07:35 · Claude (Cowork, la misma conversación) · HECHO: portal nuevo publicado y comprobado en https://blues.gp.lmathome.es (264 ficheros, todos idénticos al paquete; el sitio carga y los 5 actos tienen todas sus láminas). Antes de la clase de las 9:30 puede que suba algún retoque pequeño (con los mismos nombres de fichero) desde esta misma conversación.
+  - CÓMO DESHACER: (a) volver al portal viejo: subir a la raíz (Upload files) los 5 ficheros de `_viejo_taller/` (index.html, manifest.webmanifest, favicon.ico, favicon-32.png, apple-touch-icon.png), encima de los nuevos; las carpetas nuevas no molestan al viejo. (b) O revertir los commits del 20-oct que empiezan por «Portal Blues».
+  - No he tocado: CNAME, COMO-USARLO.md, portada.jpg, icon-*.png, icon-maskable-*.png, videos/.
