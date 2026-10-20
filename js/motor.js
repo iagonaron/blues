@@ -151,7 +151,7 @@
     5: '<svg viewBox="0 0 60 50"><path d="M30 6v6"/><path d="M22 12h16l-2 12H24z"/><path d="M24 24h12"/><path d="M6 44c8-8 16-12 24-12s16 4 24 12"/><circle cx="12" cy="16" r="2"/><circle cx="48" cy="16" r="2"/><circle cx="30" cy="40" r="2"/></svg>'
   };
   const COLOR_DIA = { 1: '#3E5E7A', 2: '#9A6A2E', 3: '#8C1E26', 4: '#A0672A', 5: '#3A3466' };
-  const TIT_DIA = { 1: 'A nana de Xan', 2: 'Músicos callejeros', 3: 'Glamour y decepción', 4: 'El blues de John', 5: 'A Jam no porche' };   // títulos de Iago (19-oct; el 4, «El blues de John» desde el 20-oct)
+  const TIT_DIA = { 1: 'La nana de Xan', 2: 'Músicos callejeros', 3: 'Glamour y decepción', 4: 'El blues de John', 5: 'El porche' };   // títulos de Iago (19-oct; el 4 desde el 20-oct; el 1 y el 5, ronda 4)
   M.portada = function () {
     dia = null; idx = -1;
     escena.classList.add('en-portada'); escena.classList.remove('precargando', 'sin-cursor');
@@ -161,7 +161,9 @@
     /* (19-oct, punto 54) el acto 5 ya visto entra DIRECTO en la sala de práctica (los alumnos lo usan para practicar en casa) */
     const d5 = B.DIAS[5], iPrac = d5 ? d5.planos.findIndex(q => B.arr(q.inter).some(x => x && x.tipo === 'practica')) : -1;
     const vio5 = iPrac > 0 && !!(pr.dias[5] || pr.planos[d5.planos[iPrac].id]);
-    let h = '<div class="sol-deco"></div><div class="port-marco"></div>' +
+    /* (ronda 4, Iago: «la portada la veo cutre… hace falta que pongas algo de fondo… no me gusta que los tickets tengan un
+       icono, prefiero imágenes de ChatGPT bien hechas») fondo pintado (img/portada/fondo.webp) y una lámina por acto en cada billete */
+    let h = '<div class="port-fondo"></div><div class="port-marco"></div>' +
       '<div class="port-cab"><div class="port-ano">A CORUÑA · NUEVA YORK · 1928</div>' +
       '<h1 class="port-tit">BLUES</h1>' +
       '<div class="port-sub">Unidad 5 · El blues y el cifrado americano</div>' +
@@ -170,7 +172,7 @@
       const d = B.DIAS[n] || { titulo: TIT_DIA[n], lugar: '' };
       const sigue = pr.ultimo && pr.ultimo.dia === n && !pr.dias[n];
       h += '<button class="billete' + (pr.dias[n] ? ' hecho' : '') + (sigue ? ' sigue' : '') + '" data-dia="' + n + '" style="--bc:' + COLOR_DIA[n] + '">' +
-        '<div class="bi-papel"><div class="bi-banda">' + EMBLEMA[n] + '</div>' +
+        '<div class="bi-papel">' + (B.existe('img/portada/billete_' + n + '.webp') ? '<div class="bi-banda bi-foto" style="background-image:url(img/portada/billete_' + n + '.webp)"></div>' : '<div class="bi-banda">' + EMBLEMA[n] + '</div>') +
         '<div class="bi-cuerpo"><div class="bi-dia">ACTO ' + n + '</div><div class="bi-tit">' + B.esc(d.titulo || TIT_DIA[n]) + '</div>' +
         '<div class="bi-lug">' + B.esc(d.lugar || '') + '</div></div>' +
         '<div class="bi-perf"></div><div class="bi-talon"><div class="bi-adm">ADMITE UNO</div><div class="bi-num">Nº 1928·0' + n + '</div></div>' +
@@ -237,7 +239,7 @@
       Object.keys(p.var || {}).forEach(q => r.push(rutaVar(p, q)));
       B.arr(p.amb).forEach(a => r.push(a.src));
       if (p.mus) r.push(p.mus.src);
-      if (p.mapa && p.mapa.silbato) r.push(p.mapa.silbato);
+      if (p.mapa) { if (p.mapa.silbato) r.push(p.mapa.silbato); if (p.mapa.musA) r.push(p.mapa.musA.src); B.arr(p.mapa.sfx).forEach(s => s && r.push(s.src)); if (p.mapa.icono) r.push(resImg(p.mapa.icono)); }
       B.arr(p.lineas).concat(B.arr(p.despues)).forEach(l => { r.push(l.voz); B.arr(l.sfx).forEach(s => r.push(s.src)); });
       B.arr(p.inter).forEach(it => {
         B.arr(it.recursos).forEach(x => r.push(x));
@@ -293,7 +295,7 @@
     limpiaPlano();
     $('#findia').classList.remove('on');
     idx = i;
-    const p = dia.planos[i]; planoAct = p; tCambio = -1e9; corteAct = null;   // un plano puede ABRIR con un plano recurso
+    const p = dia.planos[i]; planoAct = p; tCambio = -1e9; corteAct = null; ultQuien = null;   // un plano puede ABRIR con un plano recurso
     const directo = directoA === i; directoA = -1;
     const c = ctl = B.control();
     montaPlano(p);
@@ -394,9 +396,18 @@
       cuerpo.append(mk('path', { d: 'M-.9 -.55 H1.6 V.35 H-.9 Z M-1.9 -1.05 H-.9 V.35 H-1.9 Z M.85 -1.15 H1.3 V-.55 H.85 Z M1.6 .35 L2.15 .78 H1.6 Z M-2.1 -1.15 H-.7 V-.98 H-2.1 Z' }));
       [[-1.35, .6, .34], [-.2, .62, .3], [.75, .62, .3]].forEach(w => cuerpo.append(mk('circle', { cx: w[0], cy: w[1], r: w[2], class: 'rueda' })));
       barco.append(cuerpo);
+    } else if (m.icono) {   // (ronda 4, Iago: «el icono del barco no me gusta») el vapor pintado (recorte de ChatGPT) en vez del dibujo
+      const an = (m.anchoIcono || 9) * k, al = an * (m.proporcionIcono || .5);
+      const ib = mk('image', { href: resImg(m.icono), x: -an / 2, y: -al * .78, width: an, height: al, class: 'mapa-barco-img', preserveAspectRatio: 'xMidYMid meet' });
+      barco.append(ib);
     } else barco.append(mk('circle', { r: 2.2 * k, class: 'onda' }), mk('path', { d: 'M-1.6 0 L1.6 0 L1.1 .8 L-1.1 .8 Z M-.25 -1.2 L.35 -1.2 L.35 0 L-.25 0 Z', transform: 'scale(' + k + ')' }));
     svg.append(barco); capa.appendChild(svg); kbEl.appendChild(capa);
     if (m.silbato && B.buf[m.silbato]) B.suena(m.silbato, { bus: B.bus.sfx, vol: m.volSilbato || .45, t: B.ahora() + .4 });
+    /* (ronda 4) efectos al salir y al llegar (bocina del barco…) y la música que se TRANSFORMA a lo largo del viaje:
+       m.musA = la música de destino; arranca a cero y se va mezclando con la que sonaba al ritmo del barco. */
+    B.arr(m.sfx).forEach(s => { if (s && B.buf[s.src]) B.suena(s.src, { bus: B.bus.sfx, vol: s.vol == null ? .5 : s.vol, t: B.ahora() + (s.t || 0) }); });
+    if (m.musA && B.musicaHacia) B.musicaHacia(m.musA);
+    let musFija = !m.musA;
     const cartel = B.el('div', 'mapa-cartel'); cartel.innerHTML = '<div class="mc-lugar"></div><div class="mc-sub"></div>';
     cartel.firstChild.textContent = m.hasta || ''; cartel.lastChild.textContent = m.sub || ''; kbEl.parentNode.appendChild(cartel);
     const L = ruta.getTotalLength(); (tren ? [mascara] : [ruta, sombra]).forEach(r => { r.style.strokeDasharray = L; r.style.strokeDashoffset = L; });
@@ -416,7 +427,16 @@
           const h = mk('circle', { cx: (q.x + cx * Math.cos(a) - cy * Math.sin(a)).toFixed(2), cy: (q.y + cx * Math.sin(a) + cy * Math.cos(a)).toFixed(2), r: .8 * k, class: 'mapa-humo' });
           svg.insertBefore(h, barco); setTimeout(() => h.remove(), 1700);
         }
-      } else barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + q.y.toFixed(2) + ')');
+      } else {
+        let esp = '';
+        if (m.icono) {   // mira hacia donde va (el recorte navega hacia la izquierda) y cabecea un poco con el mar
+          const q2 = ruta.getPointAtLength(Math.min(L, L * s + .8)), q1 = ruta.getPointAtLength(Math.max(0, L * s - .8));
+          const dx = q2.x - q1.x, ang = B.clamp(Math.atan2(q2.y - q1.y, Math.abs(dx) || .001) * 180 / Math.PI, -14, 14) * (dx > 0 ? 1 : -1) * .5;
+          esp = ' rotate(' + (ang + Math.sin(ahora * 1.7) * 1.6).toFixed(2) + ')' + (dx > .05 ? ' scale(-1 1)' : '');
+        }
+        barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + (q.y + Math.sin(ahora * 2.1) * .12 * k).toFixed(2) + ')' + esp);
+      }
+      if (!musFija && B.musicaMezcla) { B.musicaMezcla(s); if (u >= 1) { musFija = true; B.musicaFija(); } }
       gB.classList.toggle('on', u >= .98); cartel.classList.toggle('on', u >= 1);
       requestAnimationFrame(paso);
     };
@@ -498,20 +518,42 @@
     return v;
   }
   const focoDe = (p, q) => (p.foco && p.foco[q]) || (p.var && p.var[q] && p.var[q].foco) || null;
-  /* (20-oct) dónde va el bocadillo: se prueban encima, a los lados y debajo, y gana el que menos tapa CUALQUIER cara del
-     plano (no solo la de quien habla) y no se sale de la pantalla. Medidas en --u (ancho 100, alto 56,25), como el CSS. */
+  /* (20-oct; ronda 4, Iago: «el triangulito debajo del mentón… o por encima de la frente… vamos a intentar evitar que se
+     tapen las caras») dónde va el bocadillo. Cada cara es una caja con su TAMAÑO (3.er número del foco: alto de la cara en
+     fracción del alto del encuadre; si no lo hay, 0,14). Se prueban DEBAJO (pico bajo el mentón), ENCIMA (pico sobre la
+     frente) y, solo si no caben, a los lados; gana el que no se sale, no tapa ninguna cara ni los «hechos reales».
+     Medidas en --u (ancho 100, alto 56,25), como el CSS. Devuelve { lado, dy, dx }. */
+  const CARA_H = .14;
+  function cajaCara(f) {
+    const h = (f[2] || CARA_H) * 56.25, x = f[0] * 100, y = f[1] * 56.25, w = h * .82;
+    return [x - w / 2, y - .62 * h, x + w / 2, y + .55 * h];
+  }
+  function obstaculoHechos() {
+    if (!hechosBox || !hechosBox.children.length || !escena) return null;
+    const e = escena.getBoundingClientRect(), r = hechosBox.getBoundingClientRect();
+    if (!e.width || !r.width) return null;
+    const k = 100 / e.width;
+    return [(r.left - e.left) * k - .8, (r.top - e.top) * k - .8, (r.right - e.left) * k + .8, (r.bottom - e.top) * k + .8];
+  }
   function ladoBurbuja(p, fc, texto, quien) {
     const n = texto.length, lineas = Math.min(4, Math.ceil(n / 34)), H = 3.4 + lineas * 2.15, W = n <= 34 ? Math.max(12, n * 1.02 + 3) : 38;
     const X = fc[0] * 100, Y = fc[1] * 56.25, ax = fc[0] < .3 ? .16 : fc[0] > .7 ? .84 : .5;
-    const caras = Object.keys(p.foco || {}).map(k => { const f = p.foco[k]; return [f[0] * 100 - 5.5, f[1] * 56.25 - 6.5, f[0] * 100 + 5.5, f[1] * 56.25 + 5.5]; });
-    const rect = { arriba: [X - ax * W, Y - 7 - H, X + (1 - ax) * W, Y - 7], der: [X + 6.6, Y - .58 * H, X + 6.6 + W, Y + .42 * H],
-                   izq: [X - 6.6 - W, Y - .58 * H, X - 6.6, Y + .42 * H], abajo: [X - ax * W, Y + 3.6, X + (1 - ax) * W, Y + 3.6 + H] };
+    const hc = (fc[2] || CARA_H) * 56.25, PICO = 1.6, AIRE = .5;
+    const dyAbajo = .55 * hc + PICO + AIRE, dyArriba = .62 * hc + PICO + AIRE, dxLado = .41 * hc + PICO + AIRE;
+    const caras = Object.keys(p.foco || {}).map(k => cajaCara(p.foco[k]));
+    const hb = obstaculoHechos(); if (hb) caras.push(hb);
+    const ym = Y + .2 * hc;   // a los lados: a la altura de la boca
+    const rect = {
+      abajo: [X - ax * W, Y + dyAbajo, X + (1 - ax) * W, Y + dyAbajo + H],
+      arriba: [X - ax * W, Y - dyArriba - H, X + (1 - ax) * W, Y - dyArriba],
+      der: [X + dxLado, ym - .58 * H, X + dxLado + W, ym + .42 * H],
+      izq: [X - dxLado - W, ym - .58 * H, X - dxLado, ym + .42 * H] };
     const corte = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
     const fuera = r => (r[2] - r[0]) * (r[3] - r[1]) - corte(r, [1, 1, 99, 55.25]);
-    const orden = ['arriba', fc[0] < .5 ? 'der' : 'izq', fc[0] < .5 ? 'izq' : 'der', 'abajo'];
+    const orden = ['abajo', 'arriba', fc[0] < .5 ? 'der' : 'izq', fc[0] < .5 ? 'izq' : 'der'];
     let mejor = orden[0], coste = Infinity;
-    orden.forEach((k, i) => { const r = rect[k]; const c = fuera(r) * 6 + caras.reduce((a, f) => a + corte(r, f), 0) * 3 + i * 4; if (c < coste) { coste = c; mejor = k; } });
-    return mejor;
+    orden.forEach((k, i) => { const r = rect[k]; const c = fuera(r) * 6 + caras.reduce((a, f) => a + corte(r, f), 0) * 3 + i * 4 + (i > 1 ? 40 : 0); if (c < coste) { coste = c; mejor = k; } });
+    return { lado: mejor, dy: mejor === 'abajo' ? dyAbajo : dyArriba, dx: dxLado, ym: .2 * hc };
   }
   /* (punto 38) el atril de Pearl (P3.5): los doce compases con el número romano y, al llegar a Sol, el cifrado debajo.
      Cada línea puede traer «atril»: 'vacio' · 'fila1' · 'fila2' · 'fila3' · 'sol' (lo pone parches_musica.py). */
@@ -529,10 +571,22 @@
     B.$$('.at-c', a).forEach(c => c.classList.toggle('ver', +c.dataset.f <= k));
     a.classList.toggle('sol', k >= 4);
   }
+  /* (ronda 4, Iago: «dejaría un poquito más de aire entre las intervenciones… no necesariamente un segundo siempre»)
+     antes de cada frase, una pausa corta: 0,2 s si sigue hablando el mismo, 0,5 s si cambia de personaje y 0,15 s más
+     si la anterior era una pregunta. Dentro de las interacciones no (llevan su propio ritmo). Con los 0,28 s de
+     después de cada frase quedan ~0,5 s (mismo personaje) y ~0,8 s (cambio). */
+  let ultQuien = null, ultTexto = '';
+  function aireAntes(l, o) {
+    if (o.sinAire || ultQuien == null || (escena && escena.classList.contains('con-inter'))) return 0;
+    return (ultQuien !== l.quien ? .5 : .2) + (/[?¿]\s*[»"”']?\s*$/.test(ultTexto) ? .15 : 0);
+  }
   M.di = function (l, c, o) {
     o = o || {};
+    const aire = l ? aireAntes(l, o) : 0;
+    if (aire > 0) return B.espera(aire, c).then(ok => ok ? M.di(l, c, Object.assign({}, o, { sinAire: true })) : false);
     return new Promise(res => {
       if (!l || (c && c.muerto)) return res(false);
+      ultQuien = l.quien; ultTexto = String(l.texto || '');
       if (l.atril) ponAtril(l.atril);
       const P = B.personaje(l.quien);
       const dv = (l.voz && B.buf[l.voz] ? B.buf[l.voz].duration : durTexto(l.texto)) + (l.espera || 0);
@@ -546,8 +600,10 @@
       const fc = planoAct && conBurbujas(planoAct) && !l.cilindro && l.var !== '-' && !corteAct && !escena.classList.contains('con-inter') ? focoDe(planoAct, l.quien) : null;   // en un corte (primer plano o plano recurso) no hay cara pequeña: texto abajo
       subt.classList.toggle('burbuja', !!fc);
       if (fc) {   // (Iago, 20-oct) el bocadillo NUNCA tapa la cara de quien habla: encima de la cabeza si cabe; si no, al lado (hacia el centro)
-        const lado = ladoBurbuja(planoAct, fc, String(l.texto || ''), l.quien);
-        subt.style.setProperty('--bx', fc[0]); subt.style.setProperty('--by', fc[1]); subt.style.setProperty('--ax', fc[0] < .3 ? .16 : fc[0] > .7 ? .84 : .5); subt.dataset.lado = lado;
+        const lb = ladoBurbuja(planoAct, fc, String(l.texto || ''), l.quien), lado = lb.lado;
+        const lateral = lado === 'der' || lado === 'izq';
+        subt.style.setProperty('--bx', fc[0]); subt.style.setProperty('--by', lateral ? fc[1] + lb.ym / 56.25 : fc[1]); subt.style.setProperty('--ax', fc[0] < .3 ? .16 : fc[0] > .7 ? .84 : .5);
+        subt.style.setProperty('--dy', lb.dy.toFixed(2)); subt.style.setProperty('--dx', lb.dx.toFixed(2)); subt.dataset.lado = lado;
       }
       subt.classList.add('on');
       let voz = null;

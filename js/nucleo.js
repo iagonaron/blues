@@ -147,11 +147,38 @@ window.BLUES = window.BLUES || {};
       ambAct.set(src, B.suena(src, { bus: B.bus.amb, vol: a.vol == null ? .6 : a.vol, bucle: true, fade: 1.4, grupo: 'amb' }));
     });
   };
+  let musSig = null;
   B.musica = function (m) {
     if (!AC) return;
-    if (m && musAct && musAct.src === m.src) return;
+    if (musSig && m && musSig.src === m.src) B.musicaFija();
+    if (m && musAct && musAct.src === m.src) {   // la misma música sigue sonando; solo se ajusta su volumen
+      if (m.vol != null && Math.abs((musAct.vol || 0) - m.vol) > .01) { musAct.h.gan.gain.setTargetAtTime(m.vol, AC.currentTime, .9); musAct.vol = m.vol; }
+      return;
+    }
+    if (musSig) { musSig.h.parar(1.2); musSig = null; }
     if (musAct) { musAct.h.parar(1.6); musAct = null; }
-    if (m && m.src && B.buf[m.src]) musAct = { src: m.src, h: B.suena(m.src, { bus: B.bus.mus, vol: m.vol == null ? .8 : m.vol, bucle: !!m.bucle, fade: .8, grupo: 'mus' }) };
+    if (m && m.src && B.buf[m.src]) { const vol = m.vol == null ? .8 : m.vol; musAct = { src: m.src, vol, h: B.suena(m.src, { bus: B.bus.mus, vol, bucle: !!m.bucle, fade: .8, grupo: 'mus' }) }; }
+  };
+  /* (ronda 4, Iago: «que la música de La Habana se transforme y que a medida que va avanzando se quede en el jazz»)
+     mezcla progresiva entre dos músicas en los mapas: musicaHacia arranca la nueva a cero sin cortar la que suena;
+     musicaMezcla(s) reparte el volumen (s de 0 a 1, a potencia constante); musicaFija deja solo la nueva. */
+  B.musicaHacia = function (m) {
+    if (!AC || !m || !m.src || !B.buf[m.src]) return;
+    if (musAct && musAct.src === m.src) return;
+    if (musSig) musSig.h.parar(.3);
+    musSig = { src: m.src, vol: m.vol == null ? .8 : m.vol, h: B.suena(m.src, { bus: B.bus.mus, vol: 0, bucle: !!m.bucle, grupo: 'mus' }) };
+  };
+  B.musicaMezcla = function (s) {
+    if (!AC || !musSig) return;
+    const t = AC.currentTime; s = Math.max(0, Math.min(1, s));
+    if (musAct) musAct.h.gan.gain.setTargetAtTime((musAct.vol == null ? .8 : musAct.vol) * Math.cos(s * Math.PI / 2), t, .1);
+    musSig.h.gan.gain.setTargetAtTime(musSig.vol * Math.sin(s * Math.PI / 2), t, .1);
+  };
+  B.musicaFija = function () {
+    if (!musSig) return;
+    if (musAct) musAct.h.parar(.6);
+    musAct = musSig; musSig = null;
+    try { musAct.h.gan.gain.setTargetAtTime(musAct.vol, AC.currentTime, .2); } catch (e) { }
   };
   B.silencioTotal = function () { B.ambiente([]); B.musica(null); };
 
