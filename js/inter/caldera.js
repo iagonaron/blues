@@ -57,17 +57,17 @@
     const esc = B.el('div', 'cal-esc'); caja.appendChild(esc);
     esc.innerHTML =
       '<div class="cal-horno"><div class="cal-frente"></div><div class="cal-boca"><div class="cal-luz"></div></div>' +
-      '<div class="cal-puerta"><div class="cal-pestillo"></div></div>' +
+      '<div class="cal-puerta"><div class="cal-pestillo"></div></div><button class="cal-boca-toque" aria-label="Fuego"></button>' +
       '<div class="cal-mano">' + MANOMETRO + '</div></div>' +
       '<div class="cal-carbon"></div><div class="cal-pala"></div>' +
-      '<button class="cal-casilla cal-c-carbon" aria-label="Carbón">' + ICO_CARBON + '</button>' +
-      '<button class="cal-casilla cal-c-llama" aria-label="Fuego">' + ICO_LLAMA + '</button>' +
       '<div class="cal-flecha">' + FLECHA + '</div><div class="cal-dedo">' + ICO_MANO + '</div>';
     const enun = U.panel(caja, { left: '50%', top: '3.5%', transform: 'translateX(-50%)', textAlign: 'center', minWidth: u(46), maxWidth: u(64) });
     const paso = (n, txt) => { enun.innerHTML = '<div class="i-tit">La caldera · paso ' + n + ' de 6</div><div class="i-enun">' + txt + '</div>'; B.inter.caldera.paso = n; };
     const $ = s => esc.querySelector(s);
     const puerta = $('.cal-puerta'), luz = $('.cal-luz'), pest = $('.cal-pestillo'), pala = $('.cal-pala'), aguja = $('.aguja');
-    const cCarbon = $('.cal-c-carbon'), cLlama = $('.cal-c-llama'), flecha = $('.cal-flecha'), dedo = $('.cal-dedo');
+    /* (Iago, 20-oct, 22:48) nada de iconos encima del carbón ni del horno: se toca el propio montón de carbón y la boca del horno,
+       y lo que toca se resalta por su BORDE (el contorno del carbón, el marco de la boca); los dibujos, solo en la tira de abajo */
+    const cCarbon = $('.cal-carbon'), cLlama = $('.cal-boca-toque'), flecha = $('.cal-flecha'), dedo = $('.cal-dedo');
     let rug = null, fuego = null;
     ctl.alMorir.push(() => { if (rug) rug.parar(.4); if (fuego) fuego.parar(.5); });
     /* la mano que señala dónde tocar (fija, sin latir): junto al objeto, abajo a la derecha */
@@ -79,8 +79,8 @@
       dedo.classList.add('on');
     };
     /* esperar un toque en un objeto (y un atajo para las pruebas: B.inter.caldera.hazPaso()) */
-    const toqueEn = el => new Promise(res => {
-      el.classList.add('cal-objetivo'); señala(el);
+    const toqueEn = (el, sinMano) => new Promise(res => {
+      el.classList.add('cal-objetivo'); if (!sinMano) señala(el);
       const quitaT = B.captura.poner(e => { if (e.key === ' ' || e.key === 'Enter') { fin(); return true; } return false; });
       function fin(e) { if (e) { e.preventDefault(); e.stopPropagation(); } el.removeEventListener('pointerdown', fin); quitaT(); el.classList.remove('cal-objetivo'); señala(null); B.ac(); res(); }
       el.addEventListener('pointerdown', fin); B.inter.caldera.hazPaso = () => fin(); ctl.alMorir.push(() => { quitaT(); res(); });
@@ -153,9 +153,9 @@
     /* 4 · la primera palada, de prueba (sin música) */
     esc.classList.add('palear');
     paso(4, 'Pulsa el <b>carbón</b> y después la <b>llama</b>.');
-    cCarbon.classList.add('activa'); await toqueEn(cCarbon); if (ctl.muerto) return;
+    cCarbon.classList.add('activa'); await toqueEn(cCarbon, true); if (ctl.muerto) return;
     cCarbon.classList.remove('activa'); coge(B.ahora());
-    cLlama.classList.add('activa'); await toqueEn(cLlama); if (ctl.muerto) return;
+    cLlama.classList.add('activa'); await toqueEn(cLlama, true); if (ctl.muerto) return;
     cLlama.classList.remove('activa'); echa(B.ahora());
     await B.espera(.5, ctl); if (ctl.muerto) return;
 
