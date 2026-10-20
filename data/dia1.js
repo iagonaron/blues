@@ -141,7 +141,8 @@ BLUES.dia(1, {
      "id": "d1_002",
      "quien": "AVOA",
      "texto": "E eu teño sesenta, e aínda me canta o mar. Cala e escoita.",
-     "voz": "voz/d1/d1_002.mp3"
+     "voz": "voz/d1/d1_002.mp3",
+     "espera": 3
     },
     {
      "id": "d1_003",
