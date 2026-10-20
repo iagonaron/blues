@@ -89,7 +89,9 @@ BLUES.dia(1, {
     "AVOA": "img/d1/p1_1_avoa.webp",
     "XAN": "img/d1/p1_1_xan.webp",
     "AVOA_CERCA": "img/d1/p1_1_avoa_cerca.webp",
-    "XAN_CERCA": "img/d1/p1_1_xan_cerca.webp"
+    "XAN_CERCA": "img/d1/p1_1_xan_cerca.webp",
+    "RECURSO_LUME": "img/d1/p1_1_recurso_lume.webp",
+    "RECURSO_LATA": "img/d1/p1_1_recurso_lata.webp"
    },
    "personajes": [
     "AVOA",
@@ -108,6 +110,10 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/reloj.mp3",
      "vol": 0.25
+    },
+    {
+     "src": "sfx/d1/fuego_splice.mp3",
+     "vol": 0.22
     }
    ],
    "mus": {
@@ -136,8 +142,7 @@ BLUES.dia(1, {
      "id": "d1_003",
      "quien": "XAN",
      "texto": "Por que é tan triste esa canción?",
-     "voz": "voz/d1/d1_003.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d1/d1_003.mp3"
     },
     {
      "id": "d1_004",
@@ -149,14 +154,14 @@ BLUES.dia(1, {
      "id": "d1_005",
      "quien": "AVOA",
      "texto": "Era do teu avó, sabes? Pero eu arranxeina.",
-     "voz": "voz/d1/d1_005.mp3",
-     "var": "AVOA_CERCA"
+     "voz": "voz/d1/d1_005.mp3"
     },
     {
      "id": "d1_007",
      "quien": "AVOA",
      "texto": "El tocábaa coa guitarra… rápida, cun balanceo que daba gusto.",
-     "voz": "voz/d1/d1_007.mp3"
+     "voz": "voz/d1/d1_007.mp3",
+     "var": "RECURSO_LUME"
     },
     {
      "id": "d1_008",
@@ -176,7 +181,7 @@ BLUES.dia(1, {
      "quien": "AVOA",
      "texto": "Tes o seu pelo, sabes? Eses rizos non son desta familia.",
      "voz": "voz/d1/d1_012.mp3",
-     "var": "AVOA_CERCA"
+     "var": "XAN_CERCA"
     },
     {
      "id": "d1_013",
@@ -188,14 +193,15 @@ BLUES.dia(1, {
      "id": "d1_014",
      "quien": "XAN",
      "texto": "E esa lata?",
-     "voz": "voz/d1/d1_014.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d1/d1_014.mp3"
     },
     {
      "id": "d1_015",
      "quien": "AVOA",
      "texto": "Chegou esta mañá. Sen remite… e co teu nome.",
-     "voz": "voz/d1/d1_015.mp3"
+     "voz": "voz/d1/d1_015.mp3",
+     "var": "RECURSO_LATA",
+     "espera": 0.8
     }
    ],
    "nombre": "La nana",
@@ -217,12 +223,12 @@ BLUES.dia(1, {
    },
    "foco": {
     "AVOA": [
-     0.33,
-     0.22
+     0.28,
+     0.16
     ],
     "XAN": [
-     0.8,
-     0.24
+     0.72,
+     0.21
     ]
    }
   },
@@ -232,7 +238,9 @@ BLUES.dia(1, {
    "img": "img/d1/p1_2.webp",
    "var": {
     "AVOA": "img/d1/p1_2_avoa.webp",
-    "XAN": "img/d1/p1_2_xan.webp"
+    "XAN": "img/d1/p1_2_xan.webp",
+    "RECURSO_LUME": "img/d1/p1_1_recurso_lume.webp",
+    "RECURSO_LATA": "img/d1/p1_1_recurso_lata.webp"
    },
    "personajes": [
     "XAN",
@@ -247,6 +255,10 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/fuego.mp3",
      "vol": 0.3
+    },
+    {
+     "src": "sfx/d1/fuego_splice.mp3",
+     "vol": 0.2
     }
    ],
    "lineas": [],
@@ -281,7 +293,8 @@ BLUES.dia(1, {
      "id": "d1_018",
      "quien": "XAN",
      "texto": "E unha nota: «Ven. Te esperamos. Hunterfly Road, Weeksville. Brooklyn, Nueva York».",
-     "voz": "voz/d1/d1_018.mp3"
+     "voz": "voz/d1/d1_018.mp3",
+     "var": "RECURSO_LATA"
     },
     {
      "id": "d1_019",
@@ -311,7 +324,8 @@ BLUES.dia(1, {
      "id": "d1_023",
      "quien": "AVOA",
      "texto": "Deixarte? Media Coruña marcha para América coa túa idade, e con menos.",
-     "voz": "voz/d1/d1_023.mp3"
+     "voz": "voz/d1/d1_023.mp3",
+     "var": "RECURSO_LUME"
     },
     {
      "id": "d1_024",
@@ -347,12 +361,12 @@ BLUES.dia(1, {
    },
    "foco": {
     "AVOA": [
-     0.33,
-     0.3
+     0.31,
+     0.32
     ],
     "XAN": [
      0.6,
-     0.32
+     0.27
     ]
    }
   },
@@ -362,7 +376,7 @@ BLUES.dia(1, {
    "img": "img/d1/p1_3.webp",
    "var": {
     "AVOA": "img/d1/p1_3_avoa.webp",
-    "XAN": "img/d1/p1_3_xan.webp"
+    "RECURSO_MUELLE": "img/d1/p1_3_recurso_muelle.webp"
    },
    "personajes": [
     "AVOA",
@@ -403,7 +417,9 @@ BLUES.dia(1, {
      "id": "d1_029",
      "quien": "XAN",
      "texto": "Mira eses, avoa. A eses súbenlles os baúis os mozos.",
-     "voz": "voz/d1/d1_029.mp3"
+     "voz": "voz/d1/d1_029.mp3",
+     "var": "RECURSO_MUELLE",
+     "espera": 0.6
     },
     {
      "id": "d1_030",
@@ -434,6 +450,16 @@ BLUES.dia(1, {
    "guion_sonido": {
     "amb": "Muelle: gentío, gaviotas, olas contra la piedra, cuerdas y cadenas.",
     "sfx": "La sirena grave del barco (dos veces)."
+   },
+   "foco": {
+    "AVOA": [
+     0.41,
+     0.33
+    ],
+    "XAN": [
+     0.57,
+     0.13
+    ]
    }
   },
   {
@@ -442,7 +468,9 @@ BLUES.dia(1, {
    "img": "img/d1/p1_4.webp",
    "var": {
     "SOBRE": "img/d1/p1_4_sobre.webp",
-    "XAN": "img/d1/p1_4_xan.webp"
+    "XAN": "img/d1/p1_4_xan.webp",
+    "SOBRE_CERCA": "img/d1/p1_4_sobre_cerca.webp",
+    "RECURSO_SELLO": "img/d1/p1_4_recurso_sello.webp"
    },
    "personajes": [
     "SOBRE",
@@ -489,7 +517,9 @@ BLUES.dia(1, {
      "id": "d1_039",
      "quien": "SOBRE",
      "texto": "Race or people… «African».",
-     "voz": "voz/d1/d1_039.mp3"
+     "voz": "voz/d1/d1_039.mp3",
+     "var": "RECURSO_SELLO",
+     "espera": 1.3
     },
     {
      "id": "d1_040",
@@ -513,25 +543,38 @@ BLUES.dia(1, {
      "id": "d1_042",
      "quien": "SOBRE",
      "texto": "Usted duerme abajo, junto a las calderas. Con la cuadrilla de obreros.",
-     "voz": "voz/d1/d1_042.mp3"
+     "voz": "voz/d1/d1_042.mp3",
+     "var": "SOBRE_CERCA"
     },
     {
      "id": "d1_043",
      "quien": "XAN",
      "texto": "Pero mi billete…",
-     "voz": "voz/d1/d1_043.mp3"
+     "voz": "voz/d1/d1_043.mp3",
+     "var": "SOBRE_CERCA"
     },
     {
      "id": "d1_044",
      "quien": "SOBRE",
      "texto": "Laurens… Su billete dice que sube a bordo. No dice dónde duerme. Next!",
-     "voz": "voz/d1/d1_044.mp3"
+     "voz": "voz/d1/d1_044.mp3",
+     "var": "SOBRE_CERCA"
     }
    ],
    "nombre": "El manifiesto",
    "guion_sonido": {
     "amb": "Murmullo del muelle, más lejos.",
     "sfx": "Pluma rascando el papel; un sello de goma."
+   },
+   "foco": {
+    "XAN": [
+     0.44,
+     0.08
+    ],
+    "SOBRE": [
+     0.82,
+     0.3
+    ]
    }
   },
   {
@@ -548,6 +591,14 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/mar_gaviotas.mp3",
      "vol": 0.35
+    },
+    {
+     "src": "sfx/d1/pasos_pasarela.mp3",
+     "vol": 0.85
+    },
+    {
+     "src": "sfx/d1/sirena_vapor.mp3",
+     "vol": 0.5
     }
    ],
    "espera": 4.2,
@@ -577,6 +628,14 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/calderas_lejos.mp3",
      "vol": 0.55
+    },
+    {
+     "src": "sfx/d1/pasos_dentro.mp3",
+     "vol": 0.8
+    },
+    {
+     "src": "sfx/d1/barco_cruje.mp3",
+     "vol": 0.35
     }
    ],
    "espera": 4.2,
@@ -604,7 +663,9 @@ BLUES.dia(1, {
     "AMOS": "img/d1/p1_5_amos.webp",
     "XAN": "img/d1/p1_5_xan.webp",
     "AMOS_CERCA": "img/d1/p1_5_amos_cerca.webp",
-    "XAN_CERCA": "img/d1/p1_5_xan_cerca.webp"
+    "XAN_CERCA": "img/d1/p1_5_xan_cerca.webp",
+    "RECURSO_CALDERA": "img/d1/p1_5_recurso_caldera.webp",
+    "RECURSO_RATON": "img/d1/p1_6_recurso_raton.webp"
    },
    "personajes": [
     "AMOS",
@@ -615,6 +676,10 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/calderas.mp3",
      "vol": 0.6
+    },
+    {
+     "src": "sfx/d1/fuego_splice.mp3",
+     "vol": 0.18
     }
    ],
    "hechos": [
@@ -627,26 +692,28 @@ BLUES.dia(1, {
      "id": "d1_045",
      "quien": "AMOS",
      "texto": "Well, well… ¿y tú quién eres, boy? Aquí abajo no bajan pasajeros.",
-     "voz": "voz/d1/d1_045.mp3"
+     "voz": "voz/d1/d1_045.mp3",
+     "var": "RECURSO_RATON"
     },
     {
      "id": "d1_046",
      "quien": "XAN",
      "texto": "Me han mandado aquí. Por mi apellido.",
-     "voz": "voz/d1/d1_046.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d1/d1_046.mp3"
     },
     {
      "id": "d1_048",
      "quien": "XAN",
      "texto": "Laurens.",
-     "voz": "voz/d1/d1_048.mp3"
+     "voz": "voz/d1/d1_048.mp3",
+     "espera": 1.2
     },
     {
      "id": "d1_049",
      "quien": "AMOS",
      "texto": "Laurens… Lord. En Carolina del Sur hay más Laurens que algodón.",
-     "voz": "voz/d1/d1_049.mp3"
+     "voz": "voz/d1/d1_049.mp3",
+     "var": "AMOS_CERCA"
     },
     {
      "id": "d1_050",
@@ -664,7 +731,8 @@ BLUES.dia(1, {
      "id": "d1_052",
      "quien": "AMOS",
      "texto": "Aquí come caliente el que trabaja. Abre esa puerta. Con cuidado, que muerde.",
-     "voz": "voz/d1/d1_052.mp3"
+     "voz": "voz/d1/d1_052.mp3",
+     "var": "RECURSO_CALDERA"
     }
    ],
    "inter": {
@@ -800,20 +868,21 @@ BLUES.dia(1, {
      "quien": "AMOS",
      "texto": "Mis padres nacieron esclavos. En Carolina del Sur.",
      "voz": "voz/d1/d1_053.mp3",
-     "var": "AMOS_CERCA"
+     "var": "AMOS_CERCA",
+     "espera": 0.7
     },
     {
      "id": "d1_054",
      "quien": "AMOS",
      "texto": "Yo nací libre, pero de niño recogía algodón de sol a sol.",
-     "voz": "voz/d1/d1_054.mp3"
+     "voz": "voz/d1/d1_054.mp3",
+     "var": "AMOS_CERCA"
     },
     {
      "id": "d1_055",
      "quien": "AMOS",
      "texto": "Y para aguantar, cantábamos. Uno lanzaba la pregunta y todos contestaban.",
-     "voz": "voz/d1/d1_055.mp3",
-     "var": "AMOS_CERCA"
+     "voz": "voz/d1/d1_055.mp3"
     },
     {
      "id": "d1_056",
@@ -825,20 +894,18 @@ BLUES.dia(1, {
      "id": "d1_057",
      "quien": "AMOS",
      "texto": "Pregunta y respuesta, boy. Sin eso no hay blues.",
-     "voz": "voz/d1/d1_057.mp3",
-     "var": "AMOS_CERCA"
+     "voz": "voz/d1/d1_057.mp3"
     },
     {
      "id": "d1_058",
      "quien": "XAN",
      "texto": "¿Blues?",
-     "voz": "voz/d1/d1_058.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d1/d1_058.mp3"
     },
     {
      "id": "d1_059",
      "quien": "AMOS",
-     "texto": "El blues es cuando te duele algo y lo cantas para que duela menos.",
+     "texto": "El blues es cuando echas de menos algo que dejaste lejos… te duele, y lo cantas para que duela menos.",
      "voz": "voz/d1/d1_059.mp3",
      "var": "AMOS_CERCA"
     },
@@ -847,7 +914,8 @@ BLUES.dia(1, {
      "quien": "XAN",
      "texto": "En Galicia, a eso lo llamamos morriña.",
      "voz": "voz/d1/d1_060.mp3",
-     "var": "XAN_CERCA"
+     "var": "XAN_CERCA",
+     "espera": 1.3
     },
     {
      "id": "d1_061",
@@ -874,12 +942,16 @@ BLUES.dia(1, {
    },
    "foco": {
     "XAN": [
-     0.2,
-     0.16
+     0.78,
+     0.17
     ],
     "AMOS": [
-     0.6,
-     0.2
+     0.46,
+     0.25
+    ],
+    "FOGONEROS": [
+     0.22,
+     0.19
     ]
    }
   },
@@ -890,7 +962,10 @@ BLUES.dia(1, {
    "var": {
     "AMOS": "img/d1/p1_6_amos.webp",
     "XAN": "img/d1/p1_6_xan.webp",
-    "CERRADO": "img/d1/p1_6_cerrado.webp"
+    "CERRADO": "img/d1/p1_6_cerrado.webp",
+    "RECURSO_RATON": "img/d1/p1_6_recurso_raton.webp",
+    "RECURSO_CALDERA": "img/d1/p1_5_recurso_caldera.webp",
+    "RECURSO_ESTUCHE": "img/d1/p1_6_recurso_estuche.webp"
    },
    "personajes": [
     "AMOS",
@@ -901,6 +976,10 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/calderas_lejos.mp3",
      "vol": 0.35
+    },
+    {
+     "src": "sfx/d1/barco_cruje.mp3",
+     "vol": 0.28
     }
    ],
    "hechos": [
@@ -913,7 +992,9 @@ BLUES.dia(1, {
      "id": "d1_062",
      "quien": "AMOS",
      "texto": "A ver ese cajón que llevas a todas partes. ¿Es un ataúd para gatos?",
-     "voz": "voz/d1/d1_062.mp3"
+     "voz": "voz/d1/d1_062.mp3",
+     "var": "RECURSO_ESTUCHE",
+     "espera": 0.5
     },
     {
      "id": "d1_063",
@@ -1074,6 +1155,16 @@ BLUES.dia(1, {
    "nombre": "Pregunta y respuesta",
    "guion_sonido": {
     "amb": "Calderas al fondo (más bajas), crujidos del barco."
+   },
+   "foco": {
+    "AMOS": [
+     0.28,
+     0.11
+    ],
+    "XAN": [
+     0.72,
+     0.16
+    ]
    }
   },
   {
@@ -1093,6 +1184,10 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/mar_noche.mp3",
      "vol": 0.5
+    },
+    {
+     "src": "sfx/d1/barco_cruje.mp3",
+     "vol": 0.3
     }
    ],
    "mus": {
@@ -1130,6 +1225,13 @@ BLUES.dia(1, {
      "quien": "AMOS",
      "texto": "No. Pero la música sube sola por las escaleras. A ella no la para nadie.",
      "voz": "voz/d1/d1_075.mp3"
+    },
+    {
+     "id": "d1_098",
+     "quien": "AMOS",
+     "texto": "Ve a descansar, boy. Te lo has ganado.",
+     "voz": "voz/d1/d1_098.mp3",
+     "espera": 1.0
     }
    ],
    "nombre": "Arriba y abajo",
@@ -1137,6 +1239,82 @@ BLUES.dia(1, {
    "guion_sonido": {
     "amb": "Mar abierto contra el casco, viento.",
     "mus": "La orquesta de primera (trompeta, clarinete, banjo, tuba y batería; nada más), lejos y filtrada (Suno)."
+   },
+   "foco": {
+    "AMOS": [
+     0.33,
+     0.35
+    ],
+    "XAN": [
+     0.59,
+     0.42
+    ]
+   }
+  },
+  {
+   "id": "P1.7m",
+   "nombre": "Mapa: A Coruña → La Habana",
+   "desc": "Carta náutica antigua del Atlántico: la ruta del barco se dibuja desde A Coruña hasta La Habana.",
+   "img": "img/d1/mapa.webp",
+   "pal": "atlantico",
+   "amb": [
+    {
+     "src": "sfx/d1/mar_noche.mp3",
+     "vol": 0.3
+    }
+   ],
+   "espera": 9.5,
+   "hechos": [],
+   "personajes": [],
+   "mapa": {
+    "ruta": [
+     [
+      0.861,
+      0.33
+     ],
+     [
+      0.8,
+      0.405
+     ],
+     [
+      0.66,
+      0.5
+     ],
+     [
+      0.5,
+      0.55
+     ],
+     [
+      0.36,
+      0.57
+     ],
+     [
+      0.27,
+      0.585
+     ],
+     [
+      0.22,
+      0.6
+     ],
+     [
+      0.186,
+      0.61
+     ]
+    ],
+    "desde": "A Coruña",
+    "hasta": "La Habana",
+    "sub": "Al amanecer · parada para repostar carbón",
+    "dur": 6.5,
+    "etiq": {
+     "desde": [
+      -10.5,
+      -1.6
+     ],
+     "hasta": [
+      -3.5,
+      3.6
+     ]
+    }
    }
   },
   {
@@ -1151,6 +1329,10 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/muelle_gente.mp3",
      "vol": 0.35
+    },
+    {
+     "src": "sfx/d1/playa_gaviotas.mp3",
+     "vol": 0.32
     }
    ],
    "lineas": [
@@ -1204,13 +1386,81 @@ BLUES.dia(1, {
    },
    "foco": {
     "AMOS": [
-     0.27,
-     0.22
+     0.38,
+     0.23
     ],
     "XAN": [
-     0.48,
-     0.28
+     0.65,
+     0.32
     ]
+   }
+  },
+  {
+   "id": "P1.8m",
+   "nombre": "Mapa: La Habana → Nueva Orleans",
+   "desc": "La carta náutica, más cerca: el barco cruza el golfo de México y remonta el Misisipi hasta Nueva Orleans.",
+   "img": "img/d1/mapa.webp",
+   "pal": "atlantico",
+   "amb": [
+    {
+     "src": "sfx/d1/mar_gaviotas.mp3",
+     "vol": 0.18
+    }
+   ],
+   "mus": {
+    "src": "mus/trio_club.mp3",
+    "vol": 0.5,
+    "bucle": true
+   },
+   "espera": 9,
+   "hechos": [],
+   "personajes": [],
+   "mapa": {
+    "ruta": [
+     [
+      0.186,
+      0.61
+     ],
+     [
+      0.17,
+      0.575
+     ],
+     [
+      0.145,
+      0.53
+     ],
+     [
+      0.118,
+      0.49
+     ],
+     [
+      0.1,
+      0.468
+     ],
+     [
+      0.093,
+      0.445
+     ]
+    ],
+    "desde": "La Habana",
+    "hasta": "Nueva Orleans",
+    "sub": "Dos días después, Misisipi arriba",
+    "dur": 6,
+    "encuadre": [
+     2.3,
+     0.15,
+     0.52
+    ],
+    "etiq": {
+     "desde": [
+      1.4,
+      2.2
+     ],
+     "hasta": [
+      -1.0,
+      -1.8
+     ]
+    }
    }
   },
   {
@@ -1283,6 +1533,21 @@ BLUES.dia(1, {
    "nombre": "Nueva Orleans",
    "guion_sonido": {
     "amb": "Puerto: campana de barco, gaviotas, sirena de un vapor de ruedas, gente trabajando."
+   },
+   "foco": {
+    "AMOS": [
+     0.32,
+     0.15
+    ],
+    "XAN": [
+     0.67,
+     0.25
+    ]
+   },
+   "mus": {
+    "src": "mus/trio_club.mp3",
+    "vol": 0.38,
+    "bucle": true
    }
   }
  ]
