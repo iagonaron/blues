@@ -19,6 +19,40 @@ if(window.Sentry && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){
 </script>
 
 <meta charset="utf-8">
+<!-- LM at home · SELECCIONADOR DE VOLUNTARIOS (cargador común de los portales, 14-oct-2026; el Blues, 20-oct-2026). Solo con la
+     cuenta Protester: el medallero de gp.lmathome.es abre este portal con «#c=<cuenta>»; aquí se quita de la dirección, se guarda
+     en este navegador y se carga el seleccionador de https://gp.lmathome.es/voluntarios/. Al acabar la precarga de los actos 1–4,
+     en la hora de clase, sale «Seleccionar voluntario» con la estética del acto (js/motor.js, M.empezarDia). A los alumnos no les
+     hace nada. Quitarlo de este portal: borrar este bloque. -->
+<script>
+window.LM_VOL_CONFIG = function () {
+  return {
+      portal: 'blues', tema: 'telegrafo', engancha: false,
+      sonidos: { campana: 'sfx/d1/campana_barco.mp3', raspa: ['sfx/d2/tabla_raspa_abajo.mp3', 'sfx/d2/tabla_raspa_arriba.mp3'], golpe: 'sfx/d2/tabla_golpe.mp3',
+                 pagina: 'sfx/ui/pagina.mp3', papel: 'sfx/d4/papel.mp3', aplauso: 'sfx/d3/aplauso_corto.mp3', tecla: 'sfx/ui/tecla.mp3' },
+      // si un acto está en marcha, se pone en pausa (al cerrar la ruleta, P o Esp para seguir)
+      alAbrir: function () { try { var B = window.BLUES; if (B && B.motor && B.motor.dia() && !B.pausado) B.pausa(true); } catch (x) {} }
+    };
+};
+(function () {
+  try {
+    var m = /(?:^#|&)c=([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i.exec(location.hash || ''), c = null;
+    if (m) {
+      c = m[1].toLowerCase(); try { localStorage.setItem('lm_vol_cuenta', c); } catch (e) {}
+      try { var h = location.hash.replace(/^#/, '').split('&').filter(function (p) { return p && !/^c=/.test(p); }).join('&');
+            history.replaceState(history.state, '', location.pathname + location.search + (h ? '#' + h : '')); } catch (e) {}
+    } else { try { c = localStorage.getItem('lm_vol_cuenta'); } catch (e) {} }
+    if (!c) return;
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://gp.lmathome.es/voluntarios/lm-voluntarios.js?h=' + Math.floor(Date.now() / 36e5);
+    s.onload = function () {
+      var ir = function () { try { if (window.LMVoluntarios) window.LMVoluntarios.monta(window.LM_VOL_CONFIG()); } catch (e) {} };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ir); else ir();
+    };
+    document.head.appendChild(s);
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Blues · Unidad 5</title>
 <meta name="theme-color" content="#0B0907">
@@ -33,7 +67,7 @@ if(window.Sentry && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){
 <meta name="apple-mobile-web-app-title" content="Blues">
 <link rel="preload" href="fonts/limelight-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/cormorant-garamond-latin-500-italic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/blues.css?v=20261020f">
+<link rel="stylesheet" href="css/blues.css?v=20261020g">
 </head>
 <body>
 
@@ -60,55 +94,55 @@ if(window.Sentry && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){
 </div>
 
 <!-- núcleo y componentes -->
-<script src="js/nucleo.js?v=20261020f"></script>
-<script src="js/instrumentos.js?v=20261020f"></script>
-<script src="js/teclado.js?v=20261020f"></script>
-<script src="js/partitura.js?v=20261020f"></script>
-<script src="js/banda.js?v=20261020f"></script>
-<script src="js/motor.js?v=20261020f"></script>
-<script src="js/vida.js?v=20261020f"></script>
+<script src="js/nucleo.js?v=20261020g"></script>
+<script src="js/instrumentos.js?v=20261020g"></script>
+<script src="js/teclado.js?v=20261020g"></script>
+<script src="js/partitura.js?v=20261020g"></script>
+<script src="js/banda.js?v=20261020g"></script>
+<script src="js/motor.js?v=20261020g"></script>
+<script src="js/vida.js?v=20261020g"></script>
 <!-- interacciones -->
-<script src="js/inter/comun.js?v=20261020f"></script>
-<script src="js/inter/lata.js?v=20261020f"></script>
-<script src="js/inter/caldera.js?v=20261020f"></script>
-<script src="js/inter/acordeon.js?v=20261020f"></script>
-<script src="js/inter/pregunta.js?v=20261020f"></script>
-<script src="js/inter/ahoraTu.js?v=20261020f"></script>
-<script src="js/inter/palmas.js?v=20261020f"></script>
-<script src="js/inter/swing.js?v=20261020f"></script>
-<script src="js/inter/escribe.js?v=20261020f"></script>
-<script src="js/inter/cifrado.js?v=20261020f"></script>
-<script src="js/inter/objetos.js?v=20261020f"></script>
-<script src="js/inter/fonografo.js?v=20261020f"></script>
-<script src="js/inter/notasAcorde.js?v=20261020f"></script>
-<script src="js/inter/bluenote.js?v=20261020f"></script>
-<script src="js/inter/hito.js?v=20261020f"></script>
-<script src="js/inter/practica.js?v=20261020f"></script>
+<script src="js/inter/comun.js?v=20261020g"></script>
+<script src="js/inter/lata.js?v=20261020g"></script>
+<script src="js/inter/caldera.js?v=20261020g"></script>
+<script src="js/inter/acordeon.js?v=20261020g"></script>
+<script src="js/inter/pregunta.js?v=20261020g"></script>
+<script src="js/inter/ahoraTu.js?v=20261020g"></script>
+<script src="js/inter/palmas.js?v=20261020g"></script>
+<script src="js/inter/swing.js?v=20261020g"></script>
+<script src="js/inter/escribe.js?v=20261020g"></script>
+<script src="js/inter/cifrado.js?v=20261020g"></script>
+<script src="js/inter/objetos.js?v=20261020g"></script>
+<script src="js/inter/fonografo.js?v=20261020g"></script>
+<script src="js/inter/notasAcorde.js?v=20261020g"></script>
+<script src="js/inter/bluenote.js?v=20261020g"></script>
+<script src="js/inter/hito.js?v=20261020g"></script>
+<script src="js/inter/practica.js?v=20261020g"></script>
 <!-- datos: recursos que existen, personajes, hechos y los cinco días -->
-<script src="data/recursos.js?v=20261020f"></script>
-<script src="data/recursos_d1.js?v=20261020f"></script>
-<script src="data/recursos_d2.js?v=20261020f"></script>
-<script src="data/recursos_d3.js?v=20261020f"></script>
-<script src="data/recursos_d4.js?v=20261020f"></script>
-<script src="data/recursos_d5.js?v=20261020f"></script>
-<script src="data/vozpaq_d1.js?v=20261020f"></script>
-<script src="data/vozpaq_d2.js?v=20261020f"></script>
-<script src="data/vozpaq_d3.js?v=20261020f"></script>
-<script src="data/vozpaq_d4.js?v=20261020f"></script>
-<script src="data/vozpaq_d5.js?v=20261020f"></script>
-<script src="data/instpaq.js?v=20261020f"></script>
-<script src="data/personajes.js?v=20261020f"></script>
-<script src="data/hechos.js?v=20261020f"></script>
-<script src="data/dia1.js?v=20261020f"></script>
-<script src="data/dia2.js?v=20261020f"></script>
-<script src="data/dia3.js?v=20261020f"></script>
-<script src="data/dia4.js?v=20261020f"></script>
-<script src="data/dia5.js?v=20261020f"></script>
-<script src="data/vida_d1.js?v=20261020f"></script>
-<script src="data/vida_d2.js?v=20261020f"></script>
-<script src="data/vida_d3.js?v=20261020f"></script>
-<script src="data/vida_d4.js?v=20261020f"></script>
-<script src="data/vida_d5.js?v=20261020f"></script>
+<script src="data/recursos.js?v=20261020g"></script>
+<script src="data/recursos_d1.js?v=20261020g"></script>
+<script src="data/recursos_d2.js?v=20261020g"></script>
+<script src="data/recursos_d3.js?v=20261020g"></script>
+<script src="data/recursos_d4.js?v=20261020g"></script>
+<script src="data/recursos_d5.js?v=20261020g"></script>
+<script src="data/vozpaq_d1.js?v=20261020g"></script>
+<script src="data/vozpaq_d2.js?v=20261020g"></script>
+<script src="data/vozpaq_d3.js?v=20261020g"></script>
+<script src="data/vozpaq_d4.js?v=20261020g"></script>
+<script src="data/vozpaq_d5.js?v=20261020g"></script>
+<script src="data/instpaq.js?v=20261020g"></script>
+<script src="data/personajes.js?v=20261020g"></script>
+<script src="data/hechos.js?v=20261020g"></script>
+<script src="data/dia1.js?v=20261020g"></script>
+<script src="data/dia2.js?v=20261020g"></script>
+<script src="data/dia3.js?v=20261020g"></script>
+<script src="data/dia4.js?v=20261020g"></script>
+<script src="data/dia5.js?v=20261020g"></script>
+<script src="data/vida_d1.js?v=20261020g"></script>
+<script src="data/vida_d2.js?v=20261020g"></script>
+<script src="data/vida_d3.js?v=20261020g"></script>
+<script src="data/vida_d4.js?v=20261020g"></script>
+<script src="data/vida_d5.js?v=20261020g"></script>
 <script>BLUES.motor.iniciar();</script>
 
 <!-- (17-sep-2026, Iago) PENTAGRAMAS QUE CABEN. VexFlow dibuja el pentagrama con un
