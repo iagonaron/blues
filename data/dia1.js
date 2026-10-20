@@ -545,6 +545,13 @@ BLUES.dia(1, {
      "quien": "SOBRE",
      "texto": "Race or people… «African».",
      "voz": "voz/d1/d1_039.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d1/sello_mesa.mp3",
+       "t": 2.25,
+       "vol": 0.95
+      }
+     ],
      "var": "RECURSO_SELLO",
      "espera": 1.3
     },
