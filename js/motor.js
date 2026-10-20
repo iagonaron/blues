@@ -292,7 +292,7 @@
     limpiaPlano();
     $('#findia').classList.remove('on');
     idx = i;
-    const p = dia.planos[i]; planoAct = p;
+    const p = dia.planos[i]; planoAct = p; tCambio = -1e9; corteAct = null;   // un plano puede ABRIR con un plano recurso
     const directo = directoA === i; directoA = -1;
     const c = ctl = B.control();
     montaPlano(p);
@@ -344,7 +344,8 @@
     void el.offsetWidth; el.classList.add('on');
     if (viejo) { viejo.classList.remove('on'); setTimeout(() => viejo.remove(), 1000); }
     planoEl = el; el._kb = kbEl;
-    const ip = B.arr(p.inter).find(it => it && it.previa && kbEl.querySelector('.lam.var[data-q="' + it.previa + '"]'));
+    if (p.mapa) montaMapa(p, kbEl);
+    const ip =B.arr(p.inter).find(it => it && it.previa && kbEl.querySelector('.lam.var[data-q="' + it.previa + '"]'));
     if (ip) { el._base = ip.previa; ponVariante(null); }
     /* cámara: si no la trae, una distinta para cada plano */
     const dur = p.cam && p.cam.dur || duracionEstimada(p);
@@ -354,6 +355,45 @@
     kb.t0 = B.ahora();
     focoObj = { s: 0, x: .5, y: .5 }; foco = { s: 0, x: .5, y: .5 };
     aplicaKB(B.ahora());
+  }
+  /* (Iago, 20-oct) PLANOS-MAPA: la carta náutica con la ruta del barco dibujándose y, al llegar, el rótulo del destino.
+     p.mapa = { ruta: [[x, y]…] (fracciones de la lámina), desde, hasta, sub, dur, retraso, encuadre: [escala, cx, cy], etiq: { desde: [dx, dy], hasta: [dx, dy] } } */
+  function montaMapa(p, kbEl) {
+    const m = p.mapa, NS = 'http://www.w3.org/2000/svg', e = m.encuadre || [1, .5, .5], k = 1 / e[0];
+    const mk = (tag, at) => { const n = document.createElementNS(NS, tag); for (const a in at) n.setAttribute(a, at[a]); return n; };
+    const capa = B.el('div', 'mapa-capa'); const im = kbEl.querySelector('.lam.maestra'); if (im) capa.appendChild(im);
+    capa.style.transform = 'scale(' + e[0] + ') translate(' + ((.5 - e[1]) * 100).toFixed(2) + '%,' + ((.5 - e[2]) * 100).toFixed(2) + '%)';
+    const svg = mk('svg', { viewBox: '0 0 100 56.25', class: 'mapa-svg', preserveAspectRatio: 'none' });
+    const P = m.ruta.map(q => [q[0] * 100, q[1] * 56.25]);
+    let d = 'M' + P[0][0] + ' ' + P[0][1];
+    for (let i = 1; i < P.length; i++) {
+      const a = P[i - 1], b = P[i], c0 = P[i - 2] || a, c1 = P[i + 1] || b;
+      d += ' C' + (a[0] + (b[0] - c0[0]) / 6).toFixed(2) + ' ' + (a[1] + (b[1] - c0[1]) / 6).toFixed(2) + ' ' + (b[0] - (c1[0] - a[0]) / 6).toFixed(2) + ' ' + (b[1] - (c1[1] - a[1]) / 6).toFixed(2) + ' ' + b[0] + ' ' + b[1];
+    }
+    const sombra = mk('path', { d, class: 'mapa-ruta-sombra', 'stroke-width': 1.3 * k }), ruta = mk('path', { d, class: 'mapa-ruta', 'stroke-width': .6 * k });
+    svg.append(sombra, ruta);
+    const sitio = (q, txt, cls) => {
+      const g = mk('g', { class: 'mapa-sitio ' + cls }), o = (m.etiq && m.etiq[cls]) || [1.6, .7];
+      g.append(mk('circle', { cx: q[0], cy: q[1], r: .85 * k }));
+      const t = mk('text', { x: q[0] + o[0] * k, y: q[1] + o[1] * k, 'font-size': 2.5 * k }); t.textContent = txt; g.append(t); svg.append(g); return g;
+    };
+    sitio(P[0], m.desde || '', 'desde'); const gB = sitio(P[P.length - 1], m.hasta || '', 'hasta');
+    const barco = mk('g', { class: 'mapa-barco' });
+    barco.append(mk('circle', { r: 2.2 * k, class: 'onda' }), mk('path', { d: 'M-1.6 0 L1.6 0 L1.1 .8 L-1.1 .8 Z M-.25 -1.2 L.35 -1.2 L.35 0 L-.25 0 Z', transform: 'scale(' + k + ')' }));
+    svg.append(barco); capa.appendChild(svg); kbEl.appendChild(capa);
+    const cartel = B.el('div', 'mapa-cartel'); cartel.innerHTML = '<div class="mc-lugar"></div><div class="mc-sub"></div>';
+    cartel.firstChild.textContent = m.hasta || ''; cartel.lastChild.textContent = m.sub || ''; kbEl.parentNode.appendChild(cartel);
+    const L = ruta.getTotalLength(); [ruta, sombra].forEach(r => { r.style.strokeDasharray = L; r.style.strokeDashoffset = L; });
+    const t0 = B.ahora() + (m.retraso == null ? 1.2 : m.retraso), T = m.dur || 6;
+    const paso = () => {
+      if (!capa.isConnected) return;
+      const u = B.clamp((B.ahora() - t0) / T, 0, 1), s = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      ruta.style.strokeDashoffset = sombra.style.strokeDashoffset = L * (1 - s);
+      const q = ruta.getPointAtLength(L * s); barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + q.y.toFixed(2) + ')');
+      gB.classList.toggle('on', u >= .98); cartel.classList.toggle('on', u >= 1);
+      requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
   }
   function duracionEstimada(p) {
     let s = 4;
@@ -385,7 +425,8 @@
   function ponVariante(q) {
     if (!planoEl) return;
     const base = planoEl._base;   // (punto 16) lámina «previa» (el estuche cerrado) hasta que acabe su interacción: manda sobre las de «habla X»
-    B.$$('.lam.var', planoEl).forEach(v => v.classList.toggle('on', base ? v.dataset.q === base : (!!q && v.dataset.q === q)));
+    const corte = !!q && esCorte(planoAct, q);   // un primer plano o un plano recurso manda incluso sobre la lámina «previa»
+    B.$$('.lam.var', planoEl).forEach(v => v.classList.toggle('on', corte ? v.dataset.q === q : base ? v.dataset.q === base : (!!q && v.dataset.q === q)));
     B.$$('.chapa', planoEl).forEach(v => v.classList.toggle('habla', !!q && v.dataset.q === q));
     const p = planoAct, f = q && p && ((p.foco && p.foco[q]) || (p.var && p.var[q] && p.var[q].foco));
     focoObj = { s: 0, x: .5, y: .5 };   // (Iago, 19-oct, 22:40) sin acercarse a la cara del que habla: NADA de movimientos de cámara (el foco solo sirve para los bocadillos)
@@ -412,7 +453,23 @@
   const durTexto = s => Math.max(1.6, String(s || '').length / 14);
   const durLinea = l => (l.voz && B.buf[l.voz]) ? B.buf[l.voz].duration : durTexto(l.texto);
   M.durLinea = durLinea;
-  const conBurbujas = p => !!(p.foco && (Object.keys(p.foco).length >= 3 || /^P[45]\./.test(p.id)));
+  const conBurbujas = p => !!(p.foco && Object.keys(p.foco).length);   // (Iago, 20-oct) bocadillos en todos los actos, también en el 1
+  /* (Iago, 20-oct) ningún plano de menos de 4 s (mejor 5–8): un corte (primer plano «_CERCA» o plano recurso «RECURSO_») solo
+     si la frase dura ≥ 4 s y el plano anterior ya lleva ≥ 4 s en pantalla; la lámina de «X habla» (mueve el brazo) solo en frases de ≥ 4 s */
+  const MIN_PLANO = 4;
+  let tCambio = 0, corteAct = null;
+  const esCorte = (p, q) => !!(p && p.var && p.var[q] && /_CERCA$|^RECURSO_/.test(q));
+  function eligePlano(v, l, dv) {
+    const p = planoAct, t = performance.now() / 1000;
+    if (esCorte(p, v)) {
+      if (v === corteAct) return v;
+      if (dv >= MIN_PLANO && t - tCambio >= MIN_PLANO) { corteAct = v; tCambio = t; return v; }
+      v = l.quien;
+    }
+    if (corteAct) { corteAct = null; tCambio = t; }
+    if (v === l.quien) return dv >= MIN_PLANO ? v : null;
+    return v;
+  }
   const focoDe = (p, q) => (p.foco && p.foco[q]) || (p.var && p.var[q] && p.var[q].foco) || null;
   /* (20-oct) dónde va el bocadillo: se prueban encima, a los lados y debajo, y gana el que menos tapa CUALQUIER cara del
      plano (no solo la de quien habla) y no se sale de la pantalla. Medidas en --u (ancho 100, alto 56,25), como el CSS. */
@@ -451,13 +508,15 @@
       if (!l || (c && c.muerto)) return res(false);
       if (l.atril) ponAtril(l.atril);
       const P = B.personaje(l.quien);
-      const v = l.var !== undefined ? l.var : l.quien;
+      const dv = (l.voz && B.buf[l.voz] ? B.buf[l.voz].duration : durTexto(l.texto)) + (l.espera || 0);
+      let v = l.var !== undefined ? l.var : l.quien;
+      if (v && v !== '-') v = eligePlano(v, l, dv);
       ponVariante(v && v !== '-' ? v : null);
       $('.subt-quien', subt).textContent = P.nombre;
       subt.style.setProperty('--c', P.color);
       $('.subt-texto', subt).textContent = l.texto || '';
       /* (punto 28) en escenas de grupo, la frase sale en un BOCADILLO junto a la cara de quien habla (el «foco» del plano) */
-      const fc = planoAct && conBurbujas(planoAct) && !l.cilindro && l.var !== '-' && !escena.classList.contains('con-inter') ? focoDe(planoAct, l.var && l.var !== l.quien ? l.var : l.quien) : null;   // un corte a otro encuadre (AMOS_CERCA…) no usa la cara de la maestra: subtítulo abajo
+      const fc = planoAct && conBurbujas(planoAct) && !l.cilindro && l.var !== '-' && !corteAct && !escena.classList.contains('con-inter') ? focoDe(planoAct, l.quien) : null;   // en un corte (primer plano o plano recurso) no hay cara pequeña: texto abajo
       subt.classList.toggle('burbuja', !!fc);
       if (fc) {   // (Iago, 20-oct) el bocadillo NUNCA tapa la cara de quien habla: encima de la cabeza si cabe; si no, al lado (hacia el centro)
         const lado = ladoBurbuja(planoAct, fc, String(l.texto || ''), l.quien);

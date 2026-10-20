@@ -72,18 +72,29 @@
         pinta(L, M, W, H) { bs.forEach(b => { const a = Math.sin(Math.PI * b.t / b.vida), R = b.s * W; L.globalAlpha = .6 * a; L.drawImage(o.tono === 'frio' ? S.frio : S.blanco, (b.x * W - R) * K, (b.y * H - R) * K, 2 * R * K, 2 * R * K); }); }
       };
     },
-    humo(o) {   // humo que sube y se deshace (chimeneas, cigarros, la caldera)
-      const ps = [], dir = o.dir || [.15, -1], w = o.w || .05, ritmo = 2.6 * (o.dens || 1);
-      const L0 = Math.hypot(dir[0], dir[1]) || 1, dx = dir[0] / L0, dy = dir[1] / L0, vel = o.vel || .025;
-      for (let i = 0; i < 10; i++) ps.push({ x: o.x + az(-.5, .5) * w, y: o.y, t: az(0, 6), vida: az(5, 8.5), g: az(.8, 1.3) });
+    bruma(o) {   // (Iago, 20-oct) neblina/humo de ambiente: velos grandes, casi transparentes y CONSTANTES que derivan muy despacio
+      const z = o.zona || [0, 0, 1, 1], n = o.n || 7, ps = [];
+      for (let i = 0; i < n; i++) ps.push({ x: az(z[0], z[2]), y: az(z[1], z[3]), r: az(.16, .32), v: az(.004, .01) * (Math.random() < .5 ? -1 : 1), f: az(0, 6.28), t: az(0, 30) });
+      return {
+        paso(dt) { ps.forEach(p => { p.t += dt; p.x += p.v * dt; if (p.x < z[0] - .25) p.x = z[2] + .2; if (p.x > z[2] + .25) p.x = z[0] - .2; }); },
+        pinta(L, M, W, H) {
+          const sp = o.color === 'oscuro' ? S.humoOsc : S.humo;
+          ps.forEach(p => { const R = p.r * W * (1 + .08 * Math.sin(p.t * .2 + p.f)); M.globalAlpha = (o.alfa || .06) * (.7 + .3 * Math.sin(p.t * .15 + p.f)); M.drawImage(sp, (p.x * W - R) * K, (p.y * H + Math.sin(p.t * .1 + p.f) * .012 * H - R * .55) * K, 2 * R * K, 1.1 * R * K); });
+        }
+      };
+    },
+    humo(o) {   // humo que sube y se deshace (chimeneas, cigarros, la caldera) · (Iago, 20-oct) más sutil y continuo: muchas volutas tenues, no bolas
+      const ps = [], dir = o.dir || [.15, -1], w = o.w || .05, ritmo = 6.5 * (o.dens || 1);
+      const L0 = Math.hypot(dir[0], dir[1]) || 1, dx = dir[0] / L0, dy = dir[1] / L0, vel = (o.vel || .025) * .7;
+      for (let i = 0; i < 40; i++) ps.push({ x: o.x + az(-.5, .5) * w, y: o.y, t: az(0, 9), vida: az(7, 11), g: az(.8, 1.3) });
       return {
         paso(dt) {
-          if (Math.random() < dt * ritmo) ps.push({ x: o.x + az(-.5, .5) * w, y: o.y, t: 0, vida: az(5, 8.5), g: az(.8, 1.3) });
+          if (Math.random() < dt * ritmo) ps.push({ x: o.x + az(-.5, .5) * w, y: o.y, t: 0, vida: az(7, 11), g: az(.8, 1.3) });
           for (let i = ps.length - 1; i >= 0; i--) { const p = ps[i]; p.t += dt; const k = p.t / p.vida; p.x += (dx * vel * (1 - k * .4) + .01 * k) * dt; p.y += dy * vel * 1.6 * (1 - k * .5) * dt; if (p.t > p.vida) ps.splice(i, 1); }
         },
         pinta(L, M, W, H) {
           const sp = o.color === 'oscuro' ? S.humoOsc : S.humo;
-          ps.forEach(p => { const k = p.t / p.vida, R = w * W * (.6 + 2.6 * k) * p.g; M.globalAlpha = (o.alfa || .3) * Math.sin(Math.PI * Math.min(1, k * 1.3)) * (1 - k * .3); M.drawImage(sp, (p.x * W - R) * K, (p.y * H - R) * K, 2 * R * K, 2 * R * K); });
+          ps.forEach(p => { const k = p.t / p.vida, R = w * W * (.9 + 3.6 * k) * p.g; M.globalAlpha = (o.alfa || .3) * .32 * Math.sin(Math.PI * Math.min(1, k * 1.2)) * (1 - k * .3); M.drawImage(sp, (p.x * W - R) * K, (p.y * H - R) * K, 2 * R * K, 2 * R * K); });
         }
       };
     },
