@@ -18,22 +18,15 @@
     const enun = U.panel(caja, { left: '50%', top: '6%', transform: 'translateX(-50%)', textAlign: 'center', padding: 'calc(var(--u)*.8) calc(var(--u)*1.8)' });
     enun.innerHTML = '<div class="i-tit">La lata</div><div class="i-enun">Ábrela: haz clic en la tapa.</div>';
     const lata = B.el('div', 'brilla');
-    lata.style.cssText = 'position:absolute;left:50%;top:52%;width:calc(var(--u)*30);height:calc(var(--u)*19);transform:translate(-50%,-50%);cursor:pointer';
+    lata.style.cssText = 'position:absolute;left:50%;top:54%;width:calc(var(--u)*30);height:calc(var(--u)*19.5);transform:translate(-50%,-50%);cursor:pointer';
     /* la lata vieja de galletas, como en la lámina: azul petróleo gastado, adornos dorados, sin letras */
     const flor = (x, y, r) => '<g transform="translate(' + x + ' ' + y + ')" fill="none" stroke="#C9A45C" stroke-width="1.3" opacity=".85"><circle r="' + r + '"/><path d="M0 -' + r * 1.9 + 'Q' + r * .7 + ' 0 0 ' + r * 1.9 + 'Q-' + r * .7 + ' 0 0 -' + r * 1.9 + 'M-' + r * 1.9 + ' 0Q0 ' + r * .7 + ' ' + r * 1.9 + ' 0Q0 -' + r * .7 + ' -' + r * 1.9 + ' 0"/></g>';
-    lata.innerHTML = '<svg viewBox="0 0 300 190" style="width:100%;height:100%;overflow:visible"><defs><linearGradient id="lt" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2f5566"/><stop offset="1" stop-color="#14262f"/></linearGradient>' +
-      '<linearGradient id="lt2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3a6474"/><stop offset="1" stop-color="#1d3440"/></linearGradient></defs>' +
-      '<rect x="20" y="60" width="260" height="120" rx="12" fill="url(#lt)" stroke="#C9A45C" stroke-width="2"/><rect x="32" y="72" width="236" height="96" rx="6" fill="none" stroke="#E9CD8A" stroke-width="1" opacity=".55"/>' +
-      '<path d="M32 120h236" stroke="#C9A45C" stroke-width="1" stroke-dasharray="2 5" opacity=".6"/>' + flor(150, 120, 9) + flor(80, 120, 6) + flor(220, 120, 6) +
-      '<path d="M40 82q20 10 40 0t40 0t40 0t40 0t40 0t40 0M40 158q20 -10 40 0t40 0t40 0t40 0t40 0t40 0" fill="none" stroke="#C9A45C" stroke-width="1" opacity=".5"/>' +
-      '<path d="M30 100l6 6M264 100l6 6M30 150l6-6M264 150l6-6" stroke="#0b1418" stroke-width="3" opacity=".5"/>' +
-      '<g class="tapa" style="transition:transform .9s cubic-bezier(.3,1.4,.5,1);transform-origin:40px 60px"><rect x="12" y="38" width="276" height="30" rx="9" fill="url(#lt2)" stroke="#C9A45C" stroke-width="2"/>' +
-      '<path d="M40 53q12 -7 24 0t24 0t24 0t24 0t24 0t24 0t24 0t24 0t24 0" fill="none" stroke="#E9CD8A" stroke-width="1" opacity=".7"/>' + flor(150, 53, 5) + '</g></svg>';
+    lata.innerHTML = '<div class="lt-img lt-abierta"></div><div class="lt-img lt-cerrada"></div><div class="tapa lt-tapa"></div>';   // (Iago, 20-oct) la lata pintada (img/inter/lata_*.webp)
     caja.appendChild(lata);
     await new Promise(res => { lata.addEventListener('click', e => { e.stopPropagation(); res(); }, { once: true }); ctl.alMorir.push(res); });
     if (ctl.muerto) return;
     lata.classList.remove('brilla');
-    lata.querySelector('.tapa').style.transform = 'rotate(-38deg) translate(-30px,-40px)';
+    lata.classList.add('abierta'); lata.querySelector('.tapa').style.transform = 'translate(-62%, -58%) rotate(-22deg)';
     B.sint.metal(B.ahora() + .05, .9);
     U.suelta(U.rota(op, 'abrir'), ctl, 4);
     enun.querySelector('.i-enun').textContent = '¿Qué hay dentro? Haz clic en cada cosa.';
@@ -48,13 +41,15 @@
         if (!ok) return;
         const d = B.el('div', 'aparece', '<div style="font-family:var(--f-ui);font-weight:600;font-size:calc(var(--u)*.7);letter-spacing:.3em;color:#5b4630;margin-bottom:calc(var(--u)*.6)">' + c.t.toUpperCase() + '</div>' + c.h);
         d.dataset.k = c.k;
-        d.style.cssText = 'width:calc(var(--u)*17);min-height:calc(var(--u)*13);padding:calc(var(--u)*1.2);text-align:center;color:#2a1e14;background:' + c.bg + ';border-radius:calc(var(--u)*.4);box-shadow:0 calc(var(--u)*.6) calc(var(--u)*1.6) rgba(0,0,0,.55);cursor:pointer;transform:rotate(' + ((i % 2 ? 1 : -1) * (1 + i * .6)) + 'deg);transition:transform .25s,box-shadow .25s;outline:2px solid transparent';
-        d.addEventListener('click', e => { e.stopPropagation(); vistos.add(c.k); d.style.transform = 'rotate(0) scale(1.06)'; d.style.outline = '2px solid var(--oro)'; B.sint.fuelle(B.ahora(), .18, .08); if (vistos.size === COSAS.length) resolver(); });
+        const tam = { dinero: [23, 8.8], barco: [21, 10.6], pase: [19, 9.4], nota: [17, 12.8] }[c.k] || [17, 13];   // (Iago, 20-oct) papeles pintados (img/inter/papel_*.webp)
+        d.style.cssText = 'width:calc(var(--u)*' + tam[0] + ');height:calc(var(--u)*' + tam[1] + ');display:flex;flex-direction:column;justify-content:center;padding:calc(var(--u)*1) calc(var(--u)*2.2);box-sizing:border-box;text-align:center;color:#2a1e14;background:url(img/inter/papel_' + c.k + '.webp) center/100% 100% no-repeat;filter:drop-shadow(0 calc(var(--u)*.5) calc(var(--u)*1) rgba(0,0,0,.55));cursor:pointer;transform:rotate(' + ((i % 2 ? 1 : -1) * (1 + i * .6)) + 'deg);transition:transform .25s,box-shadow .25s;outline:2px solid transparent';
+        d.addEventListener('click', e => { e.stopPropagation(); vistos.add(c.k); d.style.transform = 'rotate(0) scale(1.06)'; d.style.outline = '2px solid var(--oro)'; (B.buf['sfx/d1/papel.mp3'] ? B.suena('sfx/d1/papel.mp3', { bus: B.bus.sfx, vol: .55 }) : B.sint.fuelle(B.ahora(), .18, .08)); if (vistos.size === COSAS.length) resolver(); });
         fila.appendChild(d);
-        B.sint.fuelle(B.ahora(), .25, .06);
+        (B.buf['sfx/d1/papel.mp3'] ? B.suena('sfx/d1/papel.mp3', { bus: B.bus.sfx, vol: .55 }) : B.sint.fuelle(B.ahora(), .25, .06));
       });
     });
     await Promise.race([todo, U.seguir(caja, ctl, 'Seguir')]);
   };
   B.inter.lata.claves = ['abrir'];
+  B.inter.lata.voces = ['sfx/d1/papel.mp3'];   // se precarga con el acto
 })(window.BLUES);
