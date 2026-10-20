@@ -699,3 +699,16 @@ a{color:var(--oro-hi)}
 .gh-q.gh-carbon svg,.gh-q.gh-llama svg{width:82%;height:82%}
 .gh-q.ok{border-color:#9be38a;background:rgba(30,60,26,.85)}
 .gh-q.mal{border-color:#c9534f;opacity:.6}
+/* (Iago, 20-oct, 22:48) sin casillas con icono sobre la escena: se resalta el BORDE del propio carbón y de la boca del horno */
+.cal-casilla{display:none!important}
+.cal-carbon{touch-action:none}
+.cal-carbon.cal-objetivo{outline:none}
+.cal-carbon.activa,.cal-carbon.cal-objetivo{filter:drop-shadow(0 0 2px #F0D696) drop-shadow(0 0 calc(var(--u)*.7) rgba(240,214,150,.85)) brightness(1.15)}
+.cal-carbon.ok{filter:drop-shadow(0 0 2px #9be38a) drop-shadow(0 0 calc(var(--u)*.7) rgba(155,227,138,.85))}
+.cal-carbon.mal{filter:drop-shadow(0 0 2px #c9534f) drop-shadow(0 0 calc(var(--u)*.6) rgba(201,83,79,.8))}
+.cal-boca-toque{position:absolute;left:28%;right:27%;top:43%;bottom:16%;display:none;padding:0;cursor:pointer;z-index:4;touch-action:none;
+  background:transparent;border:2px solid transparent;border-radius:calc(var(--u)*.6)}
+.cal-esc.palear .cal-boca-toque{display:block}
+.cal-boca-toque.activa,.cal-boca-toque.cal-objetivo{outline:none;border-color:#F0D696;box-shadow:0 0 calc(var(--u)*1) rgba(240,214,150,.7),inset 0 0 calc(var(--u)*.8) rgba(240,214,150,.35)}
+.cal-boca-toque.ok{border-color:#9be38a;box-shadow:0 0 calc(var(--u)*1) rgba(155,227,138,.7)}
+.cal-boca-toque.mal{border-color:#c9534f;box-shadow:0 0 calc(var(--u)*.9) rgba(201,83,79,.7)}
