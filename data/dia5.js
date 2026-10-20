@@ -1,9 +1,9 @@
-/* BLUES · Día 5 · «A Jam no porche» — datos generados con herramientas/guion2datos.mjs (v3).
+/* BLUES · Día 5 · «El porche» — datos generados con herramientas/guion2datos.mjs (v3).
    Los textos vienen del guion: para cambiarlos, cambiar el guion y volver a pasar la herramienta.
    Lo demás (img, var, cam, amb, mus, pal, espera, configuración de inter) se puede tocar aquí: la herramienta lo respeta.
    Formato: ver LEEME-motor.md. */
 BLUES.dia(5, {
- "titulo": "A Jam no porche",
+ "titulo": "El porche",
  "lugar": "Weeksville, Brooklyn · 1929",
  "carta": {
   "encabezado": "A Coruña, 1929",
@@ -234,19 +234,23 @@ BLUES.dia(5, {
    "foco": {
     "ELI": [
      0.27,
-     0.29
+     0.29,
+     0.14
     ],
     "RUBY": [
      0.4,
-     0.21
+     0.21,
+     0.14
     ],
     "TEDDY": [
      0.66,
-     0.17
+     0.17,
+     0.14
     ],
     "ODELL": [
      0.82,
-     0.17
+     0.17,
+     0.14
     ]
    }
   }

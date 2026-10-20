@@ -1,9 +1,9 @@
-/* BLUES · Día 1 · «A nana de Xan» — datos generados con herramientas/guion2datos.mjs (v3).
+/* BLUES · Día 1 · «La nana de Xan» — datos generados con herramientas/guion2datos.mjs (v3).
    Los textos vienen del guion: para cambiarlos, cambiar el guion y volver a pasar la herramienta.
    Lo demás (img, var, cam, amb, mus, pal, espera, configuración de inter) se puede tocar aquí: la herramienta lo respeta.
    Formato: ver LEEME-motor.md. */
 BLUES.dia(1, {
- "titulo": "A nana de Xan",
+ "titulo": "La nana de Xan",
  "lugar": "A Coruña · noviembre de 1928",
  "carta": {
   "encabezado": "No barco, novembro de 1928",
@@ -45,11 +45,15 @@ BLUES.dia(1, {
    "amb": [
     {
      "src": "sfx/d1/mar_gaviotas.mp3",
+     "vol": 0.45
+    },
+    {
+     "src": "sfx/d1/gaviotas_coruna.mp3",
      "vol": 0.6
     },
     {
      "src": "sfx/d1/viento.mp3",
-     "vol": 0.35
+     "vol": 0.3
     }
    ],
    "mus": {
@@ -224,11 +228,13 @@ BLUES.dia(1, {
    "foco": {
     "AVOA": [
      0.28,
+     0.16,
      0.16
     ],
     "XAN": [
      0.72,
-     0.21
+     0.21,
+     0.15
     ]
    }
   },
@@ -274,7 +280,8 @@ BLUES.dia(1, {
        "voz": "voz/d1/d1_r001.mp3"
       }
      ]
-    }
+    },
+    "previa": "RECURSO_LATA"
    },
    "despues": [
     {
@@ -362,11 +369,13 @@ BLUES.dia(1, {
    "foco": {
     "AVOA": [
      0.31,
-     0.32
+     0.32,
+     0.19
     ],
     "XAN": [
      0.6,
-     0.27
+     0.27,
+     0.17
     ]
    }
   },
@@ -389,8 +398,12 @@ BLUES.dia(1, {
      "vol": 0.5
     },
     {
+     "src": "sfx/d1/gaviotas_coruna.mp3",
+     "vol": 0.45
+    },
+    {
      "src": "sfx/d1/mar_gaviotas.mp3",
-     "vol": 0.4
+     "vol": 0.25
     }
    ],
    "hechos": [],
@@ -454,11 +467,13 @@ BLUES.dia(1, {
    "foco": {
     "AVOA": [
      0.41,
-     0.33
+     0.33,
+     0.11
     ],
     "XAN": [
      0.57,
-     0.13
+     0.13,
+     0.11
     ]
    }
   },
@@ -481,6 +496,14 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/murmullo.mp3",
      "vol": 0.4
+    },
+    {
+     "src": "sfx/d1/gaviotas_coruna.mp3",
+     "vol": 0.3
+    },
+    {
+     "src": "sfx/d1/motor_lejos.mp3",
+     "vol": 0.25
     }
    ],
    "hechos": [
@@ -569,11 +592,13 @@ BLUES.dia(1, {
    "foco": {
     "XAN": [
      0.44,
-     0.08
+     0.08,
+     0.09
     ],
     "SOBRE": [
      0.82,
-     0.3
+     0.3,
+     0.11
     ]
    }
   },
@@ -589,8 +614,12 @@ BLUES.dia(1, {
      "vol": 0.35
     },
     {
+     "src": "sfx/d1/gaviotas_coruna.mp3",
+     "vol": 0.3
+    },
+    {
      "src": "sfx/d1/mar_gaviotas.mp3",
-     "vol": 0.35
+     "vol": 0.25
     },
     {
      "src": "sfx/d1/pasos_pasarela.mp3",
@@ -627,11 +656,15 @@ BLUES.dia(1, {
    "amb": [
     {
      "src": "sfx/d1/calderas_lejos.mp3",
-     "vol": 0.55
+     "vol": 0.5
+    },
+    {
+     "src": "sfx/d1/sala_maquinas.mp3",
+     "vol": 0.3
     },
     {
      "src": "sfx/d1/pasos_dentro.mp3",
-     "vol": 0.8
+     "vol": 0.9
     },
     {
      "src": "sfx/d1/barco_cruje.mp3",
@@ -675,7 +708,15 @@ BLUES.dia(1, {
    "amb": [
     {
      "src": "sfx/d1/calderas.mp3",
-     "vol": 0.6
+     "vol": 0.55
+    },
+    {
+     "src": "sfx/d1/sala_maquinas.mp3",
+     "vol": 0.45
+    },
+    {
+     "src": "sfx/d1/vapor_silbidos.mp3",
+     "vol": 0.55
     },
     {
      "src": "sfx/d1/fuego_splice.mp3",
@@ -953,15 +994,18 @@ BLUES.dia(1, {
    "foco": {
     "XAN": [
      0.78,
-     0.17
+     0.17,
+     0.08
     ],
     "AMOS": [
      0.46,
-     0.25
+     0.25,
+     0.09
     ],
     "FOGONEROS": [
      0.22,
-     0.19
+     0.19,
+     0.09
     ]
    }
   },
@@ -986,6 +1030,14 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/calderas_lejos.mp3",
      "vol": 0.35
+    },
+    {
+     "src": "sfx/d1/sala_maquinas.mp3",
+     "vol": 0.22
+    },
+    {
+     "src": "sfx/d1/vapor_silbidos.mp3",
+     "vol": 0.3
     },
     {
      "src": "sfx/d1/barco_cruje.mp3",
@@ -1027,7 +1079,7 @@ BLUES.dia(1, {
        }
       ]
      },
-     "previa": "CERRADO"
+     "previa": "RECURSO_ESTUCHE"
     },
     {
      "tipo": "pregunta",
@@ -1169,11 +1221,13 @@ BLUES.dia(1, {
    "foco": {
     "AMOS": [
      0.28,
-     0.11
+     0.11,
+     0.19
     ],
     "XAN": [
      0.72,
-     0.16
+     0.16,
+     0.15
     ]
    }
   },
@@ -1196,14 +1250,18 @@ BLUES.dia(1, {
      "vol": 0.5
     },
     {
+     "src": "sfx/d1/motor_lejos.mp3",
+     "vol": 0.35
+    },
+    {
      "src": "sfx/d1/barco_cruje.mp3",
      "vol": 0.3
     }
    ],
    "mus": {
-    "src": "mus/orquesta_lejana.mp3",
-    "vol": 0.45,
-    "bucle": false
+    "src": "mus/charleston_salon.mp3",
+    "vol": 0.32,
+    "bucle": true
    },
    "lineas": [
     {
@@ -1253,11 +1311,13 @@ BLUES.dia(1, {
    "foco": {
     "AMOS": [
      0.33,
-     0.35
+     0.35,
+     0.22
     ],
     "XAN": [
      0.59,
-     0.42
+     0.42,
+     0.18
     ]
    }
   },
@@ -1270,10 +1330,18 @@ BLUES.dia(1, {
    "amb": [
     {
      "src": "sfx/d1/mar_noche.mp3",
-     "vol": 0.3
+     "vol": 0.4
+    },
+    {
+     "src": "sfx/d1/motor_lejos.mp3",
+     "vol": 0.32
+    },
+    {
+     "src": "sfx/d1/barco_cruje.mp3",
+     "vol": 0.15
     }
    ],
-   "espera": 9.5,
+   "espera": 11,
    "hechos": [],
    "personajes": [],
    "mapa": {
@@ -1314,7 +1382,7 @@ BLUES.dia(1, {
     "desde": "A Coruña",
     "hasta": "La Habana",
     "sub": "Al amanecer · parada para repostar carbón",
-    "dur": 6.5,
+    "dur": 8,
     "etiq": {
      "desde": [
       -10.5,
@@ -1324,7 +1392,27 @@ BLUES.dia(1, {
       -3.5,
       3.6
      ]
-    }
+    },
+    "musA": {
+     "src": "mus/son_habana.mp3",
+     "vol": 0.6,
+     "bucle": true
+    },
+    "sfx": [
+     {
+      "src": "sfx/d1/sirena_vapor.mp3",
+      "vol": 0.35,
+      "t": 0.6
+     }
+    ],
+    "icono": "img/inter/barco_mapa.webp",
+    "proporcionIcono": 0.355,
+    "anchoIcono": 10
+   },
+   "mus": {
+    "src": "mus/charleston_salon.mp3",
+    "vol": 0.32,
+    "bucle": true
    }
   },
   {
@@ -1397,80 +1485,112 @@ BLUES.dia(1, {
    "foco": {
     "AMOS": [
      0.38,
-     0.23
+     0.23,
+     0.2
     ],
     "XAN": [
      0.65,
-     0.32
+     0.32,
+     0.18
     ]
    }
   },
   {
    "id": "P1.8m",
    "nombre": "Mapa: La Habana → Nueva Orleans",
-   "desc": "La carta náutica, más cerca: el barco cruza el golfo de México y remonta el Misisipi hasta Nueva Orleans.",
-   "img": "img/d1/mapa.webp",
+   "desc": "Carta náutica antigua del golfo de México: el barco sale de La Habana, cruza el golfo y remonta el Misisipi hasta Nueva Orleans.",
+   "img": "img/d1/mapa_golfo.webp",
    "pal": "atlantico",
    "amb": [
     {
+     "src": "sfx/d1/mar_noche.mp3",
+     "vol": 0.3
+    },
+    {
+     "src": "sfx/d1/motor_lejos.mp3",
+     "vol": 0.3
+    },
+    {
      "src": "sfx/d1/mar_gaviotas.mp3",
-     "vol": 0.18
+     "vol": 0.12
     }
    ],
    "mus": {
-    "src": "mus/jazz_nueva_orleans.mp3",
-    "vol": 0.5,
+    "src": "mus/son_habana.mp3",
+    "vol": 0.6,
     "bucle": true
    },
-   "espera": 9,
+   "espera": 10.5,
    "hechos": [],
    "personajes": [],
    "mapa": {
     "ruta": [
      [
-      0.186,
-      0.61
+      0.706,
+      0.661
      ],
      [
-      0.17,
-      0.575
+      0.7,
+      0.62
      ],
      [
-      0.145,
-      0.53
+      0.64,
+      0.5
      ],
      [
-      0.118,
-      0.49
+      0.575,
+      0.385
      ],
      [
-      0.1,
-      0.468
+      0.52,
+      0.31
      ],
      [
-      0.093,
-      0.445
+      0.497,
+      0.284
+     ],
+     [
+      0.478,
+      0.245
+     ],
+     [
+      0.465,
+      0.212
+     ],
+     [
+      0.453,
+      0.18
      ]
     ],
     "desde": "La Habana",
     "hasta": "Nueva Orleans",
     "sub": "Dos días después, Misisipi arriba",
-    "dur": 6,
-    "encuadre": [
-     2.3,
-     0.15,
-     0.52
-    ],
+    "dur": 8,
     "etiq": {
      "desde": [
-      1.4,
-      2.2
+      1.6,
+      2.4
      ],
      "hasta": [
-      -1.0,
-      -1.8
+      -8.6,
+      -3.9
      ]
-    }
+    },
+    "musA": {
+     "src": "mus/jazz_nueva_orleans.mp3",
+     "vol": 0.5,
+     "bucle": true
+    },
+    "sfx": [
+     {
+      "src": "sfx/d1/sirena_vapor.mp3",
+      "vol": 0.3,
+      "t": 8.4
+     }
+    ],
+    "icono": "img/inter/barco_mapa.webp",
+    "proporcionIcono": 0.355,
+    "anchoIcono": 8.5
    }
   },
   {
@@ -1547,11 +1667,13 @@ BLUES.dia(1, {
    "foco": {
     "AMOS": [
      0.32,
-     0.15
+     0.15,
+     0.2
     ],
     "XAN": [
      0.67,
-     0.25
+     0.25,
+     0.15
     ]
    },
    "mus": {
