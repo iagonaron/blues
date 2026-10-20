@@ -144,7 +144,9 @@ window.BLUES = window.BLUES || {};
     if (o.rate) s.playbackRate.value = o.rate;
     const vol = o.vol == null ? 1 : o.vol, t = o.t || C.currentTime;
     if (o.fade) { g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + o.fade); } else g.gain.value = vol;
-    s.connect(g); g.connect(o.bus || B.bus.sfx);
+    s.connect(g);
+    if (o.pan && C.createStereoPanner) { const pn = C.createStereoPanner(); pn.pan.value = o.pan; g.connect(pn); pn.connect(o.bus || B.bus.sfx); }   // (ronda 6) sonidos sueltos repartidos a izquierda y derecha
+    else g.connect(o.bus || B.bus.sfx);
     s.start(t, o.offset || 0);
     B.vivo(s, o.grupo);
     return {

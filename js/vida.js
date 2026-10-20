@@ -174,7 +174,10 @@
     const w = v.el.clientWidth || 1280, h = v.el.clientHeight || 720;
     if (w !== v.W || h !== v.H) { v.W = w; v.H = h; [v.luz, v.mate].forEach(c => { c.width = Math.max(2, Math.round(w * K)); c.height = Math.max(2, Math.round(h * K)); }); v.fx.forEach(e => e.H = h); }
   }
+  /* (ronda 6, rendimiento en el aula) los efectos se pintan a ~30 fotogramas por segundo, no a 60: se ven igual y el ordenador
+     respira (las láminas, la voz y las interacciones van primero) */
   function bucle(ahora) {
+    if (ahora - ult < 30) { if (vivos.size) requestAnimationFrame(bucle); else corre = false; return; }
     const dt = Math.min(.1, (ahora - ult) / 1000); ult = ahora;
     vivos.forEach(v => {
       if (!v.el.isConnected) { vivos.delete(v); return; }

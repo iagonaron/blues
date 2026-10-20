@@ -103,6 +103,15 @@
     const quieto = el => { if (el && (el.scrollTop || el.scrollLeft)) { el.scrollTop = 0; el.scrollLeft = 0; } };
     document.addEventListener('scroll', e => { const t = e.target; if (t === escena || t === interBox || (t && t.id === 'marco') || (t && t.classList && (t.classList.contains('icaja') || t.classList.contains('plano')))) quieto(t); }, true);
     B.alFotograma(() => { quieto(escena); quieto(interBox); });
+    /* (ronda 6, Iago en el aula: «no me aparece el botón de pantalla completa») el botón va SIEMPRE a la vista, abajo a la
+       derecha (también en la portada y en la precarga); ya no está dentro de la barra que se esconde */
+    const bp = B.el('button', 'bt ico peq bt-pant', ICO.pant);
+    bp.dataset.tip = 'Pantalla completa (F)'; bp.setAttribute('aria-label', 'Pantalla completa');
+    bp.addEventListener('click', e => { e.stopPropagation(); M.pantallaCompleta(); });
+    escena.appendChild(bp);
+    /* (ronda 6, Iago: en la pizarra, mantener pulsado saca el menú de copiar/cortar) nada de menú contextual ni selección en el portal */
+    escena.addEventListener('contextmenu', e => { if (!(e.target && /^(input|textarea|select)$/i.test(e.target.tagName))) e.preventDefault(); });
+    escena.addEventListener('selectstart', e => { if (!(e.target && /^(input|textarea)$/i.test(e.target.tagName))) e.preventDefault(); });
     escena.classList.remove('arrancando');
     M.portada();
   };
@@ -148,8 +157,7 @@
       '<button class="bt ico peq" data-a="ant" data-tip="Plano anterior (←)">' + ICO.ant + '</button>' +
       '<button class="bt ico peq" data-a="pausa" data-tip="Pausa (P)">' + ICO.pausa + '</button>' +
       '<button class="bt ico peq" data-a="sig" data-tip="Plano siguiente (→)">' + ICO.sig + '</button>' +
-      '<span class="ct-puntos"></span>' +
-      '<button class="bt ico peq" data-a="pant" data-tip="Pantalla completa (F)">' + ICO.pant + '</button>';
+      '<span class="ct-puntos"></span>';   // (ronda 6) la pantalla completa va en su botón fijo (.bt-pant)
     controles.addEventListener('click', e => {
       const b = e.target.closest('[data-a]'); if (!b) return;
       const a = b.dataset.a;
@@ -294,6 +302,7 @@
       Object.keys(p.var || {}).forEach(q => r.push(rutaVar(p, q)));
       B.arr(p.amb).forEach(a => r.push(a.src));
       if (p.mus) r.push(p.mus.src);
+      if (p.salpica) B.arr(p.salpica.sonidos).forEach(x => x && r.push(x.src));   // (ronda 6) sonidos sueltos del plano
       if (p.mapa) { if (p.mapa.silbato) r.push(p.mapa.silbato); if (p.mapa.musA) r.push(p.mapa.musA.src); B.arr(p.mapa.sfx).forEach(s => s && r.push(s.src)); if (p.mapa.icono) r.push(resImg(p.mapa.icono)); }
       B.arr(p.lineas).concat(B.arr(p.despues)).forEach(l => { r.push(l.voz); B.arr(l.sfx).forEach(s => r.push(s.src)); });
       B.arr(p.inter).forEach(it => {
@@ -327,7 +336,8 @@
     subt.classList.remove('on');
     cartaBox.classList.remove('on', 'leyendo'); escena.classList.remove('con-carta');
     interBox.classList.remove('on'); interBox.innerHTML = '';
-    escena.classList.remove('con-inter');
+    escena.classList.remove('con-inter', 'subt-abajo');
+    visAnt = null;
     $('#rotulo').innerHTML = '';
   }
   M.salir = function (sinPortada) {
@@ -354,7 +364,9 @@
     const directo = directoA === i; directoA = -1;
     const c = ctl = B.control();
     montaPlano(p);
+    preparaSig(i + 1);   // (ronda 6) y dejar listas las del plano siguiente
     B.ambiente(p.amb || []);
+    salpica(p.salpica, c);
     B.musica(p.mus || null);
     ponHechos(p);
     if (p.pre && !directo) { await esperaSaltable(p.pre, c); if (c.muerto) return; }   // p.pre: segundos de música sola antes de la primera línea
@@ -375,6 +387,24 @@
     if (c.muerto) return;
     if (i + 1 < dia.planos.length) correPlano(i + 1); else finDia();
   }
+  /* (ronda 6, Iago en el aula: «más sonidos ambiente en las calderas, hay momentos medio callados: golpes metálicos, aire a
+     presión») SALPICADO: sonidos sueltos que salen a ratos y sin orden fijo mientras dura el plano (también en su interacción).
+     p.salpica = { cada: [mín, máx] s, sonidos: [{ src, vol: [a, b] }…] }: nunca el mismo dos veces seguidas, con algo de variación
+     de tono y repartidos a izquierda y derecha. El reloj se congela en pausa, así que en pausa no suena nada. */
+  function salpica(s, c) {
+    const L = s ? B.arr(s.sonidos).filter(x => x && B.buf[x.src]) : [];
+    if (!L.length) return;
+    const cada = s.cada || [2.5, 6], az = (a, b) => a + Math.random() * (b - a);
+    let ult = null;
+    const uno = () => {
+      if (c.muerto) return;
+      let x; do { x = L[Math.floor(Math.random() * L.length)]; } while (L.length > 1 && x === ult); ult = x;
+      const v = Array.isArray(x.vol) ? az(x.vol[0], x.vol[1]) : (x.vol == null ? .35 : x.vol);
+      B.suena(x.src, { bus: B.bus.amb, vol: v, rate: az(.93, 1.05), pan: az(-.7, .7), grupo: 'plano' });
+      B.espera(az(cada[0], cada[1]), c).then(ok => { if (ok) uno(); });
+    };
+    B.espera(az(.8, 2.2), c).then(ok => { if (ok) uno(); });
+  }
   function esperaSaltable(seg, c) {
     return new Promise(res => {
       let hecho = false;
@@ -383,6 +413,31 @@
       saltable = adelanta;
       B.espera(seg, c).then(fin);
     });
+  }
+
+  /* (ronda 6, Iago en el aula: «en bastantes momentos la imagen llega más tarde que el audio») el portal descargaba y
+     descodificaba cada lámina en la precarga pero no la guardaba preparada: en un ordenador justo, al enseñarla por primera vez
+     había que volver a descodificarla y la voz ya había empezado. Ahora: (1) al montar un plano se descodifican todas sus láminas y
+     las del plano siguiente (y se guardan referencias para que el navegador no las suelte); (2) cada frase, si cambia la lámina
+     que se ve, espera (como mucho 0,9 s) a que esté descodificada y pintada, y entonces salen a la vez texto, imagen y voz. */
+  const prepara = im => { if (im && im.decode && !im._prep) im._prep = im.decode().catch(() => { }); return im && im._prep; };
+  const guardadas = [];
+  function preparaSig(i) {
+    const p = dia && dia.planos[i]; if (!p) return;
+    [rutaImg(p)].concat(Object.keys(p.var || {}).map(q => rutaVar(p, q))).forEach(r => {
+      if (!r || !B.img[r]) return;
+      const im = new Image(); im.src = B.img[r]; prepara(im); guardadas.push(im);
+    });
+    while (guardadas.length > 30) guardadas.shift();
+  }
+  let visAnt = null;
+  function esperaLamina() {
+    if (!planoEl) return null;
+    const im = planoEl.querySelector('.lam.var.on') || planoEl.querySelector('.lam.maestra');
+    if (!im || im === visAnt) return null;
+    visAnt = im;
+    const dec = im.decode ? im.decode().catch(() => { }) : Promise.resolve();
+    return Promise.race([dec, new Promise(r => setTimeout(r, 900))]).then(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
   }
 
   /* montar la imagen del plano: maestra + variantes (o el provisional) */
@@ -404,6 +459,7 @@
     void el.offsetWidth; el.classList.add('on');
     if (viejo) { viejo.classList.remove('on'); setTimeout(() => viejo.remove(), 1000); }
     planoEl = el; el._kb = kbEl;
+    B.$$('.lam', kbEl).forEach(prepara);   // (ronda 6) descodificar ya todas las láminas del plano (gestos, cortes, recursos)
     if (p.mapa) montaMapa(p, kbEl);
     const ip =B.arr(p.inter).find(it => it && it.previa && kbEl.querySelector('.lam.var[data-q="' + it.previa + '"]'));
     if (ip) { el._base = ip.previa; ponVariante(null); }
@@ -739,6 +795,9 @@
       let v = l.var !== undefined ? l.var : l.quien;
       if (v && v !== '-') v = eligePlano(v, l, dv);
       ponVariante(v && v !== '-' ? v : null);
+      const g = esperaLamina();
+      if (g) g.then(() => { if (c && c.muerto) return res(false); arranca(); }); else arranca();
+      function arranca() {
       $('.subt-quien', subt).textContent = P.nombre;
       subt.style.setProperty('--c', P.color);
       $('.subt-texto', subt).textContent = l.texto || '';
@@ -770,6 +829,7 @@
       const adelanta = () => fin(true);
       if (!o.noSaltable) saltable = adelanta;
       B.espera(dur, c).then(ok => { if (!ok) { if (voz) voz.parar(.05); subt.classList.remove('on'); hecho = true; return res(false); } fin(false); });
+      }
     });
   };
 
@@ -833,6 +893,7 @@
     ponVariante(null);
     subt.classList.remove('on');
     escena.classList.add('con-inter');
+    escena.classList.toggle('subt-abajo', !!(f.subtAbajo || it.subtAbajo));   // (ronda 6, Iago) el alumno mira abajo, donde toca: el texto, ahí
     interBox.innerHTML = ''; interBox.classList.add('on');
     const caja = B.el('div', 'icaja i-' + it.tipo);
     caja.style.cssText = 'position:absolute;inset:0';
@@ -846,7 +907,7 @@
     if (c.muerto) return;
     interBox.classList.remove('on'); interBox.innerHTML = '';
     subt.classList.remove('on');
-    escena.classList.remove('con-inter');
+    escena.classList.remove('con-inter', 'subt-abajo');
   };
 
   /* ══════════ HECHO REAL ══════════ */
