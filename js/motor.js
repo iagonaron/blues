@@ -15,6 +15,36 @@
   let cilindroAct = null;             // filtro de cilindro compartido (líneas con "cilindro": true)
   let kb = { t0: 0, de: [1, .5, .5], a: [1.06, .5, .5], dur: 30 };
   let foco = { s: 0, x: .5, y: .5, obj: null }, focoObj = { s: 0, x: .5, y: .5 };
+  /* (20-oct-2026, Iago: portales por hitos, como La cabaña y el museo) LOS ACTOS SE ABREN EN CLASE. El portal de gp.lmathome.es
+     (la medalla u5 y los avisos «Blues · Acto N» de la campana) abre esta página con «#cu=<cuenta>&dias=1.2» (y «&dia=2» desde
+     el aviso de ese acto): aquí se quita de la dirección, se guarda en este navegador y la portada solo deja entrar en esos
+     actos; los demás, apagados y con candado («se abre en clase»). Lo deciden Supabase (suite_hitos_de) y lo que Iago marca en
+     el Diario. El profe (#c=, Protester): todo abierto y puede saltarse los viajes del mapa. Sin cuenta guardada (el ordenador de
+     clase, quien llega por la dirección sin más): todo abierto, como hasta hoy. Quitarlo: que HIT devuelva siempre «todo abierto». */
+  const HIT = (function () {
+    const K = 'lm_blues_hitos', UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    let st = null, ir = 0, prof = false;
+    try { st = JSON.parse(localStorage.getItem(K) || 'null'); } catch (e) { }
+    try { prof = sessionStorage.getItem('lm_blues_prof') === '1'; } catch (e) { }
+    try {
+      const ps = (location.hash || '').replace(/^#/, '').split('&'), q = {};
+      ps.forEach(x => { const i = x.indexOf('='); if (i > 0) { try { q[x.slice(0, i)] = decodeURIComponent(x.slice(i + 1)); } catch (e) { } } });
+      if (q.c && UUID.test(q.c)) { st = null; prof = true; try { localStorage.removeItem(K); sessionStorage.setItem('lm_blues_prof', '1'); } catch (e) { } }
+      else if (q.cu && UUID.test(q.cu)) {
+        const d = String(q.dias || '').split(/[.,]/).map(Number).filter(n => n >= 1 && n <= 5);
+        if (d.length) { st = { cuenta: q.cu.toLowerCase(), dias: d, en: new Date().toISOString() }; try { localStorage.setItem(K, JSON.stringify(st)); } catch (e) { } }
+      }
+      if (/^[1-5]$/.test(q.dia || '')) ir = +q.dia;
+      if ('cu' in q || 'dias' in q || 'dia' in q) {
+        const resto = ps.filter(x => x && !/^(cu|dias|dia)=/.test(x)).join('&');
+        history.replaceState(history.state, '', location.pathname + location.search + (resto ? '#' + resto : ''));
+      }
+    } catch (e) { }
+    const ab = (st && Array.isArray(st.dias) && st.dias.length) ? st.dias.map(Number) : null;   // null = todo abierto
+    return { activo: () => !!ab, abierto: n => !ab || ab.indexOf(+n) >= 0, ir: () => { const n = ir; ir = 0; return n; }, prof };
+  })();
+  B.hitos = HIT; B.prof = HIT.prof;
+  const CANDADO = '<svg class="bi-candado-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>';
   const capturas = [];
   B.captura = { poner(fn) { capturas.push(fn); return () => { const i = capturas.indexOf(fn); if (i >= 0) capturas.splice(i, 1); }; } };
 
@@ -170,22 +200,35 @@
       '<div class="port-fil"><i></i><b></b><i></i></div></div><div class="billetes">';
     for (let n = 1; n <= 5; n++) {
       const d = B.DIAS[n] || { titulo: TIT_DIA[n], lugar: '' };
-      const sigue = pr.ultimo && pr.ultimo.dia === n && !pr.dias[n];
-      h += '<button class="billete' + (pr.dias[n] ? ' hecho' : '') + (sigue ? ' sigue' : '') + '" data-dia="' + n + '" style="--bc:' + COLOR_DIA[n] + '">' +
+      const sigue = pr.ultimo && pr.ultimo.dia === n && !pr.dias[n], cerrado = !HIT.abierto(n);
+      h += '<button class="billete' + (pr.dias[n] ? ' hecho' : '') + (sigue && !cerrado ? ' sigue' : '') + (cerrado ? ' cerrado' : '') + '" data-dia="' + n + '" style="--bc:' + COLOR_DIA[n] + '"' + (cerrado ? ' aria-disabled="true"' : '') + '>' +
         '<div class="bi-papel">' + (B.existe('img/portada/billete_' + n + '.webp') ? '<div class="bi-banda bi-foto" style="background-image:url(img/portada/billete_' + n + '.webp)"></div>' : '<div class="bi-banda">' + EMBLEMA[n] + '</div>') +
         '<div class="bi-cuerpo"><div class="bi-dia">ACTO ' + n + '</div><div class="bi-tit">' + B.esc(d.titulo || TIT_DIA[n]) + '</div>' +
         '<div class="bi-lug">' + B.esc(d.lugar || '') + '</div></div>' +
         '<div class="bi-perf"></div><div class="bi-talon"><div class="bi-adm">ADMITE UNO</div><div class="bi-num">Nº 1928·0' + n + '</div></div>' +
-        '<div class="bi-sello">' + (n === 5 && vio5 ? 'A PRACTICAR' : 'VISTO') + '</div></div></button>';
+        '<div class="bi-sello">' + (n === 5 && vio5 ? 'A PRACTICAR' : 'VISTO') + '</div>' + (cerrado ? '<div class="bi-cerrado">' + CANDADO + '<span>Se abre en clase</span></div>' : '') + '</div></button>';
     }
     h += '</div><div class="port-pie">';
-    if (pr.ultimo && B.DIAS[pr.ultimo.dia] && !(pr.ultimo.fin === 5)) {
+    if (pr.ultimo && B.DIAS[pr.ultimo.dia] && !(pr.ultimo.fin === 5) && HIT.abierto(pr.ultimo.dia)) {
       const u = pr.ultimo, d = B.DIAS[u.dia];
       h += '<button class="bt prim" id="continuar">' + ICO.play + ' Continuar · Acto ' + u.dia + (u.plano ? ', ' + (d.planos[u.plano] ? d.planos[u.plano].id : '') : '') + '</button>';
     } else h += '<span class="port-nota">Elige un acto · Espacio para seguir · P pausa · F pantalla completa</span>';
     h += '</div>';
     p.innerHTML = h;
-    B.$$('.billete', p).forEach(b => b.addEventListener('click', () => { B.ac(); const n = +b.dataset.dia; M.empezarDia(n, n === 5 && vio5 ? iPrac : 0, n === 5 && vio5); }));
+    B.$$('.billete', p).forEach(b => b.addEventListener('click', () => {
+      B.ac(); const n = +b.dataset.dia;
+      if (!HIT.abierto(n)) { M.aviso('El acto ' + n + ' se abre al acabar la clase en que lo veáis.', 3.2); return; }
+      M.empezarDia(n, n === 5 && vio5 ? iPrac : 0, n === 5 && vio5);
+    }));
+    /* desde el aviso de la campana («&dia=N»): un botón grande para entrar en ESE acto (el clic hace falta para el sonido) */
+    const dIr = HIT.ir();
+    if (dIr && HIT.abierto(dIr) && B.DIAS[dIr]) {
+      const pie = p.querySelector('.port-pie'), v = B.el('div', 'port-directo no-seguir'), antes = pie.innerHTML;
+      v.innerHTML = '<button class="bt prim">' + ICO.play + ' Acto ' + dIr + ' · ' + B.esc(B.DIAS[dIr].titulo || TIT_DIA[dIr]) + '</button><button class="bt pd-x">Ver todos los actos</button>';
+      pie.innerHTML = ''; pie.appendChild(v);
+      v.querySelector('.prim').addEventListener('click', e => { e.stopPropagation(); B.ac(); v.remove(); M.empezarDia(dIr, dIr === 5 && vio5 ? iPrac : 0, dIr === 5 && vio5); });
+      v.querySelector('.pd-x').addEventListener('click', e => { e.stopPropagation(); pie.innerHTML = antes; const c2 = $('#continuar', pie); if (c2) c2.addEventListener('click', () => { B.ac(); const u = B.progreso.leer().ultimo; M.empezarDia(u.dia, u.plano || 0); }); });
+    }
     const c = $('#continuar', p);
     if (c) c.addEventListener('click', () => { B.ac(); const u = B.progreso.leer().ultimo; M.empezarDia(u.dia, u.plano || 0); });
     /* ambiente suave de portada, al primer clic */
@@ -204,6 +247,7 @@
   /* ══════════ empezar un día: precarga y primer plano ══════════ */
   let directoA = -1;   // (punto 54) plano en el que se entra directo a la interacción (sin intro ni frases)
   M.empezarDia = async function (n, desde, directo) {
+    if (!HIT.abierto(n)) return;   // (20-oct-2026) acto aún no visto en clase
     directoA = directo ? (desde || 0) : -1;
     const d = B.DIAS[n]; if (!d) return;
     M.salir(true);
@@ -312,9 +356,11 @@
       await M.interaccion(it, c); if (c.muerto) return;
     }
     for (const l of B.arr(p.despues)) { await M.di(l, c); if (c.muerto) return; }
-    ponVariante(null);
+    const sig = dia.planos[i + 1], vis = planoEl && planoEl._vis;
+    if (!(sig && vis && B.arr(sig.inter).some(it => it && it.previa === vis))) ponVariante(null);   // (ronda 5) la lata de P1.1 sigue en pantalla hasta abrirla en P1.2
+    if (p.mapa && planoEl && planoEl._mapa) { await planoEl._mapa.viaje(c); if (c.muerto) return; }   // (ronda 5) el viaje lo hace el alumno
     B.progreso.plano(dia.n, i, p.id); pintaPuntos();
-    const ok = await esperaSaltable(p.espera == null ? 1.4 : p.espera, c);
+    const ok = await esperaSaltable(p.mapa ? (p.mapa.tras == null ? 3.2 : p.mapa.tras) : p.espera == null ? 1.4 : p.espera, c);
     if (c.muerto) return;
     if (i + 1 < dia.planos.length) correPlano(i + 1); else finDia();
   }
@@ -359,8 +405,12 @@
     focoObj = { s: 0, x: .5, y: .5 }; foco = { s: 0, x: .5, y: .5 };
     aplicaKB(B.ahora());
   }
-  /* (Iago, 20-oct) PLANOS-MAPA: la carta náutica con la ruta del barco dibujándose y, al llegar, el rótulo del destino.
-     p.mapa = { ruta: [[x, y]…] (fracciones de la lámina), desde, hasta, sub, dur, retraso, encuadre: [escala, cx, cy], etiq: { desde: [dx, dy], hasta: [dx, dy] } } */
+  /* (Iago, 20-oct) PLANOS-MAPA: la carta náutica (o el mapa del tren) con la ruta dibujándose y, al llegar, el rótulo del destino.
+     (ronda 5, Iago: «mapas interactivos en TODOS los viajes») el viaje lo hace EL ALUMNO: primero un cartel de adónde vamos y
+     por qué («Continuar»); luego arrastra el barco/tren por la ruta, o mantiene pulsado → / Espacio (vale el mando de clase);
+     sin moverlo no se avanza. La música se va fundiendo con la de destino según avanza. Con Protester, un clic lo completa.
+     p.mapa = { ruta: [[x, y]…] (fracciones de la lámina), desde, hasta, sub, dur (s que tarda manteniendo la tecla),
+                antes: { et, tit, txt } (cartel previo), pista, tras (s tras llegar), encuadre: [escala, cx, cy], etiq, musA, sfx, silbato… } */
   function montaMapa(p, kbEl) {
     const m = p.mapa, NS = 'http://www.w3.org/2000/svg', e = m.encuadre || [1, .5, .5], k = 1 / e[0];
     const mk = (tag, at) => { const n = document.createElementNS(NS, tag); for (const a in at) n.setAttribute(a, at[a]); return n; };
@@ -384,6 +434,9 @@
       g.append(sombra, mk('path', { d, class: 'mapa-traviesas', 'stroke-width': 1.5 * k, 'stroke-dasharray': (.24 * k) + ' ' + (.72 * k) }), mk('path', { d, class: 'mapa-rail', 'stroke-width': .42 * k }));
       svg.append(g); ruta.style.opacity = 0; svg.append(ruta);
     } else svg.append(sombra, ruta);
+    /* la ruta que falta, en punteado tenue: el alumno ve por dónde tiene que llevarlo */
+    const guiaRuta = mk('path', { d, class: 'mapa-ruta-guia', 'stroke-width': .38 * k, 'stroke-dasharray': (.9 * k) + ' ' + (1.1 * k) });
+    svg.insertBefore(guiaRuta, svg.firstChild.nextSibling || null);
     const sitio = (q, txt, cls) => {
       const g = mk('g', { class: 'mapa-sitio ' + cls }), o = (m.etiq && m.etiq[cls]) || [1.6, .7];
       g.append(mk('circle', { cx: q[0], cy: q[1], r: .85 * k }));
@@ -391,6 +444,7 @@
     };
     sitio(P[0], m.desde || '', 'desde'); const gB = sitio(P[P.length - 1], m.hasta || '', 'hasta');
     const barco = mk('g', { class: tren ? 'mapa-barco mapa-loco' : 'mapa-barco' });
+    const halo = mk('circle', { r: (tren ? 3.4 : 4.4) * k, class: 'mapa-guia' }); barco.append(halo);   // brilla hasta que el alumno lo mueve
     if (tren) {
       const cuerpo = mk('g', { transform: 'scale(' + (k * 1.35) + ')' });
       cuerpo.append(mk('path', { d: 'M-.9 -.55 H1.6 V.35 H-.9 Z M-1.9 -1.05 H-.9 V.35 H-1.9 Z M.85 -1.15 H1.3 V-.55 H.85 Z M1.6 .35 L2.15 .78 H1.6 Z M-2.1 -1.15 H-.7 V-.98 H-2.1 Z' }));
@@ -398,31 +452,24 @@
       barco.append(cuerpo);
     } else if (m.icono) {   // (ronda 4, Iago: «el icono del barco no me gusta») el vapor pintado (recorte de ChatGPT) en vez del dibujo
       const an = (m.anchoIcono || 9) * k, al = an * (m.proporcionIcono || .5);
-      const ib = mk('image', { href: resImg(m.icono), x: -an / 2, y: -al * .78, width: an, height: al, class: 'mapa-barco-img', preserveAspectRatio: 'xMidYMid meet' });
-      barco.append(ib);
+      barco.append(mk('image', { href: resImg(m.icono), x: -an / 2, y: -al * .78, width: an, height: al, class: 'mapa-barco-img', preserveAspectRatio: 'xMidYMid meet' }));
     } else barco.append(mk('circle', { r: 2.2 * k, class: 'onda' }), mk('path', { d: 'M-1.6 0 L1.6 0 L1.1 .8 L-1.1 .8 Z M-.25 -1.2 L.35 -1.2 L.35 0 L-.25 0 Z', transform: 'scale(' + k + ')' }));
     svg.append(barco); capa.appendChild(svg); kbEl.appendChild(capa);
-    if (m.silbato && B.buf[m.silbato]) B.suena(m.silbato, { bus: B.bus.sfx, vol: m.volSilbato || .45, t: B.ahora() + .4 });
-    /* (ronda 4) efectos al salir y al llegar (bocina del barco…) y la música que se TRANSFORMA a lo largo del viaje:
-       m.musA = la música de destino; arranca a cero y se va mezclando con la que sonaba al ritmo del barco. */
-    B.arr(m.sfx).forEach(s => { if (s && B.buf[s.src]) B.suena(s.src, { bus: B.bus.sfx, vol: s.vol == null ? .5 : s.vol, t: B.ahora() + (s.t || 0) }); });
-    if (m.musA && B.musicaHacia) B.musicaHacia(m.musA);
-    let musFija = !m.musA;
+    const plano = kbEl.parentNode;
     const cartel = B.el('div', 'mapa-cartel'); cartel.innerHTML = '<div class="mc-lugar"></div><div class="mc-sub"></div>';
-    cartel.firstChild.textContent = m.hasta || ''; cartel.lastChild.textContent = m.sub || ''; kbEl.parentNode.appendChild(cartel);
+    cartel.firstChild.textContent = m.hasta || ''; cartel.lastChild.textContent = m.sub || ''; plano.appendChild(cartel);
     const L = ruta.getTotalLength(); (tren ? [mascara] : [ruta, sombra]).forEach(r => { r.style.strokeDasharray = L; r.style.strokeDashoffset = L; });
-    const t0 = B.ahora() + (m.retraso == null ? 1.2 : m.retraso), T = m.dur || 6;
-    let tHumo = 0;
-    const paso = () => {
-      if (!capa.isConnected) return;
-      const ahora = B.ahora(), u = B.clamp((ahora - t0) / T, 0, 1), s = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+    const T = m.dur || 8;
+    let prog = 0, s = 0, ult = B.ahora(), tHumo = 0, activo = false, llego = false, musFija = true, held = false, holdHasta = 0, alLlegar = null;
+    const pinta = (ahora) => {
       if (tren) mascara.style.strokeDashoffset = L * (1 - s); else ruta.style.strokeDashoffset = sombra.style.strokeDashoffset = L * (1 - s);
+      guiaRuta.style.strokeDashoffset = 0; guiaRuta.style.opacity = s >= .999 ? 0 : '';
       const q = ruta.getPointAtLength(L * s);
       if (tren) {   // la locomotora mira hacia donde va y echa humo mientras corre
         const q2 = ruta.getPointAtLength(Math.min(L, L * s + .5)), q1 = ruta.getPointAtLength(Math.max(0, L * s - .5));
         const ang = Math.atan2(q2.y - q1.y, q2.x - q1.x) * 180 / Math.PI;
         barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + q.y.toFixed(2) + ') rotate(' + ang.toFixed(1) + ')');
-        if (u > 0 && u < 1 && ahora - tHumo > .22) {
+        if (activo && s > 0 && s < 1 && Math.abs(prog - s) > .002 && ahora - tHumo > .22) {
           tHumo = ahora; const a = ang * Math.PI / 180, cx = 1.07 * k * 1.35, cy = -1.25 * k * 1.35;
           const h = mk('circle', { cx: (q.x + cx * Math.cos(a) - cy * Math.sin(a)).toFixed(2), cy: (q.y + cx * Math.sin(a) + cy * Math.cos(a)).toFixed(2), r: .8 * k, class: 'mapa-humo' });
           svg.insertBefore(h, barco); setTimeout(() => h.remove(), 1700);
@@ -436,11 +483,86 @@
         }
         barco.setAttribute('transform', 'translate(' + q.x.toFixed(2) + ' ' + (q.y + Math.sin(ahora * 2.1) * .12 * k).toFixed(2) + ')' + esp);
       }
-      if (!musFija && B.musicaMezcla) { B.musicaMezcla(s); if (u >= 1) { musFija = true; B.musicaFija(); } }
-      gB.classList.toggle('on', u >= .98); cartel.classList.toggle('on', u >= 1);
+      halo.style.display = activo && prog < .04 ? '' : 'none';
+      if (!musFija && B.musicaMezcla) B.musicaMezcla(s);
+      gB.classList.toggle('on', s >= .98); cartel.classList.toggle('on', s >= .999);
+    };
+    const paso = () => {
+      if (!capa.isConnected) return;
+      const ahora = B.ahora(), dt = Math.min(.1, Math.max(0, ahora - ult)); ult = ahora;
+      if (activo && !B.pausado && (held || ahora < holdHasta)) prog = Math.min(1, prog + dt / T);
+      s += (prog - s) * Math.min(1, dt * 6); if (prog >= 1 && 1 - s < .003) s = 1;
+      pinta(ahora);
+      if (activo && s >= 1 && !llego) { llego = true; if (alLlegar) alLlegar(); }
       requestAnimationFrame(paso);
     };
     requestAnimationFrame(paso);
+    /* el viaje, paso a paso: lo llama correPlano */
+    plano._mapa = {
+      viaje(c) {
+        return new Promise(res => {
+          const quitar = [], limpia = () => { quitar.splice(0).forEach(f => { try { f(); } catch (er) { } }); if (saltable === salta) saltable = null; };
+          let fase = 0, fin = false;
+          const acaba = ok => { if (fin) return; fin = true; limpia(); res(ok); };
+          c.alMorir.push(() => acaba(false));
+          /* 1 · el cartel de adónde vamos y por qué */
+          const an = m.antes || {}, pre = B.el('div', 'mapa-previo no-seguir');
+          pre.innerHTML = '<div class="mp-et"></div><div class="mp-tit"></div><div class="mp-txt"></div><button class="bt prim mp-bt">Continuar ' + ICO.play + '</button>';
+          pre.children[0].textContent = an.et || (tren ? 'Próxima estación' : 'Próxima escala');
+          pre.children[1].textContent = an.tit || ('Rumbo a ' + (m.hasta || ''));
+          pre.children[2].textContent = an.txt || m.sub || '';
+          plano.appendChild(pre); void pre.offsetWidth; pre.classList.add('on');
+          quitar.push(() => { pre.classList.remove('on'); setTimeout(() => pre.remove(), 600); });
+          const pista = B.el('div', 'mapa-pista'), toque = B.el('div', 'mapa-toque no-seguir');
+          pista.innerHTML = m.pista || ('Arrastra ' + (tren ? 'el tren' : 'el barco') + ' hasta <b>' + B.esc(m.hasta || '') + '</b> · o mantén pulsado <kbd>→</kbd> / <kbd>Espacio</kbd>');
+          const parte = () => {
+            if (fase) return; fase = 1; B.ac();
+            pre.classList.remove('on');
+            activo = true; ult = B.ahora();
+            if (m.musA && B.musicaHacia) { B.musicaHacia(m.musA); musFija = false; }
+            if (m.silbato && B.buf[m.silbato]) B.suena(m.silbato, { bus: B.bus.sfx, vol: m.volSilbato || .45, t: B.ahora() + .3 });
+            B.arr(m.sfx).forEach(x => { if (x && B.buf[x.src] && (x.t || 0) <= 2) B.suena(x.src, { bus: B.bus.sfx, vol: x.vol == null ? .5 : x.vol, t: B.ahora() + (x.t || 0) }); });
+            plano.appendChild(toque); plano.appendChild(pista); void pista.offsetWidth; pista.classList.add('on');
+            quitar.push(() => { toque.remove(); pista.classList.remove('on'); setTimeout(() => pista.remove(), 500); });
+            saltable = salta;
+          };
+          /* Protester: un clic (o Espacio) completa el viaje; el alumno, no */
+          const salta = () => { if (!fase) parte(); else if (B.prof) { prog = 1; } else saltable = salta; };
+          saltable = salta;
+          pre.querySelector('.mp-bt').addEventListener('click', ev => { ev.stopPropagation(); parte(); });
+          /* teclado y mando de clase: → / Espacio / AvPág / Intro. Mantener = avanzar; cada pulsación suelta, un tramo corto */
+          const TECLA = /^( |Spacebar|ArrowRight|PageDown|Enter)$/;
+          quitar.push(B.captura.poner(ev => {
+            if (!TECLA.test(ev.key)) return false;
+            if (!fase) { if (!ev.repeat) parte(); return true; }
+            held = true; holdHasta = Math.max(holdHasta, B.ahora() + .4); return true;
+          }));
+          const suelta = ev => { if (TECLA.test(ev.key)) held = false; };
+          document.addEventListener('keyup', suelta); quitar.push(() => document.removeEventListener('keyup', suelta));
+          const alBlur = () => { held = false; }; addEventListener('blur', alBlur); quitar.push(() => removeEventListener('blur', alBlur));
+          /* arrastrar: el barco sigue al dedo/ratón si va por delante, cerca de la ruta (nunca hacia atrás) */
+          let arr = false;
+          const hacia = ev => {
+            const r = svg.getBoundingClientRect(); if (!r.width) return;
+            const x = (ev.clientX - r.left) / r.width * 100, y = (ev.clientY - r.top) / r.height * 56.25;
+            let mej = -1, dm = Infinity;
+            for (let v = prog; v <= Math.min(1, prog + .3) + 1e-9; v += .004) { const q = ruta.getPointAtLength(L * Math.min(1, v)), dd = Math.hypot(q.x - x, q.y - y); if (dd < dm) { dm = dd; mej = Math.min(1, v); } }
+            if (mej >= 0 && dm < 9 * k) prog = Math.max(prog, mej > .985 ? 1 : mej);
+          };
+          toque.addEventListener('pointerdown', ev => { ev.preventDefault(); ev.stopPropagation(); arr = true; toque.classList.add('arrastra'); try { toque.setPointerCapture(ev.pointerId); } catch (er) { } hacia(ev); });
+          toque.addEventListener('pointermove', ev => { if (arr) hacia(ev); });
+          const fuera = () => { arr = false; toque.classList.remove('arrastra'); };
+          toque.addEventListener('pointerup', fuera); toque.addEventListener('pointercancel', fuera);
+          toque.addEventListener('click', ev => ev.stopPropagation());
+          /* 3 · al llegar: el rótulo del destino, los efectos de llegada y la música de destino sola */
+          alLlegar = () => {
+            B.arr(m.sfx).forEach(x => { if (x && B.buf[x.src] && (x.t || 0) > 2) B.suena(x.src, { bus: B.bus.sfx, vol: x.vol == null ? .5 : x.vol, t: B.ahora() + .2 }); });
+            if (!musFija && B.musicaFija) { musFija = true; B.musicaFija(); }
+            acaba(true);
+          };
+        });
+      }
+    };
   }
   function duracionEstimada(p) {
     let s = 4;
@@ -473,7 +595,13 @@
     if (!planoEl) return;
     const base = planoEl._base;   // (punto 16) lámina «previa» (el estuche cerrado) hasta que acabe su interacción: manda sobre las de «habla X»
     const corte = !!q && esCorte(planoAct, q);   // un primer plano o un plano recurso manda incluso sobre la lámina «previa»
-    B.$$('.lam.var', planoEl).forEach(v => v.classList.toggle('on', corte ? v.dataset.q === q : base ? v.dataset.q === base : (!!q && v.dataset.q === q)));
+    const vis = corte ? q : base ? base : (q || null);
+    B.$$('.lam.var', planoEl).forEach(v => v.classList.toggle('on', !!vis && v.dataset.q === vis));
+    /* (ronda 5) qué lámina se ve: en un plano recurso o un primer plano no hay bocadillo (no se ve a quien habla) y la vida
+       del plano general (fuego, lámpara, polvo…) se apaga para no brillar donde no toca */
+    const hay = !!vis && !!planoEl.querySelector('.lam.var[data-q="' + vis + '"]');
+    planoEl._vis = hay ? vis : null; planoEl._recurso = hay && /^RECURSO_|_CERCA$/.test(vis);
+    planoEl.classList.toggle('en-corte', planoEl._recurso);
     B.$$('.chapa', planoEl).forEach(v => v.classList.toggle('habla', !!q && v.dataset.q === q));
     const p = planoAct, f = q && p && ((p.foco && p.foco[q]) || (p.var && p.var[q] && p.var[q].foco));
     focoObj = { s: 0, x: .5, y: .5 };   // (Iago, 19-oct, 22:40) sin acercarse a la cara del que habla: NADA de movimientos de cámara (el foco solo sirve para los bocadillos)
@@ -510,6 +638,7 @@
     const p = planoAct, t = performance.now() / 1000;
     if (esCorte(p, v)) {
       if (v === corteAct) return v;
+      if (l.fijo) { corteAct = v; tCambio = t; return v; }
       if (dv >= MIN_PLANO && t - tCambio >= MIN_PLANO) { corteAct = v; tCambio = t; return v; }
       v = l.quien;
     }
@@ -597,7 +726,7 @@
       subt.style.setProperty('--c', P.color);
       $('.subt-texto', subt).textContent = l.texto || '';
       /* (punto 28) en escenas de grupo, la frase sale en un BOCADILLO junto a la cara de quien habla (el «foco» del plano) */
-      const fc = planoAct && conBurbujas(planoAct) && !l.cilindro && l.var !== '-' && !corteAct && !escena.classList.contains('con-inter') ? focoDe(planoAct, l.quien) : null;   // en un corte (primer plano o plano recurso) no hay cara pequeña: texto abajo
+      const fc = planoAct && conBurbujas(planoAct) && !l.cilindro && l.var !== '-' && !corteAct && !(planoEl && planoEl._recurso) && !escena.classList.contains('con-inter') ? focoDe(planoAct, l.quien) : null;   // en un corte (primer plano o plano recurso) no hay cara pequeña: texto abajo
       subt.classList.toggle('burbuja', !!fc);
       if (fc) {   // (Iago, 20-oct) el bocadillo NUNCA tapa la cara de quien habla: encima de la cabeza si cabe; si no, al lado (hacia el centro)
         const lb = ladoBurbuja(planoAct, fc, String(l.texto || ''), l.quien), lado = lb.lado;
@@ -618,8 +747,7 @@
         if (hecho) return; hecho = true;
         if (saltable === adelanta) saltable = null;
         if (salto && voz) voz.parar(.08);
-        if (voz) B.agacha(false);
-        subt.classList.remove('on');
+        if (voz) B.agacha(false);   // (ronda 5, Iago) el bocadillo y el subtítulo NO se quitan entre frase y frase: se quedan hasta que cambia el texto o el plano
         B.espera(.28, c).then(() => res(!(c && c.muerto)));
       };
       const adelanta = () => fin(true);
@@ -686,6 +814,7 @@
     const f = B.inter[it.tipo];
     if (!f) { console.warn('Interacción sin módulo:', it.tipo); return; }
     ponVariante(null);
+    subt.classList.remove('on');
     escena.classList.add('con-inter');
     interBox.innerHTML = ''; interBox.classList.add('on');
     const caja = B.el('div', 'icaja i-' + it.tipo);
@@ -699,6 +828,7 @@
     if (planoEl && it.previa && planoEl._base === it.previa) { planoEl._base = null; ponVariante(null); }   // corte seco a la lámina de después
     if (c.muerto) return;
     interBox.classList.remove('on'); interBox.innerHTML = '';
+    subt.classList.remove('on');
     escena.classList.remove('con-inter');
   };
 
@@ -748,7 +878,7 @@
       '<div class="fd-sig">' + (sig ? 'Próxima sesión: Acto ' + (n + 1) + ' · ' + B.esc(sig.titulo) : 'Fin de la historia. La sala de práctica sigue abierta.') + '</div>' +
       '<div class="fd-bt"><button class="bt" data-a="port">' + ICO.casa + ' Portada</button>' +
       '<button class="bt" data-a="rep">Repetir el acto</button>' +
-      (sig ? '<button class="bt prim" data-a="sig">Acto ' + (n + 1) + ' ' + ICO.play + '</button>' : '') + '</div></div>';
+      (sig && HIT.abierto(n + 1) ? '<button class="bt prim" data-a="sig">Acto ' + (n + 1) + ' ' + ICO.play + '</button>' : sig ? '<span class="fd-cerrado">' + CANDADO + 'El acto ' + (n + 1) + ' se abre en clase</span>' : '') + '</div></div>';
     f.classList.add('on');
     f.querySelector('[data-a=port]').addEventListener('click', () => { M.salir(); M.portada(); });
     f.querySelector('[data-a=rep]').addEventListener('click', () => M.empezarDia(n, 0));
