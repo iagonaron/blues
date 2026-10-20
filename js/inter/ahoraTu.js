@@ -99,4 +99,5 @@
   };
   B.inter.ahoraTu.responde = responde;
   B.inter.ahoraTu.claves = ['respuesta', 'devuelve', 'otra', 'fin'];
+  B.inter.ahoraTu.subtAbajo = true;   // (ronda 6, Iago en el aula) el texto de quien habla, abajo: el alumno mira donde toca
 })(window.BLUES);

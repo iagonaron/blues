@@ -55,4 +55,5 @@
   };
   B.inter.lata.claves = ['abrir'];
   B.inter.lata.voces = ['sfx/d1/papel.mp3'];   // se precarga con el acto
+  B.inter.lata.subtAbajo = true;   // (ronda 6, Iago en el aula) el texto de quien habla, abajo: el alumno mira donde toca
 })(window.BLUES);

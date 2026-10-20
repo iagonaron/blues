@@ -56,4 +56,5 @@
   };
   B.inter.acordeon.claves = ['abierto'];
   B.inter.acordeon.voces = ['sfx/d1/estuche_cierre.mp3', 'sfx/d1/estuche_abrir.mp3'];   // se precargan con el acto
+  B.inter.acordeon.subtAbajo = true;   // (ronda 6, Iago en el aula) el texto de quien habla, abajo: el alumno mira donde toca
 })(window.BLUES);

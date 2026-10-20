@@ -83,4 +83,5 @@
   B.inter.pregunta.RONDAS = RONDAS;
   B.inter.pregunta.voces = BIEN.concat(CASI);
   B.inter.pregunta.claves = ['acierto_r1', 'acierto_r2', 'acierto_r3', 'acierto', 'fallo', 'pista'];
+  B.inter.pregunta.subtAbajo = true;   // (ronda 6, Iago en el aula) el texto de quien habla, abajo: el alumno mira donde toca
 })(window.BLUES);
