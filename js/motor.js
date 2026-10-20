@@ -29,7 +29,9 @@
     try {
       const ps = (location.hash || '').replace(/^#/, '').split('&'), q = {};
       ps.forEach(x => { const i = x.indexOf('='); if (i > 0) { try { q[x.slice(0, i)] = decodeURIComponent(x.slice(i + 1)); } catch (e) { } } });
-      if (q.c && UUID.test(q.c)) { st = null; prof = true; try { localStorage.removeItem(K); sessionStorage.setItem('lm_blues_prof', '1'); } catch (e) { } }
+      /* el cargador de voluntarios (arriba del <head>) ya ha quitado «#c=» de la dirección y la ha guardado en lm_vol_cuenta */
+      let volC = ''; try { volC = localStorage.getItem('lm_vol_cuenta') || ''; } catch (e) { }
+      if ((q.c && UUID.test(q.c)) || (!q.cu && UUID.test(volC))) { st = null; prof = true; try { localStorage.removeItem(K); sessionStorage.setItem('lm_blues_prof', '1'); } catch (e) { } }
       else if (q.cu && UUID.test(q.cu)) {
         const d = String(q.dias || '').split(/[.,]/).map(Number).filter(n => n >= 1 && n <= 5);
         if (d.length) { st = { cuenta: q.cu.toLowerCase(), dias: d, en: new Date().toISOString() }; try { localStorage.setItem(K, JSON.stringify(st)); } catch (e) { } }
@@ -271,6 +273,15 @@
     const pasado = performance.now() - t0;
     if (pasado < 900) await new Promise(r => setTimeout(r, 900 - pasado));
     if (dia !== d) return;
+    /* (20-oct-2026, Iago) SELECCIONADOR DE VOLUNTARIOS: con la cuenta Protester y en la hora de clase, al acabar la precarga sale
+       «Seleccionar voluntario» con la estética del acto (1 el telégrafo del barco, 2 la tabla de lavar, 3 la marquesina de Harlem,
+       4 el álbum de fotos de John; el 5 no lleva). El acto empieza al cerrar la ruleta o con «Ahora no». A los alumnos, nada. */
+    const VOL = { 1: 'telegrafo', 2: 'tabla', 3: 'marquesina', 4: 'album' };
+    if (VOL[n] && !directo && window.LMVoluntarios && window.LMVoluntarios.ofrece) {
+      $('.pc-mb', pc).textContent = 'Listo';
+      try { await window.LMVoluntarios.ofrece({ tema: VOL[n] }); } catch (e) { }
+      if (dia !== d) return;
+    }
     escena.classList.remove('precargando');
     correPlano(B.clamp(desde || 0, 0, d.planos.length - 1));
   };
@@ -443,6 +454,8 @@
       const t = mk('text', { x: q[0] + o[0] * k, y: q[1] + o[1] * k, 'font-size': 2.5 * k }); t.textContent = txt; g.append(t); svg.append(g); return g;
     };
     sitio(P[0], m.desde || '', 'desde'); const gB = sitio(P[P.length - 1], m.hasta || '', 'hasta');
+    /* (C2, 20-oct) paradas: el nombre de la ciudad sale cuando el tren pasa por el punto i de la ruta */
+    const paradas = B.arr(m.paradas).filter(x => x && P[x.i]).map(x => { const g = sitio(P[x.i], x.n || '', 'hasta parada'); g.querySelector('circle').setAttribute('r', .6 * k); g.querySelector('text').setAttribute('font-size', 1.9 * k); return { g, i: x.i, s: 1 }; });
     const barco = mk('g', { class: tren ? 'mapa-barco mapa-loco' : 'mapa-barco' });
     const halo = mk('circle', { r: (tren ? 3.4 : 4.4) * k, class: 'mapa-guia' }); barco.append(halo);   // brilla hasta que el alumno lo mueve
     if (tren) {
@@ -459,6 +472,8 @@
     const cartel = B.el('div', 'mapa-cartel'); cartel.innerHTML = '<div class="mc-lugar"></div><div class="mc-sub"></div>';
     cartel.firstChild.textContent = m.hasta || ''; cartel.lastChild.textContent = m.sub || ''; plano.appendChild(cartel);
     const L = ruta.getTotalLength(); (tren ? [mascara] : [ruta, sombra]).forEach(r => { r.style.strokeDasharray = L; r.style.strokeDashoffset = L; });
+    paradas.forEach(pa => { let dm = Infinity; for (let v = 0; v <= 1.0001; v += .002) { const q = ruta.getPointAtLength(L * Math.min(1, v)), dd = Math.hypot(q.x - P[pa.i][0], q.y - P[pa.i][1]); if (dd < dm) { dm = dd; pa.s = v; } } });
+    const soloArrastre = m.arrastrar === 'solo';   // (Iago a C2) en el acto 2 el tren solo se mueve arrastrando (Protester puede saltar)
     const T = m.dur || 8;
     let prog = 0, s = 0, ult = B.ahora(), tHumo = 0, activo = false, llego = false, musFija = true, held = false, holdHasta = 0, alLlegar = null;
     const pinta = (ahora) => {
@@ -486,6 +501,7 @@
       halo.style.display = activo && prog < .04 ? '' : 'none';
       if (!musFija && B.musicaMezcla) B.musicaMezcla(s);
       gB.classList.toggle('on', s >= .98); cartel.classList.toggle('on', s >= .999);
+      paradas.forEach(pa => pa.g.classList.toggle('on', s >= pa.s - .004));
     };
     const paso = () => {
       if (!capa.isConnected) return;
@@ -506,7 +522,7 @@
           const acaba = ok => { if (fin) return; fin = true; limpia(); res(ok); };
           c.alMorir.push(() => acaba(false));
           /* 1 · el cartel de adónde vamos y por qué */
-          const an = m.antes || {}, pre = B.el('div', 'mapa-previo no-seguir');
+          const an = m.antes || (m.cartel ? { tit: m.cartel.titulo, txt: m.cartel.texto, et: m.cartel.et } : {}), pre = B.el('div', 'mapa-previo no-seguir');
           pre.innerHTML = '<div class="mp-et"></div><div class="mp-tit"></div><div class="mp-txt"></div><button class="bt prim mp-bt">Continuar ' + ICO.play + '</button>';
           pre.children[0].textContent = an.et || (tren ? 'Próxima estación' : 'Próxima escala');
           pre.children[1].textContent = an.tit || ('Rumbo a ' + (m.hasta || ''));
@@ -514,7 +530,7 @@
           plano.appendChild(pre); void pre.offsetWidth; pre.classList.add('on');
           quitar.push(() => { pre.classList.remove('on'); setTimeout(() => pre.remove(), 600); });
           const pista = B.el('div', 'mapa-pista'), toque = B.el('div', 'mapa-toque no-seguir');
-          pista.innerHTML = m.pista || ('Arrastra ' + (tren ? 'el tren' : 'el barco') + ' hasta <b>' + B.esc(m.hasta || '') + '</b> · o mantén pulsado <kbd>→</kbd> / <kbd>Espacio</kbd>');
+          pista.innerHTML = m.pista || ('Arrastra ' + (tren ? 'el tren' : 'el barco') + ' hasta <b>' + B.esc(m.hasta || '') + '</b>' + (soloArrastre ? '' : ' · o mantén pulsado <kbd>→</kbd> / <kbd>Espacio</kbd>'));
           const parte = () => {
             if (fase) return; fase = 1; B.ac();
             pre.classList.remove('on');
@@ -535,6 +551,7 @@
           quitar.push(B.captura.poner(ev => {
             if (!TECLA.test(ev.key)) return false;
             if (!fase) { if (!ev.repeat) parte(); return true; }
+            if (soloArrastre && !B.prof) return true;   // solo arrastrando (la tecla no hace nada, ni salta el plano)
             held = true; holdHasta = Math.max(holdHasta, B.ahora() + .4); return true;
           }));
           const suelta = ev => { if (TECLA.test(ev.key)) held = false; };

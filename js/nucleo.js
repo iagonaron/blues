@@ -46,7 +46,24 @@ window.BLUES = window.BLUES || {};
   let AC = null;
   B.bus = {};
   B.pausado = false;
+  /* (C5, 20-oct) iPhone/iPad: con el interruptor de SILENCIO puesto, Safari calla el Web Audio (no los vídeos).
+     Se pide la sesión de audio «playback» (iOS 16.4+) y, por si acaso, se arranca en el primer toque un <audio> mudo en
+     bucle, que pasa el móvil a modo «reproducción». En ordenador no hace nada. */
+  const esIOS = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+  let iosSon = false, mudo = null;
+  function sonIOS() {
+    if (iosSon) return;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { }
+    if (!esIOS()) { iosSon = true; return; }
+    try {
+      if (!mudo) { mudo = document.createElement('audio'); mudo.loop = true; mudo.setAttribute('playsinline', ''); mudo.src = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAACQAAA2AAVVVVVVVVVVVVVVVqampqampqampqaoCAgICAgICAgICAlZWVlZWVlZWVlZWqqqqqqqqqqqqqqsDAwMDAwMDAwMDA1dXV1dXV1dXV1dXq6urq6urq6urq6v//////////////AAAAAExhdmM2MC4zMQAAAAAAAAAAAAAAACQCYAAAAAAAAANgUN8OnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAAAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxDsAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxHYAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxLEAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'; }
+      iosSon = true;
+      const p = mudo.play(); if (p && p.catch) p.catch(() => { iosSon = false; });
+    } catch (e) { iosSon = false; }
+  }
+  ['touchend', 'pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, sonIOS, { passive: true, capture: true }));
   B.ac = function () {
+    sonIOS();
     if (!AC) {
       AC = new (window.AudioContext || window.webkitAudioContext)();
       const master = AC.createGain(); master.gain.value = .9;
