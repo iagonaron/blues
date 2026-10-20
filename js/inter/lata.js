@@ -21,7 +21,7 @@
     lata.style.cssText = 'position:absolute;left:50%;top:54%;width:calc(var(--u)*30);height:calc(var(--u)*19.5);transform:translate(-50%,-50%);cursor:pointer';
     /* la lata vieja de galletas, como en la lámina: azul petróleo gastado, adornos dorados, sin letras */
     const flor = (x, y, r) => '<g transform="translate(' + x + ' ' + y + ')" fill="none" stroke="#C9A45C" stroke-width="1.3" opacity=".85"><circle r="' + r + '"/><path d="M0 -' + r * 1.9 + 'Q' + r * .7 + ' 0 0 ' + r * 1.9 + 'Q-' + r * .7 + ' 0 0 -' + r * 1.9 + 'M-' + r * 1.9 + ' 0Q0 ' + r * .7 + ' ' + r * 1.9 + ' 0Q0 -' + r * .7 + ' -' + r * 1.9 + ' 0"/></g>';
-    lata.innerHTML = '<div class="lt-img lt-abierta"></div><div class="lt-img lt-cerrada"></div><div class="tapa lt-tapa"></div>';   // (Iago, 20-oct) la lata pintada (img/inter/lata_*.webp)
+    lata.innerHTML = '<div class="lt-img lt-abierta"></div><div class="lt-img lt-llena"></div><div class="lt-img lt-cerrada"></div><div class="tapa lt-tapa"></div>';   // (ronda 5, Iago) al abrirla se ve llena (billetes, billete de barco, pase y nota) y se vacía al sacarlas   // (Iago, 20-oct) la lata pintada (img/inter/lata_*.webp)
     caja.appendChild(lata);
     await new Promise(res => { lata.addEventListener('click', e => { e.stopPropagation(); res(); }, { once: true }); ctl.alMorir.push(res); });
     if (ctl.muerto) return;
@@ -29,8 +29,11 @@
     lata.classList.add('abierta'); lata.querySelector('.tapa').style.transform = 'translate(-62%, -58%) rotate(-22deg)';
     B.sint.metal(B.ahora() + .05, .9);
     U.suelta(U.rota(op, 'abrir'), ctl, 4);
+    enun.querySelector('.i-enun').textContent = '¿Qué hay dentro?';
+    await B.espera(1.9, ctl);   // (ronda 5) un momento para ver lo que hay dentro antes de sacarlo
+    if (ctl.muerto) return;
     enun.querySelector('.i-enun').textContent = '¿Qué hay dentro? Haz clic en cada cosa.';
-    await B.espera(.7, ctl);
+    lata.classList.add('vaciada');
     lata.style.transition = 'top .8s ease, transform .8s ease'; lata.style.top = '78%'; lata.style.transform = 'translate(-50%,-50%) scale(.7)';
     const fila = B.el('div', ''); fila.style.cssText = 'position:absolute;left:6%;right:6%;top:24%;display:flex;justify-content:center;gap:calc(var(--u)*1.4)';
     caja.appendChild(fila);

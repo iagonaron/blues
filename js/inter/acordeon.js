@@ -9,9 +9,12 @@
     const enun = U.panel(caja, { left: '50%', top: '6%', transform: 'translateX(-50%)', textAlign: 'center' });
     enun.innerHTML = '<div class="i-tit">El acordeón de Xan</div><div class="i-enun">Abre los dos cierres del estuche.</div>';
     const est = B.el('div', ''); est.style.cssText = 'position:absolute;left:50%;top:56%;width:calc(var(--u)*38);height:calc(var(--u)*26.5);transform:translate(-50%,-50%)';   // (Iago, 20-oct) el estuche pintado (img/inter/estuche_*.webp)
-    est.innerHTML = '<div class="caja" style="position:absolute;left:0;right:0;bottom:0;height:54.5%;background:url(img/inter/estuche_caja.webp) center/100% 100% no-repeat;filter:drop-shadow(0 calc(var(--u)*.8) calc(var(--u)*1.6) rgba(0,0,0,.7))"></div>' +
-      '<div class="tapa" style="position:absolute;left:0;right:0;top:0;height:45.5%;background:url(img/inter/estuche_tapa.webp) center/100% 100% no-repeat;transform-origin:top;transition:transform .9s ease;z-index:3"></div>' +
-      [20.5, 79.5].map((x, k) => '<button class="cierre brilla" data-k="' + k + '" style="position:absolute;left:' + x + '%;top:37%;width:calc(var(--u)*4.6);height:calc(var(--u)*5.2);margin-left:calc(var(--u)*-2.3);border-radius:calc(var(--u)*.6);border:0;background:transparent;cursor:pointer;z-index:4;transition:transform .3s"></button>').join('') +
+    est.innerHTML = '<div class="caja" style="position:absolute;left:0;right:0;bottom:0;height:54.5%;background:url(img/inter/d1_estuche_caja.webp) center/100% 100% no-repeat;filter:drop-shadow(0 calc(var(--u)*.8) calc(var(--u)*1.6) rgba(0,0,0,.7))"></div>' +
+      '<div class="tapa" style="position:absolute;left:0;right:0;top:0;height:45.5%;background:url(img/inter/d1_estuche_tapa.webp) center/100% 100% no-repeat;transform-origin:top;transition:transform .9s ease;z-index:3"></div>' +
+      /* (ronda 5, Iago: «al pulsar los cierres, que se vean moverse o levantarse») cada cierre lleva su lengüeta pintada
+         (recortada de la lámina, img/inter/d1_cierre_*.webp) que gira sobre su bisagra y se levanta; debajo queda la grapa */
+      [[21.2, 'izq'], [78.8, 'der']].map(([x, l], k) => '<button class="cierre brilla" data-k="' + k + '" aria-label="Cierre ' + (k + 1) + '" style="position:absolute;left:' + x + '%;top:38.6%;width:calc(var(--u)*4.6);height:calc(var(--u)*5.2);margin-left:calc(var(--u)*-2.3);border-radius:calc(var(--u)*.6);border:0;padding:0;background:transparent;cursor:pointer;z-index:4;transition:opacity .3s">' +
+        '<i class="lengua" style="position:absolute;left:50%;top:calc(var(--u)*.87);width:calc(var(--u)*1.94);height:calc(var(--u)*3.46);margin-left:calc(var(--u)*-.97);background:url(img/inter/d1_cierre_' + l + '.webp) center/100% 100% no-repeat;transform-origin:50% 4%;transition:transform .38s cubic-bezier(.3,1.5,.5,1),filter .38s;filter:drop-shadow(0 calc(var(--u)*.12) calc(var(--u)*.15) rgba(0,0,0,.6))"></i></button>').join('') +
       '<div class="acc" style="position:absolute;left:50%;top:50%;height:66%;width:62%;transform:translate(-50%,-46%);display:none;align-items:stretch;z-index:2;touch-action:none;cursor:ew-resize;filter:drop-shadow(0 calc(var(--u)*.6) calc(var(--u)*1) rgba(0,0,0,.6))">' +
       '<div style="flex:none;width:calc(var(--u)*10.1);background:url(img/inter/acordeon_teclado.webp) right center/contain no-repeat"></div>' +   // (Iago, 20-oct) el acordeón de Xan pintado, por piezas
       '<div class="fuelle" style="flex:1 1 0;min-width:0;background:url(img/inter/acordeon_fuelle.webp) center/100% 92% no-repeat"></div>' +
@@ -19,7 +22,7 @@
     caja.appendChild(est);
     const abiertos = new Set();
     await new Promise(res => {
-      B.$$('.cierre', est).forEach(b => b.addEventListener('click', e => { e.stopPropagation(); b.style.transform = 'translateY(calc(var(--u)*-.8)) rotate(-25deg)'; b.classList.remove('brilla'); abiertos.add(b.dataset.k); (B.buf['sfx/d1/estuche_cierre.mp3'] ? B.suena('sfx/d1/estuche_cierre.mp3', { bus: B.bus.sfx, vol: .9 }) : B.sint.metal(B.ahora(), .35)); if (abiertos.size === 2) res(); }));
+      B.$$('.cierre', est).forEach(b => b.addEventListener('click', e => { e.stopPropagation(); if (abiertos.has(b.dataset.k)) return; const lg = b.querySelector('.lengua'); lg.style.transform = 'perspective(calc(var(--u)*20)) rotateX(-128deg)'; lg.style.filter = 'brightness(.62) drop-shadow(0 calc(var(--u)*-.3) calc(var(--u)*.4) rgba(0,0,0,.6))'; b.classList.remove('brilla'); abiertos.add(b.dataset.k); (B.buf['sfx/d1/estuche_cierre.mp3'] ? B.suena('sfx/d1/estuche_cierre.mp3', { bus: B.bus.sfx, vol: .9 }) : B.sint.metal(B.ahora(), .35)); if (abiertos.size === 2) res(); }));
       ctl.alMorir.push(res);
     });
     if (B.buf['sfx/d1/estuche_abrir.mp3']) B.suena('sfx/d1/estuche_abrir.mp3', { bus: B.bus.sfx, vol: .85 });   // (Iago, 20-oct) sonidos de Splice
