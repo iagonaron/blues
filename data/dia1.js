@@ -674,6 +674,112 @@ BLUES.dia(1, {
      "vol": 0.35
     }
    ],
+   "salpica": {
+    "cada": [
+     3.5,
+     7
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d1/sala_golpe_1.mp3",
+      "vol": [
+       0.121,
+       0.22
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_2.mp3",
+      "vol": [
+       0.11,
+       0.198
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_3.mp3",
+      "vol": [
+       0.099,
+       0.176
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_4.mp3",
+      "vol": [
+       0.11,
+       0.187
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_5.mp3",
+      "vol": [
+       0.066,
+       0.121
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_1.mp3",
+      "vol": [
+       0.154,
+       0.262
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_2.mp3",
+      "vol": [
+       0.154,
+       0.262
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_3.mp3",
+      "vol": [
+       0.139,
+       0.231
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_4.mp3",
+      "vol": [
+       0.044,
+       0.077
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cadena_1.mp3",
+      "vol": [
+       0.123,
+       0.216
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cadena_2.mp3",
+      "vol": [
+       0.108,
+       0.185
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cruje_1.mp3",
+      "vol": [
+       0.108,
+       0.185
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cruje_2.mp3",
+      "vol": [
+       0.092,
+       0.154
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_carbon_1.mp3",
+      "vol": [
+       0.108,
+       0.185
+      ]
+     }
+    ]
+   },
    "espera": 4.2,
    "cam": {
     "de": [
@@ -726,6 +832,112 @@ BLUES.dia(1, {
      "vol": 0.18
     }
    ],
+   "salpica": {
+    "cada": [
+     2.2,
+     5
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d1/sala_golpe_1.mp3",
+      "vol": [
+       0.22,
+       0.4
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_2.mp3",
+      "vol": [
+       0.2,
+       0.36
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_3.mp3",
+      "vol": [
+       0.18,
+       0.32
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_4.mp3",
+      "vol": [
+       0.2,
+       0.34
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_5.mp3",
+      "vol": [
+       0.12,
+       0.22
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_1.mp3",
+      "vol": [
+       0.28,
+       0.476
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_2.mp3",
+      "vol": [
+       0.28,
+       0.476
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_3.mp3",
+      "vol": [
+       0.252,
+       0.42
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_4.mp3",
+      "vol": [
+       0.08,
+       0.14
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cadena_1.mp3",
+      "vol": [
+       0.224,
+       0.392
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cadena_2.mp3",
+      "vol": [
+       0.196,
+       0.336
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cruje_1.mp3",
+      "vol": [
+       0.196,
+       0.336
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cruje_2.mp3",
+      "vol": [
+       0.168,
+       0.28
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_carbon_1.mp3",
+      "vol": [
+       0.196,
+       0.336
+      ]
+     }
+    ]
+   },
    "hechos": [
     "h5",
     "h35",
@@ -1048,6 +1260,112 @@ BLUES.dia(1, {
      "vol": 0.28
     }
    ],
+   "salpica": {
+    "cada": [
+     3,
+     6.5
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d1/sala_golpe_1.mp3",
+      "vol": [
+       0.165,
+       0.3
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_2.mp3",
+      "vol": [
+       0.15,
+       0.27
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_3.mp3",
+      "vol": [
+       0.135,
+       0.24
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_4.mp3",
+      "vol": [
+       0.15,
+       0.255
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_golpe_5.mp3",
+      "vol": [
+       0.09,
+       0.165
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_1.mp3",
+      "vol": [
+       0.21,
+       0.357
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_2.mp3",
+      "vol": [
+       0.21,
+       0.357
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_3.mp3",
+      "vol": [
+       0.189,
+       0.315
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_valvula_4.mp3",
+      "vol": [
+       0.06,
+       0.105
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cadena_1.mp3",
+      "vol": [
+       0.168,
+       0.294
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cadena_2.mp3",
+      "vol": [
+       0.147,
+       0.252
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cruje_1.mp3",
+      "vol": [
+       0.147,
+       0.252
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_cruje_2.mp3",
+      "vol": [
+       0.126,
+       0.21
+      ]
+     },
+     {
+      "src": "sfx/d1/sala_carbon_1.mp3",
+      "vol": [
+       0.147,
+       0.252
+      ]
+     }
+    ]
+   },
    "hechos": [
     "h7",
     "h8",
