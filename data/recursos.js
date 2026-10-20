@@ -1,6 +1,12 @@
 /* BLUES · recursos que existen comunes (lo genera herramientas/inventario.mjs; NO editar a mano).
    Ruta → bytes. Lo que no esté aquí se da por ausente y se usa un provisional. */
 BLUES.RECURSOS = Object.assign(BLUES.RECURSOS || {}, {
+  "banda/Bb/acordeon_huecos.mp3": 603006,
+  "banda/Bb/acordeon_tema.mp3": 603006,
+  "banda/F/acordeon_huecos.mp3": 603006,
+  "banda/F/acordeon_tema.mp3": 603006,
+  "banda/G/acordeon_huecos.mp3": 603006,
+  "banda/G/acordeon_tema.mp3": 603006,
   "img/inter/acordeon_bajos.webp": 102050,
   "img/inter/acordeon_fuelle.webp": 102294,
   "img/inter/acordeon_teclado.webp": 90094,
