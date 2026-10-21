@@ -39,22 +39,27 @@ BLUES.dia(2, {
  "planos": [
   {
    "id": "P2.0",
-   "desc": "Título: el tren cruza el Sur entre campos de algodón.",
+   "desc": "Título: el tren de vapor llega a la estación de Nueva Orleans y sale de plano (vídeo de 8 s); queda el andén vacío, con vapor en el aire.",
    "img": "img/d2/p2_0.webp",
    "pal": "ocre",
    "amb": [
     {
-     "src": "sfx/d2/tren.mp3",
-     "vol": 0.5
+     "src": "sfx/d2/estacion.mp3",
+     "vol": 0.45
     },
     {
-     "src": "sfx/d2/tren_marcha.mp3",
-     "vol": 0.22
+     "src": "sfx/d2/tren.mp3",
+     "vol": 0.12
     }
    ],
    "lineas": [],
    "nombre": "Título",
-   "titulo": true
+   "titulo": true,
+   "video": {
+    "src": "img/d2/p2_0_tren.mp4",
+    "sonido": "sfx/d2/tren_llega.mp3",
+    "vol": 0.9
+   }
   },
   {
    "id": "P2.1",
@@ -733,7 +738,7 @@ BLUES.dia(2, {
        {
         "id": "d2_038",
         "quien": "XAN",
-        "texto": "Iguales. Ta-ta, ta-ta.",
+        "texto": "Iguales. Todas iguales.",
         "voz": "voz/d2/d2_038.mp3"
        },
        {
@@ -1527,7 +1532,7 @@ BLUES.dia(2, {
      "quien": "XAN",
      "texto": "Avoa… si vieras esto. Edificios más altos que la Torre de Hércules… ¡y en fila!",
      "voz": "voz/d2/d2_069.mp3",
-     "var": "XAN_CERCA"
+     "var": "RECURSO_SKYLINE"
     },
     {
      "id": "d2_070",

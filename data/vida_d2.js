@@ -5,8 +5,8 @@ window.BLUES.VIDA = Object.assign(window.BLUES.VIDA || {}, {
   /* acto 2 · estación de Nueva Orleans: lámparas, humo de la locomotora del fondo, reflejos en el andén mojado */
   /* (Iago, 20-oct 13:55: «anima el humo del tren… humo negro por encima y algo en el cielo; vida en los fondos, partículas, nubes sutiles») */
   /* (Iago, 14:28) el tren mira a la IZQUIERDA (lámina volteada) para que la carta, a la derecha, no tape la locomotora: el humo corre hacia la derecha */
-  'P2.0': [{ t: 'humo', x: .155, y: .5, w: .028, dir: [1, -.35], vel: .05, dens: 1.6, alfa: .5, color: 'oscuro' }, { t: 'humo', x: .165, y: .49, w: .02, dir: [1, -.5], vel: .035, dens: 1, alfa: .3, color: 'oscuro' },
-           { t: 'bruma', zona: [0, 0, 1, .38], alfa: 0.08, n: 6 }, { t: 'luz', x: .8, y: .5, r: .05, k: .55 }, { t: 'polvo', n: 20, zona: [.4, .35, .95, .8] }],
+  'P2.0': [{ t: 'bruma', zona: [.3, .08, 1, .8], alfa: 0.06, n: 7 }, { t: 'bruma', zona: [0, .55, 1, 1], alfa: 0.03, n: 4 }, { t: 'polvo', n: 26, zona: [.42, .18, .96, .75] },   // (21-oct) estación vacía tras pasar el tren: vapor y polvo en la luz
+           { t: 'luz', x: .865, y: .27, r: .022, k: .8 }, { t: 'luz', x: .75, y: .355, r: .016, k: .7 }, { t: 'luz', x: .695, y: .405, r: .012, k: .6 }],
   'P2.1': [{ t: 'bruma', zona: [0, .05, 1, .7], alfa: 0.03 }, { t: 'luz', x: .062, y: .115, r: .02, k: .9 }, { t: 'luz', x: .243, y: .14, r: .02, k: .9 }, { t: 'luz', x: .445, y: .09, r: .018, k: .8 },
            { t: 'humo', x: .565, y: .06, w: .03, dir: [.25, -1], vel: .04, dens: 1.4, alfa: .38, color: 'oscuro' }, { t: 'bruma', zona: [.3, 0, .75, .25], alfa: 0.06, n: 4 }, { t: 'brillos', zona: [.28, .72, .62, .98], n: 4 }],
   /* el vagón de equipajes (P2.2–P2.6): traqueteo, sombras de postes, farol que se balancea, polvo en la luz */
