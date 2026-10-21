@@ -5,6 +5,14 @@
   const U = B.iu;
   const VOZ = 'voz/d4/john_cilindro.mp3';
   const LINEA = { quien: 'JOHN', texto: 'Meu neno Xan… si estás oyendo esto, es que has venido. Este blues es tuyo.' };   // (solo si faltan las líneas del guion; John habla castellano)
+  /* (Iago, 21-oct 19:31) «hay que recrear el sonido del fonógrafo»: la guitarra de John entra al cilindro un poco saturada
+     (las voces de John ya vienen con menos graves y algo de distorsión en sus mp3; el chisporroteo es sfx/d4/cilindro.mp3) */
+  const sucio = dest => {
+    const C = B.ac(), pre = C.createGain(), sh = C.createWaveShaper(), post = C.createGain(), n = 1024, cur = new Float32Array(n);
+    for (let i = 0; i < n; i++) { const x = i * 2 / n - 1; cur[i] = Math.tanh(2.6 * x) / Math.tanh(2.6); }
+    sh.curve = cur; pre.gain.value = 2.2; post.gain.value = .5; pre.connect(sh); sh.connect(post); post.connect(dest);
+    return pre;
+  };
   B.inter.fonografo = async function (caja, op) {
     const ctl = op.ctl;
     U.fondo(caja);
@@ -68,8 +76,8 @@
       /* el guion trae las líneas de John (despues, "cilindro": true): suenan por el mismo cilindro, con su guitarra debajo */
       const cil = B.motor.cilindro();
       { const ci = f.querySelector('.cil'); if (ci) ci.classList.add('brilla'); }
-      const t0 = B.ahora() + .6, p = .62;
-      B.TEMA.slice(0, 4).forEach((cp, i) => cp.forEach(e => { if (e.n) B.inst.toca('guitarra', e.n.midi - 12, { t: t0 + (i * 4 + Math.floor(e.t) + (e.t % 1 ? .67 : 0)) * p, dur: e.dur * p, vel: .45, dest: cil.entrada }); }));
+      const t0 = B.ahora() + .6, p = .62, gtr = sucio(cil.entrada);
+      B.TEMA.slice(0, 4).forEach((cp, i) => cp.forEach(e => { if (e.n) B.inst.toca('guitarra', e.n.midi - 12, { t: t0 + (i * 4 + Math.floor(e.t) + (e.t % 1 ? .67 : 0)) * p, dur: e.dur * p, vel: .45, dest: gtr }); }));
       /* (Iago, 20-oct) el chisporroteo del cilindro se calla cuando se acaba la voz de John: en cuanto el motor va a decir
          la primera frase SIN cilindro (Eli: «Ahí se acaba…»), se para el cilindro. Se envuelve B.motor.di solo mientras dura este plano. */
       const di = B.motor.di; let hubo = false;
@@ -88,8 +96,8 @@
     const cil = B.sint.cilindro(); ctl.alMorir.push(() => cil.parar());
     { const ci = f.querySelector('.cil'); if (ci) ci.classList.add('brilla'); }
     /* la guitarra de John (provisional: los primeros compases del tema) */
-    const t0 = B.ahora() + 1.2, p = .62;
-    B.TEMA.slice(0, 2).forEach((cp, i) => cp.forEach(e => { if (e.n) B.inst.toca('guitarra', e.n.midi - 12, { t: t0 + 3 + (i * 4 + Math.floor(e.t) + (e.t % 1 ? .67 : 0)) * p, dur: e.dur * p, vel: .8, dest: cil.entrada }); }));
+    const t0 = B.ahora() + 1.2, p = .62, gtr = sucio(cil.entrada);
+    B.TEMA.slice(0, 2).forEach((cp, i) => cp.forEach(e => { if (e.n) B.inst.toca('guitarra', e.n.midi - 12, { t: t0 + 3 + (i * 4 + Math.floor(e.t) + (e.t % 1 ? .67 : 0)) * p, dur: e.dur * p, vel: .8, dest: gtr }); }));
     if (B.buf[VOZ]) B.suena(VOZ, { bus: cil.entrada, t: t0 });
     await B.espera(1.2, ctl);
     await U.di(Object.assign({ voz: null }, LINEA), ctl);

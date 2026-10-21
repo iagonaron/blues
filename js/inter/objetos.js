@@ -20,6 +20,11 @@
   const SIN_GUION = ['foto1', 'acordeon', 'papeles'];
   B.inter.objetos = async function (caja, op) {
     const ctl = op.ctl;
+    /* (Iago, 21-oct 19:29) sin velo oscuro en esta interacción: la casa y los primeros planos de los objetos, con su luz */
+    const velo = document.getElementById('velo'), veloAntes = velo ? velo.style.background : '';
+    const quitaVelo = () => { if (velo) velo.style.background = veloAntes; };
+    if (velo) velo.style.background = 'transparent'; ctl.alMorir.push(quitaVelo);
+    const calla = () => { const st = document.getElementById('subt'); if (st) st.classList.remove('on'); };   // la frase (abajo) se va al volver a la casa
     const claves = op.lineas ? Object.keys(op.lineas).filter(k => k !== 'fin') : SIN_GUION;
     const lista = op.objetos || claves.map((k, i) => Object.assign({ k, t: k, x: 12 + (i * 13) % 76, y: 30 + (i % 3) * 18 }, OBJ[k] || {}, { k }));
     const enun = U.panel(caja, { left: '3%', bottom: 'calc(var(--u)*10.8)', textAlign: 'left', maxWidth: '40%' });   // (C4) abajo a la izquierda, sobre la tira: ni caras ni fotos de la pared
@@ -61,7 +66,7 @@
         if (o.hecho) B.motor.abreHecho(o.hecho);
         z.style.background = 'transparent';
         vistos.add(o.k); mk[i].classList.add('ok'); marca(z, ch, true);
-        tapa(true); ocupado = false;
+        calla(); tapa(true); ocupado = false;
         if (vistos.size === lista.length) resolver();
       };
       z.addEventListener('click', toca); ch.addEventListener('click', toca);
@@ -71,7 +76,9 @@
     tapa(false);   // vistos todos: fuera bordes, tira y enunciado antes de la última frase
     if (!await U.dice(op, 'fin', ctl)) return;
     await U.seguir(caja, ctl, 'Seguir');
+    quitaVelo();
   };
+  B.inter.objetos.subtAbajo = true;   // (Iago, 21-oct 19:29) el texto, abajo (ronda 6 del motor)
   B.inter.objetos.OBJ = OBJ;
   B.inter.objetos.voces = Object.keys(OBJ).filter(k => OBJ[k].l).map(k => OBJ[k].l);
   B.inter.objetos.claves = '*';      // cualquier clave = un objeto (más «fin»)

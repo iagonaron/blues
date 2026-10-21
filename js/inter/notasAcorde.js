@@ -16,12 +16,14 @@
     const pcs = { G7: [7, 11, 2, 5], C7: [7, 10, 0, 4], D7: [6, 9, 0, 2] };
     let fin = false;
     const izq = B.el('div', 'i-pie-izq'); caja.appendChild(izq); const pips = U.pips(izq);
+    const quitaBanda = B.c4banda ? B.c4banda(ctl) : () => { };   // (Iago, 21-oct) claqueta a mayores, guitarra de Eli más alta, sin acorde final (js/inter/hito.js)
     B.banda.tocar({ ton: 'G', claqueta: true, vueltas: 1, pistas: { guitarra: 'base' },
       alEntrada: k => pips.k(k),
       alCompas: i => { rej.marca(i); const a = B.ACORDES[i]; tec.marcaClases(pcs[a], 'obj'); ac.textContent = a + ': ' + B.NOTAS_ACORDE[a].map(t => B.nombre(B.notaDe(t).midi)).join(' · '); },
       alFin: () => { fin = true; } });
     ctl.alMorir.push(() => B.banda.parar());
     while (!fin && !ctl.muerto) await B.espera(.1, ctl);
+    quitaBanda();
     if (ctl.muerto) return;
     tec.limpia(); rej.marca(-1);
     ac.textContent = pulsadas ? '¡Suena bien! (' + pulsadas + ' notas)' : '¡Suena bien! La próxima vez, prueba a tocar tú también.';
