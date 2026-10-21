@@ -277,12 +277,14 @@ window.BLUES = window.BLUES || {};
     paqHechos.add(paq);
   }
   B.existe = r => !!(r && (tiene(B.RECURSOS, r) || enPaq(r)));
-  B.esAudio = r => /\.(mp3|ogg|opus|wav|m4a|webm)$/i.test(r);
+  B.esAudio = r => /\.(mp3|ogg|opus|wav|m4a)$/i.test(r);   // (21-oct) .webm es vídeo (la portada), ya no audio
   B.esImagen = r => /\.(webp|jpe?g|png|avif|gif)$/i.test(r);
+  B.esVideo = r => /\.(mp4|m4v|webm)$/i.test(r);   // (21-oct) vídeos (la portada): se bajan enteros y se sirven desde la memoria
+  B.vid = B.vid || {};
   B.precarga = async function (rutas, alProgreso) {
     const lista = Array.from(new Set(rutas.filter(Boolean)));
     const paqs = new Set(lista.filter(r => !B.buf[r] && enPaq(r)).map(r => enPaq(r)[0]).filter(p => !paqHechos.has(p)));
-    const hay = lista.filter(r => !enPaq(r) && B.existe(r) && !B.buf[r] && !B.img[r]).concat(Array.from(paqs));
+    const hay = lista.filter(r => !enPaq(r) && B.existe(r) && !B.buf[r] && !B.img[r] && !B.vid[r]).concat(Array.from(paqs));
     const total = hay.reduce((a, r) => a + (B.RECURSOS[r] || 0), 0);
     let hecho = 0; const enCurso = {}; let turno = Promise.resolve();
     const avisa = () => { const parcial = Object.values(enCurso).reduce((a, b) => a + b, 0); alProgreso && alProgreso({ bytes: hecho + parcial, total, ficheros: hay.length, faltan: lista.filter(r => !B.existe(r) && !B.buf[r] && !B.img[r]).length }); };
@@ -305,6 +307,8 @@ window.BLUES = window.BLUES || {};
         } else if (B.esAudio(r)) {
           const ab = await datos.arrayBuffer();
           B.buf[r] = await new Promise((ok, mal) => B.ac().decodeAudioData(ab, ok, mal));
+        } else if (B.esVideo(r)) {
+          B.vid[r] = URL.createObjectURL(datos);
         } else if (B.esImagen(r)) {
           const url = URL.createObjectURL(datos);
           const im = new Image(); im.src = url;

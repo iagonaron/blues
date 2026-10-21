@@ -113,8 +113,47 @@
     escena.addEventListener('contextmenu', e => { if (!(e.target && /^(input|textarea|select)$/i.test(e.target.tagName))) e.preventDefault(); });
     escena.addEventListener('selectstart', e => { if (!(e.target && /^(input|textarea)$/i.test(e.target.tagName))) e.preventDefault(); });
     escena.classList.remove('arrancando');
-    M.portada();
+    preparaPortada().then(() => M.portada());
   };
+  /* (21-oct, Iago: «un vídeo de barco para la portada… mi pantalla del aula es limitada: que cargue ANTES de entrar en la
+     portada… y el sonido coherente: mar, gaviotas, barco») el vídeo (de C2, Runway: Coruña → Nueva York → Coruña, día y noche, en
+     bucle) se baja entero con una barra de carga y se sirve desde la memoria; mientras, nada. Sirve también de fondo de la carta
+     del acto 1 (P1.0, «video» en data/dia1.js), que sigue en el mismo punto del bucle. */
+  /* WebM (VP9, 3,9 MB) donde se pueda, que carga en la mitad de tiempo; si no, el MP4 (H.264, 8,2 MB) */
+  const vpx = (() => { try { const v = document.createElement('video'); return !!(v.canPlayType && v.canPlayType('video/webm; codecs="vp9"')); } catch (e) { return false; } })();
+  const PORT = { get video() { return (vpx && B.existe('img/portada/fondo_bucle.webm')) ? 'img/portada/fondo_bucle.webm' : 'img/portada/fondo_bucle.mp4'; }, poster: 'img/portada/fondo_poster.webp',
+    amb: [{ src: 'sfx/d1/mar_gaviotas.mp3', vol: .42 }, { src: 'sfx/d1/gaviotas_coruna.mp3', vol: .3 }, { src: 'sfx/d1/motor_lejos.mp3', vol: .32 }], sirena: 'sfx/d1/sirena_vapor.mp3' };
+  M.PORT = PORT;
+  async function preparaPortada() {
+    const rutas = [PORT.poster, PORT.video].filter(r => B.existe(r) && !B.vid[r] && !B.img[r]);
+    if (!rutas.length) return;
+    escena.classList.add('precargando');
+    const pc = $('#precarga');
+    pc.innerHTML = '<div class="pc-caja"><div class="pc-dia">A CORUÑA · NUEVA YORK · 1928</div><div class="pc-tit">Blues</div>' +
+      '<div class="pc-barra"><i></i></div><div class="pc-mb">Preparando…</div><div class="pc-det"></div></div>';
+    await B.precarga(rutas, pr => {
+      const pct = pr.total ? pr.bytes / pr.total : 1;
+      $('.pc-barra i', pc).style.width = Math.round(pct * 100) + '%';
+      $('.pc-mb', pc).textContent = pr.total ? B.fmtMB(pr.bytes) + ' de ' + B.fmtMB(pr.total) : '';
+    });
+    escena.classList.remove('precargando');
+  }
+  /* el vídeo del barco en un contenedor (portada o plano), en el punto del bucle donde se quedó */
+  M._tBarco = 0;
+  function videoBarco(cls) {
+    const url = B.vid[PORT.video]; if (!url) return null;
+    const v = document.createElement('video');
+    v.className = cls; v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
+    if (B.img[PORT.poster]) v.poster = B.img[PORT.poster];
+    v.src = url;
+    const t = M._tBarco || 0;
+    v.addEventListener('loadedmetadata', () => { try { v.currentTime = t % (v.duration || 38); } catch (e) { } }, { once: true });
+    v.addEventListener('timeupdate', () => { M._tBarco = v.currentTime; });
+    const pl = v.play(); if (pl && pl.catch) pl.catch(() => { });
+    return v;
+  }
+  M.videoBarco = videoBarco;
+  B.alPausar.push(on => B.$$('video', escena).forEach(v => { try { if (on) v.pause(); else { const pl = v.play(); if (pl && pl.catch) pl.catch(() => { }); } } catch (e) { } }));
 
   /* ══════════ teclado del ordenador ══════════ */
   function teclas() {
@@ -225,6 +264,7 @@
     } else h += '<span class="port-nota">Elige un acto · Espacio para seguir · P pausa · F pantalla completa</span>';
     h += '</div>';
     p.innerHTML = h;
+    const vb = videoBarco('port-vid'); if (vb) p.querySelector('.port-fondo').appendChild(vb);
     B.$$('.billete', p).forEach(b => b.addEventListener('click', () => {
       B.ac(); const n = +b.dataset.dia;
       if (!HIT.abierto(n)) { M.aviso('El acto ' + n + ' se abre al acabar la clase en que lo veáis.', 3.2); return; }
@@ -241,18 +281,26 @@
     }
     const c = $('#continuar', p);
     if (c) c.addEventListener('click', () => { B.ac(); const u = B.progreso.leer().ultimo; M.empezarDia(u.dia, u.plano || 0); });
-    /* ambiente suave de portada, al primer clic */
-    const amb = () => {
-      p.removeEventListener('pointerdown', amb);
-      B.ac();
-      if (!escena.classList.contains('en-portada')) return;
-      if (B.existe('mus/portada.mp3')) B.precarga(['mus/portada.mp3']).then(() => { if (escena.classList.contains('en-portada')) B.musica({ src: 'mus/portada.mp3', vol: .5, bucle: true }); });
-      else if (B.sint && !M._crepita) M._crepita = B.sint.crepitar(.5);
-    };
-    p.addEventListener('pointerdown', amb);
-    if (B.hayAudio() && !M._crepita && B.sint && !B.existe('mus/portada.mp3')) M._crepita = B.sint.crepitar(.5);
+    /* (21-oct, Iago) el sonido de la portada, coherente con el vídeo: mar, gaviotas y la máquina del vapor; de vez en cuando, su
+       sirena. Suena al primer clic o tecla (el navegador no deja sonar antes); los sonidos se bajan mientras se mira la portada */
+    const rutasAmb = PORT.amb.map(a => a.src).concat(PORT.sirena).filter(r => B.existe(r));
+    const listos = B.precarga(rutasAmb);
+    const enPort = () => escena.classList.contains('en-portada');
+    const suenaMar = () => listos.then(() => {
+      if (!enPort()) return;
+      B.ambiente(PORT.amb);
+      clearTimeout(M._sirena);
+      const sirena = () => { if (!enPort()) return; if (B.buf[PORT.sirena] && !B.pausado) B.suena(PORT.sirena, { bus: B.bus.amb, vol: .28, pan: .35 }); M._sirena = setTimeout(sirena, 26000 + Math.random() * 24000); };
+      M._sirena = setTimeout(sirena, 7000 + Math.random() * 6000);
+    });
+    const amb = () => { p.removeEventListener('pointerdown', amb); removeEventListener('keydown', amb); B.ac(); suenaMar(); };
+    p.addEventListener('pointerdown', amb); addEventListener('keydown', amb, { once: true });
+    if (B.hayAudio()) suenaMar();
   };
-  function paraPortada() { if (M._crepita) { M._crepita.parar(); M._crepita = null; } B.musica(null); }
+  function paraPortada() {
+    if (M._crepita) { M._crepita.parar(); M._crepita = null; }
+    clearTimeout(M._sirena); B.musica(null);   // el mar sigue sonando durante la precarga del acto: lo cambia su primer plano
+  }
 
   /* ══════════ empezar un día: precarga y primer plano ══════════ */
   let directoA = -1;   // (punto 54) plano en el que se entra directo a la interacción (sin intro ni frases)
@@ -302,7 +350,8 @@
       Object.keys(p.var || {}).forEach(q => r.push(rutaVar(p, q)));
       B.arr(p.amb).forEach(a => r.push(a.src));
       if (p.mus) r.push(p.mus.src);
-      if (p.salpica) B.arr(p.salpica.sonidos).forEach(x => x && r.push(x.src));   // (ronda 6) sonidos sueltos del plano
+      if (p.salpica) B.arr(p.salpica.sonidos).forEach(x => x && r.push(x.src));
+      if (p.video) r.push(/fondo_bucle\./.test(p.video) ? PORT.video : p.video);   // (21-oct) normalmente ya está en memoria desde la portada   // (ronda 6) sonidos sueltos del plano
       if (p.mapa) { if (p.mapa.silbato) r.push(p.mapa.silbato); if (p.mapa.musA) r.push(p.mapa.musA.src); B.arr(p.mapa.sfx).forEach(s => s && r.push(s.src)); if (p.mapa.icono) r.push(resImg(p.mapa.icono)); }
       B.arr(p.lineas).concat(B.arr(p.despues)).forEach(l => { r.push(l.voz); B.arr(l.sfx).forEach(s => r.push(s.src)); });
       B.arr(p.inter).forEach(it => {
@@ -447,7 +496,9 @@
     const kbEl = B.el('div', 'kb');
     el.appendChild(kbEl);
     const rM = rutaImg(p);
-    if (B.img[rM]) {
+    const vp = p.video && /fondo_bucle\./.test(p.video) ? videoBarco('lam maestra vid') : null;   // (21-oct) el barco de la portada
+    if (vp) kbEl.appendChild(vp);
+    else if (B.img[rM]) {
       const im = B.el('img', 'lam maestra'); im.src = B.img[rM]; im.alt = p.desc || p.id; im.draggable = false; kbEl.appendChild(im);
       Object.keys(p.var || {}).forEach(q => {
         const r = rutaVar(p, q);
@@ -455,7 +506,7 @@
       });
     } else kbEl.appendChild(provisional(p, rM));
     pelicula.appendChild(el);
-    if (B.vida && B.VIDA) B.vida.pon(el, B.VIDA[p.id]);   // (Iago, 19-oct) fuego, luces, humo, pájaros… (js/vida.js + data/vida.js)
+    if (B.vida && B.VIDA && !vp) B.vida.pon(el, B.VIDA[p.id]);   // con el vídeo, la vida de la lámina no casa: fuera   // (Iago, 19-oct) fuego, luces, humo, pájaros… (js/vida.js + data/vida.js)
     void el.offsetWidth; el.classList.add('on');
     if (viejo) { viejo.classList.remove('on'); setTimeout(() => viejo.remove(), 1000); }
     planoEl = el; el._kb = kbEl;
