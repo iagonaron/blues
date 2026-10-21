@@ -9,7 +9,7 @@ window.BLUES.VIDA = Object.assign(window.BLUES.VIDA || {}, {
            { t: 'polvo', n: 14, zona: [.55, .15, 1, .8] }],
   'P1.2': [{ t: 'bruma', zona: [0, 0, .5, .7], alfa: .04 }, { t: 'fuego', x: .02, y: .38, r: .16, k: .8 }, { t: 'luz', x: .923, y: .6, r: .05, k: 1.15 },
            { t: 'polvo', n: 12, zona: [.6, .25, 1, .9] }],
-  'P1.3': [{ t: 'bruma', zona: [0, .15, 1, .8], alfa: .055 }, { t: 'humo', x: .36, y: .05, w: .04, dir: [.35, -1], dens: .7, alfa: .26 }, { t: 'sinpajaros', zona: [.46, .01, 1, .09], n: 2, tam: .008 }],
+  'P1.3': [{ t: 'bruma', zona: [0, .15, 1, .8], alfa: .055 }, { t: 'humo', x: .64, y: .05, w: .04, dir: [-.35, -1], dens: .7, alfa: .26 }, { t: 'sinpajaros', zona: [0, .01, .54, .09], n: 2, tam: .008 }],   // (21-oct, Iago) lámina volteada: el barco a la derecha, como en los planos siguientes
   'P1.4': [{ t: 'bruma', zona: [0, .15, 1, .8], alfa: .055 }, { t: 'humo', x: .565, y: .1, w: .05, dir: [.25, -1], dens: .9, color: 'oscuro', alfa: .3 }, { t: 'sinpajaros', zona: [0, .01, .42, .08], n: 2, tam: .008 }],
   'P1.4b': [{ t: 'bruma', zona: [0, .1, 1, .8], alfa: .055 }, { t: 'sinpajaros', zona: [0, 0, .35, .12], n: 3, tam: .009 }, { t: 'humo', x: .32, y: .03, w: .03, dir: [.3, -1], dens: .7, color: 'oscuro', alfa: .3 }],
   'P1.4c': [{ t: 'bruma', zona: [0, 0, 1, 1], alfa: .06, color: 'oscuro' }, { t: 'sinvapor', x: .6, y: .5, dir: [0, -1], cada: 4 }, { t: 'luz', x: .6, y: .52, r: .06, k: 1.1, tint: 1.5 }, { t: 'polvo', n: 10, tono: 'brasa', zona: [.5, .3, .72, .7] }],
