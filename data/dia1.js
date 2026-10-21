@@ -41,6 +41,7 @@ BLUES.dia(1, {
    "id": "P1.0",
    "desc": "La Torre de Hércules y las galerías de la Marina al atardecer; mar picado, gaviotas.",
    "img": "img/d1/p1_0.webp",
+   "video": "img/portada/fondo_bucle.mp4",
    "pal": "atlantico",
    "amb": [
     {
@@ -54,6 +55,10 @@ BLUES.dia(1, {
     {
      "src": "sfx/d1/viento.mp3",
      "vol": 0.3
+    },
+    {
+     "src": "sfx/d1/motor_lejos.mp3",
+     "vol": 0.28
     }
    ],
    "mus": {
