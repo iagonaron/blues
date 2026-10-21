@@ -712,3 +712,13 @@ a{color:var(--oro-hi)}
 .cal-boca-toque.activa,.cal-boca-toque.cal-objetivo{outline:none;border-color:#F0D696;box-shadow:0 0 calc(var(--u)*1) rgba(240,214,150,.7),inset 0 0 calc(var(--u)*.8) rgba(240,214,150,.35)}
 .cal-boca-toque.ok{border-color:#9be38a;box-shadow:0 0 calc(var(--u)*1) rgba(155,227,138,.7)}
 .cal-boca-toque.mal{border-color:#c9534f;box-shadow:0 0 calc(var(--u)*.9) rgba(201,83,79,.7)}
+/* (21-oct) portada en vídeo (el barco Coruña → Nueva York → Coruña, de día y de noche): el póster mientras arranca; el vídeo
+   algo ampliado y anclado abajo para que el horizonte y el barco queden por encima de los billetes */
+.port-fondo{background:url(../img/portada/fondo_poster.webp) center bottom/cover no-repeat}
+.port-fondo video,.lam.vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.port-fondo video{transform-origin:50% 100%;transform:scale(var(--port-zoom,1))}
+/* el vídeo es de día y claro: el barco por encima de los billetes (algo ampliado y anclado abajo) y más sombra arriba para leer
+   el año y la línea de la unidad; la franja del horizonte, limpia */
+.port-fondo{--port-zoom:1.1}
+.port-fondo::after{background:linear-gradient(180deg,rgba(6,5,9,.7) 0%,rgba(6,5,9,.46) 20%,rgba(6,5,9,.28) 33%,rgba(6,5,9,.06) 42%,rgba(6,5,9,.1) 50%,rgba(6,5,9,.42) 66%,rgba(6,5,9,.78) 100%)}
+.port-ano,.port-sub{text-shadow:0 0 calc(var(--u)*.6) rgba(0,0,0,.9),0 1px 2px #000}
