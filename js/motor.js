@@ -936,6 +936,9 @@
     $('.p-firma', cartaBox).classList.add('on');
     if (!saltado) await esperaSaltable(2.2, c); else await B.espera(.6, c);
     if (c.muerto) return;
+    /* (21-oct, Iago) «carta.funde»: la carta NO se retira al acabar; se va con el plano, fundiéndose con el siguiente (en el acto 1,
+       así no se ve al barco volviendo a Coruña, que la carta tapaba). La quita limpiaPlano al cambiar de plano, con su fundido. */
+    if (ca.funde) return;
     cartaBox.classList.remove('on'); escena.classList.remove('con-carta');
     await B.espera(.7, c);
   }
