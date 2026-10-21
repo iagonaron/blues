@@ -34,30 +34,28 @@ window.BLUES.VIDA = Object.assign(window.BLUES.VIDA || {}, {
   'P4.12i': [{ t: 'bruma', zona: [0, .1, 1, .95], alfa: 0.035 }, { t: 'fuego', x: .03, y: .65, r: .08, k: 1, chispas: 4 }, { t: 'luz', x: .965, y: .5, r: .03, k: 1.1 }, { t: 'lluvia', n: 40, zona: [.78, 0, .98, .28], alfa: .25 }],
 });
 
-/* (C4, 20-oct; Iago: «que a través de las ventanas se produzca ese movimiento, para que dé la sensación de que el tren se mueve»)
-   PAISAJE QUE PASA por las ventanas del tren: la lámina p4_1 lleva las ventanas transparentes (alfa) y por detrás corre, en bucle,
-   una vista larga de los tejados de Brooklyn. Efecto { t: 'paisaje', src, alto (fracción del alto del plano), dur (s por vuelta), blur (px) }.
-   Envuelve B.vida.pon sin tocar js/vida.js (común). Si C1 lo quiere para otros actos, puede pasarlo tal cual a vida.js. */
+/* (C4, 21-oct; Iago, 19:25) sin paisaje en movimiento por las ventanas del tren («se ve recortado»): basta el traqueteo del vagón.
+   (Iago, 20-oct 15:18) en la cocina (la vuelta) la lluvia de la ventana se veía por dentro: fuera la lluvia de todos los planos P4.12… */
 (function (B) {
-  const V = B.vida; if (!V || V._paisajeC4) return; V._paisajeC4 = true;
-  const pon = V.pon, vivos = new Set();
-  const limpia = () => vivos.forEach(a => { const t = a.effect && a.effect.target; if (!t || !t.isConnected) { try { a.cancel(); } catch (e) { } vivos.delete(a); } });
-  V.pon = function (el, cfg) {
-    pon.apply(this, arguments);
-    const o = (cfg || []).find(x => x && x.t === 'paisaje'); if (!o || !el) return;
-    limpia();
-    const kb = el.querySelector('.kb') || el, r = (B.motor && B.motor.resImg) ? B.motor.resImg(o.src) : o.src;
-    const url = (B.img && (B.img[r] || B.img[o.src])) || r;
-    const caja = document.createElement('div'); caja.className = 'c4-paisaje';
-    caja.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:' + ((o.alto || .6) * 100) + '%;overflow:hidden;pointer-events:none' + (o.blur ? ';filter:blur(' + o.blur + 'px)' : '');
-    const cinta = document.createElement('div'); cinta.style.cssText = 'position:absolute;left:0;top:0;height:100%;display:flex;will-change:transform';
-    for (let i = 0; i < 2; i++) { const im = document.createElement('img'); im.src = url; im.alt = ''; im.draggable = false; im.style.cssText = 'height:100%;width:auto;max-width:none;display:block;flex:none'; cinta.appendChild(im); }
-    caja.appendChild(cinta); kb.insertBefore(caja, kb.firstChild);
-    const an = cinta.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: (o.dur || 18) * 1000, iterations: Infinity });
-    if (B.pausado) an.pause(); vivos.add(an);
-  };
-  (B.alPausar = B.alPausar || []).push(on => { limpia(); vivos.forEach(a => { try { on ? a.pause() : a.play(); } catch (e) { } }); });
-  /* (Iago, 15:18) en la cocina (la vuelta) la lluvia de la ventana se veía por dentro: fuera la lluvia de todos los planos P4.12… */
   Object.keys(B.VIDA).forEach(k => { if (/^P4\.12/.test(k)) B.VIDA[k] = B.VIDA[k].filter(o => o.t !== 'lluvia'); });
-  B.VIDA['P4.1'] = (B.VIDA['P4.1'] || []).concat([{ t: 'paisaje', src: 'img/d4/p4_1_paisaje.webp', alto: .6, dur: 18, blur: 0 }]);
+  /* (Iago, 21-oct 19:33) vida TAMBIÉN en un primer plano: { t: 'enCorte', q: '<variante>', fx: [efectos] } pinta esos efectos solo
+     mientras se ve esa lámina (el motor apaga la vida del plano general en los cortes). Envuelve B.vida.pon sin tocar js/vida.js. */
+  const V = B.vida;
+  if (V && !V._corteC4) {
+    V._corteC4 = true;
+    const pon = V.pon;
+    V.pon = function (el, cfg) {
+      const cs = (cfg || []).filter(o => o && o.t === 'enCorte');
+      pon.call(this, el, (cfg || []).filter(o => !(o && o.t === 'enCorte')));
+      cs.forEach(o => {
+        const caja = document.createElement('div'); caja.style.cssText = 'position:absolute;inset:0;pointer-events:none';
+        el.appendChild(caja); pon.call(this, caja, o.fx || []);
+        const cv = caja.querySelectorAll('canvas');
+        const mira = () => { if (!caja.isConnected) return; const on = el._vis === o.q; cv.forEach(c => { c.style.opacity = on ? '1' : '0'; }); requestAnimationFrame(mira); };
+        mira();
+      });
+    };
+  }
+  /* el primer plano de las manos en el acordeón mientras Xan toca la nana: hojas que caen y polvo en la luz */
+  B.VIDA['P4.5'] = (B.VIDA['P4.5'] || []).concat([{ t: 'enCorte', q: 'RECURSO_TECLAS', fx: [{ t: 'hojas', zona: [0, 0, 1, .95], n: 14 }, { t: 'polvo', n: 16, zona: [.1, .05, .9, .7] }] }]);
 })(window.BLUES);

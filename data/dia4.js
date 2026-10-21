@@ -78,7 +78,7 @@ BLUES.dia(4, {
     {
      "id": "d4_002",
      "quien": "XAN",
-     "texto": "Ya. El avó tendría ya sesenta y tantos. ¿Cómo sabía quién era yo?",
+     "texto": "Ya. El avó tendría ya sesenta y tantos. ¿Cómo sabías quién era yo?",
      "voz": "voz/d4/d4_002.mp3",
      "var": "XAN_CERCA"
     },
@@ -259,8 +259,14 @@ BLUES.dia(4, {
     {
      "id": "d4_014",
      "quien": "ELI",
-     "texto": "Y esta es la casa de John. Hunterfly Road.",
+     "texto": "Y esta era la casa de John. Hunterfly Road.",
      "voz": "voz/d4/d4_014.mp3"
+    },
+    {
+     "id": "d4_014b",
+     "quien": "XAN",
+     "texto": "¿Era?",
+     "voz": "voz/d4/d4_014b.mp3"
     }
    ],
    "nombre": "Weeksville",
@@ -309,7 +315,7 @@ BLUES.dia(4, {
     {
      "id": "d4_015",
      "quien": "ELI",
-     "texto": "Siéntate, Xan. John murió este verano.",
+     "texto": "Lo siento mucho, hijo… Tu abuelo murió este verano.",
      "voz": "voz/d4/d4_015.mp3",
      "sfx": [
       {
@@ -323,15 +329,9 @@ BLUES.dia(4, {
      ]
     },
     {
-     "id": "d4_016",
-     "quien": "XAN",
-     "texto": "Pero… entonces… ¿quién mandó la lata?",
-     "voz": "voz/d4/d4_016.mp3"
-    },
-    {
      "id": "d4_017",
      "quien": "ELI",
-     "texto": "Yo. Cuando John volvió de Coruña, en 1913, yo tenía treinta y cinco años y nadie en el mundo.",
+     "texto": "Cuando John volvió de Coruña, en 1913, yo tenía treinta y cinco años y nadie en el mundo.",
      "voz": "voz/d4/d4_017.mp3"
     },
     {
@@ -716,7 +716,7 @@ BLUES.dia(4, {
     {
      "id": "d4_036",
      "quien": "ELI",
-     "texto": "Esa es la canción de John. La tocaba cada domingo en este porche. Pero así…",
+     "texto": "¡Esa es la canción de John! La tocaba cada domingo en este porche. Pero así…",
      "voz": "voz/d4/d4_036.mp3",
      "var": "ELI_CERCA"
     },
@@ -765,7 +765,7 @@ BLUES.dia(4, {
   },
   {
    "id": "P4.6",
-   "desc": "Eli despliega un papel amarillento sobre las rodillas de Xan: una partitura escrita a mano, con manchas y partes borradas. Arriba, el título «Blues de John» tachado y, encima, con otra tinta: «A nana de Xan»; debajo: «Para o meu neto John · Coruña, 1912». A su lado, el acordeón pequeño de John.",
+   "desc": "Eli despliega un papel amarillento sobre las rodillas de Xan: una partitura escrita a mano, con manchas y partes borradas. Arriba, el título «Blues de John» tachado y, encima, con otra tinta: «A nana de Xan». A su lado, el acordeón pequeño de John.",
    "img": "img/d4/p4_6.webp",
    "personajes": [
     "ELI",
@@ -792,7 +792,7 @@ BLUES.dia(4, {
     {
      "id": "d4_039",
      "quien": "XAN",
-     "texto": "«Blues de John»… tachado. Y encima: «A nana de Xan». Abajo: «Para o meu neto John. Coruña, 1912».",
+     "texto": "«Blues de John»… tachado. Y encima: «A nana de Xan».",
      "voz": "voz/d4/d4_039.mp3",
      "var": "RECURSO_MANUSCRITO",
      "sfx": [
@@ -1094,12 +1094,6 @@ BLUES.dia(4, {
      "voz": "voz/d4/d4_055.mp3"
     },
     {
-     "id": "d4_056",
-     "quien": "RUBY",
-     "texto": "Te dejaste esto en el club. Sin él, no eres tú.",
-     "voz": "voz/d4/d4_056.mp3"
-    },
-    {
      "id": "d4_057",
      "quien": "RUBY",
      "texto": "¿Me puedo sumar?",
@@ -1134,14 +1128,8 @@ BLUES.dia(4, {
     {
      "id": "d4_060",
      "quien": "ELI",
-     "texto": "Elige una de las cuatro notas del acorde. En G7: sol, si, re, fa.",
+     "texto": "Elige una de las cuatro notas del acorde.",
      "voz": "voz/d4/d4_060.mp3"
-    },
-    {
-     "id": "d4_061",
-     "quien": "ELI",
-     "texto": "En C7: sol, si bemol, do, mi. Y en D7: fa sostenido, la, do, re.",
-     "voz": "voz/d4/d4_061.mp3"
     },
     {
      "id": "d4_062",
@@ -1170,7 +1158,11 @@ BLUES.dia(4, {
       }
      ]
     },
-    "vueltas": 1
+    "vueltas": 1,
+    "recursos": [
+     "sfx/d4/rascador_abajo.mp3",
+     "sfx/d4/rascador_arriba.mp3"
+    ]
    },
    "nombre": "Hito 2 · Notas largas",
    "hechos": [],
@@ -1292,7 +1284,7 @@ BLUES.dia(4, {
     {
      "id": "d4_067",
      "quien": "ELI",
-     "texto": "Esos finales los vas a poner tú. Pregunta y respuesta: John pregunta, tú contestas.",
+     "texto": "Esos finales los vas a poner tú.",
      "voz": "voz/d4/d4_067.mp3"
     },
     {
@@ -1322,7 +1314,11 @@ BLUES.dia(4, {
       }
      ]
     },
-    "vueltas": 1
+    "vueltas": 1,
+    "recursos": [
+     "sfx/d4/rascador_abajo.mp3",
+     "sfx/d4/rascador_arriba.mp3"
+    ]
    },
    "nombre": "Hito 3 · Los finales",
    "hechos": [],
@@ -1612,12 +1608,6 @@ BLUES.dia(4, {
      "quien": "AVOA",
      "texto": "E o avó?",
      "voz": "voz/d4/d4_089.mp3"
-    },
-    {
-     "id": "d4_091",
-     "quien": "AVOA",
-     "texto": "«Para cando volvas»…",
-     "voz": "voz/d4/d4_091.mp3"
     },
     {
      "id": "d4_092",
@@ -1972,20 +1962,11 @@ BLUES.dia(4, {
      "id": "d4_096",
      "quien": "XAN",
      "texto": "El blues es cuando te duele algo y lo cantas para que duela menos. La avoa ya lo sabía.",
-     "voz": "voz/d4/d4_096.mp3"
+     "voz": "voz/d4/d4_096.mp3",
+     "var": "-"
     }
    ],
-   "foco": {
-    "XAN": [
-     0.625,
-     0.32,
-     0.14
-    ]
-   },
-   "personajes": [
-    "XAN"
-   ],
-   "espera": 10.6
+   "espera": 7.3
   }
  ],
  "banda": true
