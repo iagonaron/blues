@@ -284,3 +284,55 @@
   };
   B.inter.periodico.claves = ['schoenberg', 'cinta', 'gershwin'];
 })(window.BLUES);
+
+/* ══════════ (C2, 21-oct · Iago 14:41) PORTADA DEL ACTO 2 EN VÍDEO
+   «que pase el tren llegando a la estación del acto 2 y luego se quede quieto el último fotograma, ya sin el tren, con sonido
+   ambiente». Vídeo de Runway (img/d2/p2_0_tren.mp4, 8 s) que empieza y acaba en la misma estación vacía: la lámina del plano
+   (img/d2/p2_0.webp) ES ese último fotograma, así que al terminar el vídeo se funde y queda la imagen quieta con el ambiente
+   del andén (amb del plano) y la vida. El sonido del tren va aparte (sfx/d2/tren_llega.mp3), por Web Audio (bus de efectos),
+   sincronizado con el vídeo. Si el vídeo no carga, no pasa nada: se ve la lámina. Datos: plano P2.0 → "video": {src, sonido}. */
+(function (B) {
+  const PLANO = 'P2.0';
+  let bufSon = null, cargando = null;
+  const carga = async src => {
+    if (bufSon) return bufSon; if (cargando) return cargando;
+    cargando = fetch(src).then(r => r.arrayBuffer()).then(a => B.ac().decodeAudioData(a)).then(b => (bufSon = b)).catch(() => null);
+    return cargando;
+  };
+  const datos = () => { try { const d = B.motor.dia(); if (!d || d.n !== 2) return null; const p = d.planos[B.motor.indice()]; return p && p.id === PLANO && p.video ? p.video : null; } catch (e) { return null; } };
+  function pon(planoEl, v) {
+    if (planoEl._d2video) return; planoEl._d2video = true;
+    const kb = planoEl.querySelector('.kb') || planoEl;
+    const vid = document.createElement('video');
+    vid.muted = true; vid.playsInline = true; vid.setAttribute('playsinline', ''); vid.preload = 'auto'; vid.src = v.src;
+    vid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .7s;pointer-events:none;opacity:0';
+    kb.appendChild(vid);
+    let fuente = null;
+    const para = () => { try { if (fuente) { fuente.gan.gain.setTargetAtTime(0, B.ac().currentTime, .15); fuente.src.stop(B.ac().currentTime + .6); } } catch (e) { } fuente = null; };
+    const suena = async () => {
+      if (!v.sonido) return; const b = await carga(v.sonido); if (!b || !planoEl.isConnected) return;
+      const C = B.ac(), s = C.createBufferSource(), g = C.createGain(); s.buffer = b; g.gain.value = v.vol == null ? .9 : v.vol;
+      s.connect(g); g.connect(B.bus.sfx || C.destination); s.start(C.currentTime, Math.min(b.duration - .05, vid.currentTime || 0));
+      fuente = { src: s, gan: g };
+    };
+    vid.addEventListener('playing', () => { vid.style.opacity = 1; if (!fuente) suena(); }, { once: true });
+    vid.addEventListener('ended', () => { vid.style.opacity = 0; setTimeout(() => vid.remove(), 900); });
+    vid.addEventListener('error', () => vid.remove());
+    const p = vid.play(); if (p && p.catch) p.catch(() => vid.remove());
+    /* si se cambia de plano antes de acabar, fuera el sonido */
+    const obs = new MutationObserver(() => { if (!planoEl.isConnected || !planoEl.classList.contains('on')) { para(); obs.disconnect(); } });
+    obs.observe(planoEl.parentNode || document.body, { childList: true, subtree: false, attributes: true, attributeFilter: ['class'] });
+  }
+  function vigila() {
+    const pel = document.getElementById('pelicula'); if (!pel) return setTimeout(vigila, 500);
+    new MutationObserver(ms => {
+      for (const m of ms) for (const n of m.addedNodes) {
+        if (n.nodeType !== 1 || !n.classList.contains('plano')) continue;
+        setTimeout(() => { const v = datos(); if (v) pon(n, v); }, 30);
+      }
+    }).observe(pel, { childList: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', vigila); else vigila();
+  /* que el sonido esté listo antes de llegar al acto 2 */
+  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('.billete[data-dia="2"]')) { try { const d = B.DIAS && B.DIAS[2]; const p = d && d.planos && d.planos.find(x => x.id === PLANO); if (p && p.video && p.video.sonido) carga(p.video.sonido); } catch (er) { } } }, true);
+})(window.BLUES);
