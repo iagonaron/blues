@@ -34,7 +34,8 @@ BLUES.dia(1, {
     "texto": "Cóntoche como comezou todo. Por se un día alguén che pregunta por que marchei.",
     "voz": "voz/d1/d1_c04.mp3"
    }
-  ]
+  ],
+  "funde": true
  },
  "planos": [
   {
@@ -88,7 +89,8 @@ BLUES.dia(1, {
      0.42
     ]
    },
-   "titulo": true
+   "titulo": true,
+   "espera": 0.8
   },
   {
    "id": "P1.1",
@@ -245,7 +247,8 @@ BLUES.dia(1, {
      0.2,
      0.2
     ]
-   }
+   },
+   "pre": 1.0
   },
   {
    "id": "P1.2",
