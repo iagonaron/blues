@@ -43,13 +43,37 @@
     M.lat = med(des); M.umbral = Math.max(M.ruido * 4, .4 * med(picos));
     return true;
   }
+  /* (C2, 20-oct · Iago: «interacciones con texturas pintadas, sonidos contundentes y los objetos se mueven al tocarlos»)
+     tabla de lavar, manos y maleta pintadas (img/inter/d2_*.webp) que se mueven con cada golpe; sonidos de Splice del acto 2 */
+  const PALMAS = ['sfx/d2/palma_1.mp3', 'sfx/d2/palma_2.mp3', 'sfx/d2/palma_3.mp3'];   // (Iago 14:40) palmas de verdad (packs de Splice), alternadas
+  const SFX = { palma: 'sfx/d2/palma_1.mp3', golpe: 'sfx/d2/tabla_golpe.mp3', arriba: 'sfx/d2/tabla_raspa_arriba.mp3', abajo: 'sfx/d2/tabla_raspa_abajo.mp3' };
+  let rr = 0;
+  const toca = (k, t, vol, alt) => {
+    if (k === 'palma') { const hay = PALMAS.filter(f => B.buf[f]); if (hay.length) return B.suena(hay[rr++ % hay.length], { t, vol: vol * (.9 + Math.random() * .1) }); }
+    return B.buf[SFX[k]] ? B.suena(SFX[k], { t, vol }) : alt();
+  };
+  const destello = (el, cls, ms) => { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms || 120); };
+  function estilo() {
+    if (document.getElementById('d2-palmas-css')) return;
+    const s = document.createElement('style'); s.id = 'd2-palmas-css';
+    s.textContent = '.d2-instr{display:flex;justify-content:center;align-items:flex-end;gap:calc(var(--u)*2.6);margin:calc(var(--u)*1.1) 0 calc(var(--u)*.3)}' +
+      '.d2-obj{background:center/contain no-repeat;transition:transform .08s ease-out,filter .12s;filter:drop-shadow(0 calc(var(--u)*.35) calc(var(--u)*.5) rgba(0,0,0,.6))}' +
+      '.d2-tabla{width:calc(var(--u)*8.5);height:calc(var(--u)*11);background-image:url(img/inter/d2_tabla.webp)}' +
+      '.d2-manos{width:calc(var(--u)*10);height:calc(var(--u)*7.5);background-image:url(img/inter/d2_manos.webp)}' +
+      '.d2-maleta{width:calc(var(--u)*12);height:calc(var(--u)*9.5);background-image:url(img/inter/d2_maleta.webp)}' +
+      '.d2-obj.golpe{transform:translateY(calc(var(--u)*.4)) scale(1.05,.95)}.d2-obj.raspa{transform:rotate(-2.5deg)}' +
+      '.d2-manos.palma{transform:scale(1.13)}.d2-manos.tuya{filter:drop-shadow(0 0 calc(var(--u)*1.1) rgba(255,214,140,.9))}';
+    document.head.appendChild(s);
+  }
   B.inter.palmas = async function (caja, op) {
     const ctl = op.ctl;
-    U.fondo(caja);
+    U.fondo(caja); estilo();
     const pnl = U.panel(caja, { left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center', padding: 'calc(var(--u)*2) calc(var(--u)*3)' });
     pnl.innerHTML = '<div class="i-tit">Palmas en el 2 y el 4</div><div class="i-enun">Primero Ruby da las palmas contigo. Luego, tú solo. Espacio o clic.</div>' +
-      '<div class="pulsos" style="justify-content:center;margin:calc(var(--u)*1.6) 0"><div class="pl">1</div><div class="pl marca">2</div><div class="pl">3</div><div class="pl marca">4</div></div>' +
+      '<div class="d2-instr"><div class="d2-obj d2-tabla"></div><div class="d2-obj d2-manos"></div><div class="d2-obj d2-maleta"></div></div>' +
+      '<div class="pulsos" style="justify-content:center;margin:calc(var(--u)*1.2) 0"><div class="pl">1</div><div class="pl marca">2</div><div class="pl">3</div><div class="pl marca">4</div></div>' +
       '<div class="i-marcas" style="justify-content:center">' + '<i></i>'.repeat(8) + '</div><div class="i-estado" style="margin-top:calc(var(--u)*.8)">Escucha el groove…</div>';
+    const oTabla = pnl.querySelector('.d2-tabla'), oManos = pnl.querySelector('.d2-manos'), oMaleta = pnl.querySelector('.d2-maleta');
     const pls = B.$$('.pl', pnl), mks = B.$$('.i-marcas i', pnl), est = pnl.querySelector('.i-estado'), enun = pnl.querySelector('.i-enun');
     /* micrófono (si lo hay y se deja): palmas de verdad */
     est.textContent = 'Si te lo pide, dale permiso al micrófono: darás palmas de verdad.';
@@ -62,19 +86,22 @@
     const ronda = async () => {
       const p = 60 / 100, sw = p * .67, t0 = B.ahora() + .5, golpes = [];
       mks.forEach(m => m.classList.remove('ok', 'mal', 'act'));
-      const palma = () => { const t = B.ahora(); golpes.push(t); B.sint.palma(t, .9); };
+      const palma = () => { const t = B.ahora(); golpes.push(t); toca('palma', t, 1, () => B.sint.palma(t, .9)); destello(oManos, 'palma'); destello(oManos, 'tuya', 220); };
       const quita = B.captura.poner(e => { if (e.key === ' ' || e.key === 'Enter') { if (!e.repeat) palma(); return true; } return false; });
       const zona = B.el('div', ''); zona.style.cssText = 'position:absolute;inset:0;z-index:0'; caja.insertBefore(zona, pnl);
       zona.addEventListener('pointerdown', e => { e.preventDefault(); palma(); });
-      const sinMic = mic ? mic.oye(t => { golpes.push(t - mic.lat); pls.forEach(x => x.classList.contains('on') && x.classList.add('golpe')); setTimeout(() => pls.forEach(x => x.classList.remove('golpe')), 140); }) : null;
+      const sinMic = mic ? mic.oye(t => { golpes.push(t - mic.lat); destello(oManos, 'palma'); destello(oManos, 'tuya', 220); pls.forEach(x => x.classList.contains('on') && x.classList.add('golpe')); setTimeout(() => pls.forEach(x => x.classList.remove('golpe')), 140); }) : null;
       if (sinMic) ctl.alMorir.push(sinMic);
       B.inter.palmas.palma = palma; B.inter.palmas.t0 = t0; B.inter.palmas.p = p;
       ctl.alMorir.push(quita);
       for (let c = 0; c < 6; c++) for (let b = 0; b < 4; b++) {
         const t = t0 + (c * 4 + b) * p;
-        B.sint.tabla(t, b % 2 ? 'golpe' : 'raspa', b % 2 ? .9 : .6); B.sint.tabla(t + sw, 'raspa', .4);
+        toca(b % 2 ? 'golpe' : 'abajo', t, b % 2 ? .9 : .6, () => B.sint.tabla(t, b % 2 ? 'golpe' : 'raspa', b % 2 ? .9 : .6));
+        toca('arriba', t + sw, .45, () => B.sint.tabla(t + sw, 'raspa', .4));
         B.sint.maleta(t, b % 2 ? 'escoba' : 'bombo', .6);
-        if (c < 2 && b % 2) B.sint.palma(t, .7);
+        if (c < 2 && b % 2) toca('palma', t, .75, () => B.sint.palma(t, .7));
+        B.enTiempo(t, () => { destello(oTabla, b % 2 ? 'golpe' : 'raspa'); destello(oMaleta, 'golpe'); if (c < 2 && b % 2) destello(oManos, 'palma'); }, ctl);
+        B.enTiempo(t + sw, () => destello(oTabla, 'raspa', 90), ctl);
         B.enTiempo(t, () => { pls.forEach((x, j) => x.classList.toggle('on', j === b)); if (b === 0) est.textContent = c < 2 ? 'Con Ruby: 2… y 4…' : 'Tú solo'; }, ctl);
       }
       let ok = 0, enUno = false;
