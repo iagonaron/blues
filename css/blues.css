@@ -722,3 +722,4 @@ a{color:var(--oro-hi)}
 .port-fondo{--port-zoom:1.1}
 .port-fondo::after{background:linear-gradient(180deg,rgba(6,5,9,.7) 0%,rgba(6,5,9,.46) 20%,rgba(6,5,9,.28) 33%,rgba(6,5,9,.06) 42%,rgba(6,5,9,.1) 50%,rgba(6,5,9,.42) 66%,rgba(6,5,9,.78) 100%)}
 .port-ano,.port-sub{text-shadow:0 0 calc(var(--u)*.6) rgba(0,0,0,.9),0 1px 2px #000}
+#carta{transition:opacity .9s ease}   /* (21-oct) el mismo tiempo que el fundido entre planos: la carta del acto 1 se va con el barco */
