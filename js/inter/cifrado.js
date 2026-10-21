@@ -43,7 +43,7 @@
     const tec = B.teclado(abajo, { desde: 60, hasta: 83, inst: 'piano', nombres: true, ctl });
     const izq = B.el('div', 'i-pie-izq'); caja.appendChild(izq);
     const estado = B.el('span', 'i-estado', ''); izq.appendChild(estado);
-    const SF = { mur: 'sfx/d3/club_tarde.mp3', risas: 'sfx/d3/risas_cortas.mp3', abucheo: 'sfx/d3/abucheo.mp3', reloj: 'sfx/d3/reloj.mp3', burla: 'sfx/d3/badumtss.mp3' };
+    const SF = { mur: 'sfx/d3/club_tarde.mp3', risas: 'sfx/d3/risas_cortas.mp3', abucheo: 'sfx/d3/abucheo.mp3', reloj: 'sfx/d3/reloj.mp3' };
     const suena = (k, o) => B.buf[SF[k]] ? B.suena(SF[k], Object.assign({ bus: B.bus.sfx }, o)) : null;
     let mur;
     if (B.buf[SF.mur]) { const h = suena('mur', { vol: .12, bucle: true, fade: 1 }); mur = { vol: (v, t) => h && h.gan.gain.setTargetAtTime(Math.min(1, v * 2.2), B.ac().currentTime, (t || .6) / 3), parar: f => h && h.parar(f) }; }
@@ -51,15 +51,39 @@
     ctl.alMorir.push(() => mur.parar(1));
     let reloj = null; const paraReloj = () => { if (reloj) { reloj.parar(.15); reloj = null; } }; ctl.alMorir.push(paraReloj);
     let fallos = 0, nervios = .08, fin = false, tiempoAgotado = false;
-    const ponNervios = v => { nervios = B.clamp(v, 0, 1); nerv.querySelector('.nv').style.height = Math.round(nervios * 100) + '%'; mur.vol(.04 + nervios * .32, .6); };
-    const fallo = () => { fallos++; suena('risas', { vol: .3 + .25 * fallos }); if (fallos >= 3) suena('abucheo', { vol: .45, t: B.ahora() + .5 }); B.$$('.fallos i', nerv).forEach((m, k) => m.classList.toggle('mal', k < fallos)); ponNervios(Math.max(nervios, .08 + fallos * (.92 / 3)));   /* proporcional: cada fallo sube un tercio (3 fallos = 100 %) */ atril.classList.remove('sacude'); void atril.offsetWidth; atril.classList.add('sacude'); };
+    /* (Iago, 21-oct 14:55) TENSIÓN que crece: un fondo (dron grave + cuerdas disonantes) y un latido que suben con las rondas
+       y con los nervios (el latido, además, se acelera). Cada vez que suben los nervios: un golpe de tensión y el medidor se
+       destaca UNA vez (crece, tiembla y brilla en rojo; sin animaciones en bucle). Sonidos de su biblioteca de Splice. */
+    const TEN = { fondo: 'sfx/d3/tension_fondo.mp3', latido: 'sfx/d3/latido.mp3', sube: 'sfx/d3/tension_sube.mp3' };
+    const suenaT = (k, o) => B.buf[TEN[k]] ? B.suena(TEN[k], Object.assign({ bus: B.bus.sfx }, o)) : null;
+    const tFondo = suenaT('fondo', { vol: 0, bucle: true }), tLat = suenaT('latido', { vol: 0, bucle: true, rate: 1.3 });
+    const paraTension = f => { [tFondo, tLat].forEach(h => h && h.parar(f || 1.2)); };
+    ctl.alMorir.push(() => paraTension(1.2));
+    let rondaT = 0;
+    const tension = seg => {
+      const T = B.clamp(.13 * rondaT + .55 * nervios, 0, 1), ahora = B.ac().currentTime, tc = (seg || 1.2) / 3;
+      if (tFondo) tFondo.gan.gain.setTargetAtTime(T > .03 ? .05 + .55 * T : 0, ahora, tc);
+      if (tLat) { tLat.gan.gain.setTargetAtTime(T > .12 ? .12 + .8 * T : 0, ahora, tc); tLat.fuente.playbackRate.setTargetAtTime(1.3 + 1.4 * T, ahora, tc); }
+    };
+    if (!document.getElementById('d3-nervios-css')) {
+      const st = document.createElement('style'); st.id = 'd3-nervios-css';
+      st.textContent = '@keyframes d3NvSube{0%{transform:none}16%{transform:scale(1.16) rotate(-2deg)}32%{transform:scale(1.1) rotate(1.5deg)}50%{transform:scale(1.05) rotate(-.6deg)}100%{transform:none}}' +
+        '@keyframes d3NvBrillo{0%{box-shadow:0 0 0 0 rgba(224,100,75,0)}18%{box-shadow:0 0 calc(var(--u)*2.8) calc(var(--u)*.6) rgba(224,100,75,.95)}100%{box-shadow:0 0 0 0 rgba(224,100,75,0)}}' +
+        '@keyframes d3NvBarra{0%{filter:brightness(2.3) saturate(1.4)}100%{filter:none}}' +
+        '.d3-nv-sube{animation:d3NvSube .9s ease-out 1,d3NvBrillo 1.5s ease-out 1}.d3-nv-sube .nv{animation:d3NvBarra 1.3s ease-out 1}' +
+        '.d3-nv-alto{outline:2px solid rgba(224,100,75,.9);outline-offset:3px}.d3-nv-alto .i-tit{color:#F0876F!important}';
+      document.head.appendChild(st);
+    }
+    const destaca = fuerte => { nerv.classList.remove('d3-nv-sube'); void nerv.offsetWidth; nerv.classList.add('d3-nv-sube'); suenaT('sube', { vol: fuerte ? 1 : .45 + .45 * nervios }); };
+    const ponNervios = v => { nervios = B.clamp(v, 0, 1); nerv.querySelector('.nv').style.height = Math.round(nervios * 100) + '%'; nerv.classList.toggle('d3-nv-alto', nervios >= .6); mur.vol(.04 + nervios * .32, .6); tension(); };
+    const fallo = () => { fallos++; suena('risas', { vol: .3 + .25 * fallos }); if (fallos >= 3) suena('abucheo', { vol: .45, t: B.ahora() + .5 }); B.$$('.fallos i', nerv).forEach((m, k) => m.classList.toggle('mal', k < fallos)); ponNervios(Math.max(nervios, .08 + fallos * (.92 / 3)));   /* proporcional: cada fallo sube un tercio (3 fallos = 100 %) */ destaca(fallos >= 3); atril.classList.remove('sacude'); void atril.offsetWidth; atril.classList.add('sacude'); };
     const cuenta = atril.querySelector('.cuenta');
     let pulsadas = [];
     tec.alPulsar.push(m => pulsadas.push(m));
     B.inter.cifrado.estado = () => ({ fallos, nervios, ronda: rondaAct, item: itemAct, objetivo, activo, fin });
     let rondaAct = 0, itemAct = 0, objetivo = null, activo = false;
     for (let r = 0; r < RONDAS.length && !fin; r++) {
-      const R = RONDAS[r]; rondaAct = r;
+      const R = RONDAS[r]; rondaAct = r; rondaT = r; tension(3);   /* cada ronda, un poco más de tensión */
       tec.nombres(!!R.nombres);
       atril.querySelector('.ronda').textContent = 'Ronda ' + (r + 1) + ' de 6 · ' + R.tit;
       atril.querySelector('.ayuda').textContent = R.ayuda;
@@ -77,15 +101,18 @@
         const lim = R.tiempo ? R.tiempo[k] : null, t0 = B.ahora();
         if (lim && !reloj) { reloj = suena('reloj', { vol: .5, bucle: true }); if (reloj) reloj.fuente.playbackRate.value = 1 + r * .12; }   /* (C3) el reloj corre más deprisa en cada ronda */
         estado.textContent = objetivo.length === 1 ? 'Toca la nota' : 'Toca las ' + objetivo.length + ' notas, una detrás de otra';
-        let res = null; activo = true;
+        let res = null, vistas = 0; activo = true;
         while (!ctl.muerto && res == null) {
           await B.espera(.03, ctl);
           const t = B.ahora();
           if (lim) cuenta.style.transform = 'scaleX(' + B.clamp(1 - (t - t0) / lim, 0, 1).toFixed(3) + ')'; else cuenta.style.transform = 'scaleX(1)';
           if (lim && r === 1 && !prisa && t - t0 > lim * .5) { prisa = true; U.suelta(U.rota(op, 'r2_prisa'), ctl, 1.8); }
-          for (let j = 0; j < pulsadas.length; j++) {
+          /* (Iago, 21-oct) cada tecla pulsada se enciende UNA sola vez: antes se volvía a encender cada 30 ms y, en las rondas
+             de acordes (3 notas), la primera parpadeaba */
+          for (; vistas < pulsadas.length; vistas++) {
+            const j = vistas;
             if (B.mod12(pulsadas[j]) !== objetivo[j]) { res = 'mal'; tec.enciende(pulsadas[j], 'mal', .6); break; }
-            tec.enciende(pulsadas[j], 'ok', .5);
+            tec.enciende(pulsadas[j], 'ok', objetivo.length > 1 ? 1.2 : .5);
           }
           if (res == null && pulsadas.length >= objetivo.length) res = 'bien';
           if (res == null && lim && t - t0 > lim) res = 'tiempo';
@@ -105,14 +132,16 @@
     cuenta.style.transform = 'scaleX(0)';
     if (!fin) {
       /* lo ha conseguido todo: ahora, a tempo */
+      paraTension(1.5);
       await U.di(U.rota(op, 'todo', [ATEMPO]), ctl);
       B.banda.tocar({ ton: 'G', bpm: 300, claqueta: false, vueltas: 1, pistas: { guitarra: 'base', tabla: 'base', contrabajo: 'base', trompeta: 'tema' } });
       ctl.alMorir.push(() => B.banda.parar());
       await B.espera(4.5, ctl); B.banda.parar();
     } else {
+      if (nervios < .99) destaca(true);
       { const n0 = nervios; for (let k = 1; k <= 12 && !ctl.muerto; k++) { ponNervios(n0 + (1 - n0) * k / 12); await B.espera(.1, ctl); } }   /* sube poco a poco, no de golpe */
       estado.textContent = tiempoAgotado ? 'El tiempo vuela, las risas suben…' : 'Tres fallos. Las risas suben…';
-      suena('burla', { vol: .6 });
+      /* (Iago, 21-oct) aquí ya NO suena el «ba-dum-tss»: solo después del chiste de Pearl (P3.7, «Vuelve cuando sepas…») */
       await B.espera(1.2, ctl);
     }
     mur.parar(1.5);
@@ -121,7 +150,7 @@
   B.inter.cifrado.analiza = analiza;
   B.inter.cifrado.subtAbajo = true;   /* (ronda 6) el alumno mira al teclado: el texto, abajo */
   B.inter.cifrado.RONDAS = RONDAS;
-  B.inter.cifrado.voces = ['sfx/d3/club_tarde.mp3', 'sfx/d3/risas_cortas.mp3', 'sfx/d3/abucheo.mp3'];   /* (C3) las pullas sueltas nunca se grabaron: Pearl usa las del guion (r1…r6, fallo, tiempo, todo) */
+  B.inter.cifrado.voces = ['sfx/d3/club_tarde.mp3', 'sfx/d3/risas_cortas.mp3', 'sfx/d3/abucheo.mp3', 'sfx/d3/tension_fondo.mp3', 'sfx/d3/latido.mp3', 'sfx/d3/tension_sube.mp3'];   /* (C3) las pullas sueltas nunca se grabaron: Pearl usa las del guion (r1…r6, fallo, tiempo, todo) */
   B.inter.cifrado.claves = ['r1', 'r1_bien', 'r2', 'r2_prisa', 'r3', 'r4', 'r5', 'r6', 'fallo', 'tiempo', 'todo'];
 })(window.BLUES);
 
@@ -133,7 +162,7 @@
   const U = B.iu;
   B.inter.acordeonDecide = async function (caja, op) {
     const ctl = op.ctl;
-    U.fondo(caja);
+    const fondo = U.fondo(caja);
     const PAPEL = B.existe('img/inter/d3_papel.webp');
     const tit = B.el('div', ''); tit.style.cssText = 'position:absolute;left:0;right:0;top:10%;text-align:center;color:var(--crema);text-shadow:0 2px 12px rgba(0,0,0,.8)';
     tit.innerHTML = '<div class="i-tit" style="font-size:calc(var(--u)*1.05);letter-spacing:.35em">XAN MIRA SU ACORDEÓN</div>' +
@@ -176,8 +205,10 @@
     }
     if (B.buf['sfx/d3/pasos_tarima.mp3']) B.suena('sfx/d3/pasos_tarima.mp3', { bus: B.bus.sfx, vol: 1, t: B.ahora() + .35 });
     await B.espera(1.4, ctl); if (ctl.muerto) return;
-    tit.style.transition = fila.style.transition = 'opacity .5s'; tit.style.opacity = fila.style.opacity = '0';
-    await B.espera(.4, ctl); if (ctl.muerto) return;
+    tit.style.transition = fila.style.transition = fondo.style.transition = 'opacity .5s'; tit.style.opacity = fila.style.opacity = fondo.style.opacity = '0';
+    /* (Iago, 21-oct) en cuanto decide, el plano se ve BIEN (sin oscurecer) y Pearl habla en su bocadillo, como en el resto del acto */
+    const esc = document.getElementById('escena'); if (esc) esc.classList.remove('con-inter', 'subt-abajo');
+    await B.espera(.5, ctl); if (ctl.muerto) return;
     await U.dice(op, eleccion, ctl);
   };
   B.inter.acordeonDecide.subtAbajo = true;
