@@ -46,6 +46,10 @@ BLUES.dia(2, {
     {
      "src": "sfx/d2/tren.mp3",
      "vol": 0.5
+    },
+    {
+     "src": "sfx/d2/tren_marcha.mp3",
+     "vol": 0.22
     }
    ],
    "lineas": [],
@@ -56,10 +60,6 @@ BLUES.dia(2, {
    "id": "P2.1",
    "desc": "Estación de Nueva Orleans: dos salas de espera con carteles «WHITE» y «COLORED». En el andén, el lujoso Crescent Limited (todo coches Pullman); al fondo, un tren corriente con un vagón viejo de equipajes y pasajeros pegado a la locomotora. George, con chaqueta blanca de mozo, encuentra a Xan, que carga su estuche grande.",
    "img": "img/d2/p2_1.webp",
-   "var": {
-    "GEORGE": "img/d2/p2_1_george.webp",
-    "XAN": "img/d2/p2_1_xan.webp"
-   },
    "personajes": [
     "GEORGE",
     "XAN"
@@ -69,6 +69,10 @@ BLUES.dia(2, {
     {
      "src": "sfx/d2/estacion.mp3",
      "vol": 0.5
+    },
+    {
+     "src": "sfx/d2/tren.mp3",
+     "vol": 0.16
     }
    ],
    "hechos": [
@@ -86,25 +90,37 @@ BLUES.dia(2, {
      "id": "d2_002",
      "quien": "GEORGE",
      "texto": "«Este chico contesta bien». Con eso me basta.",
-     "voz": "voz/d2/d2_002.mp3"
+     "voz": "voz/d2/d2_002.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/papel.mp3",
+       "t": 0,
+       "vol": 0.55
+      }
+     ],
+     "var": "RECURSO_NOTA",
+     "espera": 1.0
     },
     {
      "id": "d2_003",
      "quien": "GEORGE",
      "texto": "Ese de ahí es el Crescent Limited: todo coches Pullman. Camas, manteles blancos, cubiertos de plata.",
-     "voz": "voz/d2/d2_003.mp3"
+     "voz": "voz/d2/d2_003.mp3",
+     "var": "RECURSO_CRESCENT"
     },
     {
      "id": "d2_004",
      "quien": "GEORGE",
      "texto": "Yo trabajo en él. Pero tú y yo no viajamos en él.",
-     "voz": "voz/d2/d2_004.mp3"
+     "voz": "voz/d2/d2_004.mp3",
+     "var": "RECURSO_CRESCENT"
     },
     {
      "id": "d2_005",
      "quien": "GEORGE",
      "texto": "Tu tren es ese. Y tu vagón, el primero, pegado a la locomotora: mitad equipajes, mitad personas.",
-     "voz": "voz/d2/d2_005.mp3"
+     "voz": "voz/d2/d2_005.mp3",
+     "var": "GEORGE_CERCA"
     },
     {
      "id": "d2_006",
@@ -123,26 +139,91 @@ BLUES.dia(2, {
      "quien": "REVISOR",
      "texto": "All aboard!",
      "voz": "voz/d2/d2_008.mp3",
-     "var": "-"
+     "var": "-",
+     "sfx": [
+      {
+       "src": "sfx/d2/silbato.mp3",
+       "t": 0.5,
+       "vol": 0.6
+      }
+     ]
     }
    ],
    "nombre": "Dos puertas",
    "guion_sonido": {
     "amb": "Estación: vapor, campana de locomotora, gente, carritos.",
     "sfx": "Silbato; el grito del revisor."
+   },
+   "foco": {
+    "XAN": [
+     0.375,
+     0.133,
+     0.135
+    ],
+    "GEORGE": [
+     0.662,
+     0.112,
+     0.149
+    ]
+   },
+   "var": {
+    "GEORGE_CERCA": "img/d2/p2_1_george_cerca.webp",
+    "RECURSO_CRESCENT": "img/d2/p2_1_recurso_crescent.webp",
+    "RECURSO_NOTA": "img/d2/p2_1_recurso_nota.webp"
+   }
+  },
+  {
+   "id": "P2.2a",
+   "nombre": "La puerta del vagón",
+   "desc": "El vagón de equipajes desde el andén: la puerta corredera, cerrada. El alumno la abre y dentro está la cuadrilla.",
+   "img": "img/d2/p2_2.webp",
+   "pal": "ocre",
+   "amb": [
+    {
+     "src": "sfx/d2/estacion.mp3",
+     "vol": 0.35
+    },
+    {
+     "src": "sfx/d2/tren.mp3",
+     "vol": 0.25
+    }
+   ],
+   "espera": 0,
+   "hechos": [],
+   "personajes": [],
+   "inter": {
+    "tipo": "puerta",
+    "desc": "Puerta corredera del vagón de equipajes en 3D: el alumno arrastra la hoja (o Espacio/clic), sale la luz del farol y la cámara entra en el vagón.",
+    "dentro": "img/d2/p2_2.webp",
+    "puerta": "img/d2/p2_2a.webp",
+    "recursos": [
+     "img/d2/p2_2.webp",
+     "img/inter/d2_puerta_muro.webp",
+     "img/inter/d2_puerta_hoja.webp",
+     "sfx/d2/puerta_corredera.mp3",
+     "sfx/d2/tren_arranca.mp3",
+     "sfx/d2/tabla_golpe.mp3",
+     "mus/musica_tren.mp3"
+    ],
+    "muro": "img/inter/d2_puerta_muro.webp",
+    "hoja": "img/inter/d2_puerta_hoja.webp",
+    "hueco": [
+     0.435,
+     0,
+     1,
+     1
+    ],
+    "prof": 450,
+    "musica": {
+     "src": "mus/musica_tren.mp3",
+     "vol": 0.7
+    }
    }
   },
   {
    "id": "P2.2",
    "desc": "El peor vagón del tren: coche de equipajes pegado a la locomotora, casi sin ventanas (solo una, pequeña); cajas, sacos y maletas; un farol de queroseno; humo que se cuela por las rendijas. En su rincón, felices, la cuadrilla —Teddy (trompeta), Ruby (tabla de lavar), Buster (maleta con escobillas) y Slim (banjo)— toca. Un ratón asoma entre los sacos. Xan, apartado, sentado sobre su estuche grande.",
    "img": "img/d2/p2_2.webp",
-   "var": {
-    "TEDDY": "img/d2/p2_2_teddy.webp",
-    "RUBY": "img/d2/p2_2_ruby.webp",
-    "SLIM": "img/d2/p2_2_slim.webp",
-    "XAN": "img/d2/p2_2_xan.webp",
-    "BUSTER": "img/d2/p2_2_buster.webp"
-   },
    "personajes": [
     "RUBY",
     "XAN",
@@ -153,8 +234,8 @@ BLUES.dia(2, {
    "pal": "ocre",
    "amb": [
     {
-     "src": "sfx/d2/tren_dentro.mp3",
-     "vol": 0.5
+     "src": "sfx/d2/vagon.mp3",
+     "vol": 0.8
     }
    ],
    "mus": {
@@ -195,7 +276,24 @@ BLUES.dia(2, {
      "id": "d2_013",
      "quien": "TEDDY",
      "texto": "Esta es Ruby, la reina de la tabla de lavar.",
-     "voz": "voz/d2/d2_013.mp3"
+     "voz": "voz/d2/d2_013.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/tabla_raspa_arriba.mp3",
+       "t": 0.5,
+       "vol": 0.7
+      },
+      {
+       "src": "sfx/d2/tabla_raspa_abajo.mp3",
+       "t": 0.85,
+       "vol": 0.7
+      },
+      {
+       "src": "sfx/d2/tabla_golpe.mp3",
+       "t": 1.2,
+       "vol": 0.7
+      }
+     ]
     },
     {
      "id": "d2_014",
@@ -207,7 +305,14 @@ BLUES.dia(2, {
      "id": "d2_015",
      "quien": "BUSTER",
      "texto": "Dentro llevo los calcetines. Fuera, el ritmo.",
-     "voz": "voz/d2/d2_015.mp3"
+     "voz": "voz/d2/d2_015.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/escobillas_100.mp3",
+       "t": 0.9,
+       "vol": 0.22
+      }
+     ]
     },
     {
      "id": "d2_016",
@@ -225,13 +330,28 @@ BLUES.dia(2, {
      "id": "d2_077",
      "quien": "BUSTER",
      "texto": "Tranquila, que es de la casa. Viaja con nosotros desde Nueva Orleans.",
-     "voz": "voz/d2/d2_077.mp3"
+     "voz": "voz/d2/d2_077.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/raton.mp3",
+       "t": 0.1,
+       "vol": 0.6
+      }
+     ],
+     "var": "RECURSO_RATON"
     },
     {
      "id": "d2_086",
      "quien": "SLIM",
      "texto": "Es el único de este vagón que no paga billete.",
-     "voz": "voz/d2/d2_086.mp3"
+     "voz": "voz/d2/d2_086.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/raton.mp3",
+       "t": 0.3,
+       "vol": 0.5
+      }
+     ]
     },
     {
      "id": "d2_018",
@@ -255,19 +375,29 @@ BLUES.dia(2, {
      "id": "d2_021",
      "quien": "RUBY",
      "texto": "Nosotros, a buscar fortuna. Desde la riada del año pasado, en casa no queda nada que buscar.",
-     "voz": "voz/d2/d2_021.mp3"
+     "voz": "voz/d2/d2_021.mp3",
+     "var": "RECURSO_INSTRUMENTOS"
     },
     {
      "id": "d2_079",
      "quien": "RUBY",
      "texto": "Mira: pases para tocar después del cierre en el Ivory Room. ¡En Harlem! Una «jam», lo llaman ahora.",
-     "voz": "voz/d2/d2_079.mp3"
+     "voz": "voz/d2/d2_079.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/papel.mp3",
+       "t": 0,
+       "vol": 0.45
+      }
+     ],
+     "var": "RECURSO_PASES"
     },
     {
      "id": "d2_022",
      "quien": "TEDDY",
      "texto": "Cuando se van los ricos, suben los músicos de verdad. Allí uno se hace famoso en una noche.",
-     "voz": "voz/d2/d2_022.mp3"
+     "voz": "voz/d2/d2_022.mp3",
+     "var": "TEDDY_CERCA"
     },
     {
      "id": "d2_023",
@@ -295,41 +425,43 @@ BLUES.dia(2, {
    },
    "foco": {
     "XAN": [
-     0.2,
-     0.33,
-     0.113
+     0.18,
+     0.305,
+     0.15
     ],
     "TEDDY": [
-     0.37,
-     0.2,
-     0.113
+     0.34,
+     0.185,
+     0.15
     ],
     "RUBY": [
-     0.6,
-     0.25,
-     0.113
+     0.585,
+     0.245,
+     0.145
     ],
     "BUSTER": [
-     0.74,
-     0.37,
-     0.124
+     0.715,
+     0.34,
+     0.175
     ],
     "SLIM": [
-     0.87,
-     0.15,
-     0.107
+     0.867,
+     0.148,
+     0.163
     ]
+   },
+   "var": {
+    "RECURSO_INSTRUMENTOS": "img/d2/p2_2_recurso_instrumentos.webp",
+    "RECURSO_PASES": "img/d2/p2_2_recurso_pases.webp",
+    "RECURSO_RATON": "img/d2/p2_2_recurso_raton.webp",
+    "RUBY_CERCA": "img/d2/p2_2_ruby_cerca.webp",
+    "TEDDY_CERCA": "img/d2/p2_2_teddy_cerca.webp"
    }
   },
   {
    "id": "P2.3",
    "desc": "Mismo vagón, a la luz del farol. Teddy, de pie entre los sacos, toca un solo con la sordina de desatascador; Xan escribe a toda prisa en su libreta de pentagramas; Ruby mira por encima de su hombro.",
    "img": "img/d2/p2_3.webp",
-   "var": {
-    "TEDDY": "img/d2/p2_3_teddy.webp",
-    "XAN": "img/d2/p2_3_xan.webp",
-    "RUBY": "img/d2/p2_3_ruby.webp"
-   },
    "personajes": [
     "TEDDY",
     "XAN",
@@ -338,8 +470,8 @@ BLUES.dia(2, {
    "pal": "ocre",
    "amb": [
     {
-     "src": "sfx/d2/tren_dentro.mp3",
-     "vol": 0.4
+     "src": "sfx/d2/vagon.mp3",
+     "vol": 0.8
     }
    ],
    "hechos": [
@@ -350,7 +482,19 @@ BLUES.dia(2, {
      "id": "d2_024",
      "quien": "TEDDY",
      "texto": "¿Qué haces, gallego? ¿Me estás haciendo un retrato?",
-     "voz": "voz/d2/d2_024.mp3"
+     "voz": "voz/d2/d2_024.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/lapiz_trazo.mp3",
+       "t": 0.2,
+       "vol": 0.45
+      },
+      {
+       "src": "sfx/d2/lapiz_trazo.mp3",
+       "t": 1.1,
+       "vol": 0.4
+      }
+     ]
     },
     {
      "id": "d2_025",
@@ -362,31 +506,46 @@ BLUES.dia(2, {
      "id": "d2_026",
      "quien": "TEDDY",
      "texto": "¿Escribiendo? ¿Para qué escribes? Esto no se escribe, se siente.",
-     "voz": "voz/d2/d2_026.mp3"
+     "voz": "voz/d2/d2_026.mp3",
+     "var": "TEDDY_CERCA"
     },
     {
      "id": "d2_027",
      "quien": "XAN",
-     "texto": "Todo se puede escribir. Mira: sol, si bemol, si, re…",
-     "voz": "voz/d2/d2_027.mp3"
-    },
-    {
-     "id": "d2_028",
-     "quien": "TEDDY",
-     "texto": "A ver, tócalo tal cual.",
-     "voz": "voz/d2/d2_028.mp3"
+     "texto": "Todo se puede escribir. Mira: sol, si bemol…",
+     "voz": "voz/d2/d2_027.mp3",
+     "var": "RECURSO_LIBRETA",
+     "espera": 0.4
     }
    ],
    "inter": {
     "tipo": "escribe",
-    "desc": "Las notas del solo aparecen en la libreta de Xan; suena «tal cual está escrito» (rígido) y después Teddy lo toca de verdad, con swing y un bend: no se parece."
+    "desc": "Xan apunta de memoria el solo de Teddy en una página de su libreta (solo se oye el lápiz); luego Teddy lo toca de verdad (lick de Splice con swing): mismas notas, pero no suenan como están escritas.",
+    "lineas": {
+     "deverdad": [
+      {
+       "id": "d2_r007",
+       "quien": "TEDDY",
+       "texto": "Ahora, de verdad.",
+       "voz": "voz/d2/d2_r007.mp3"
+      }
+     ]
+    },
+    "recursos": [
+     "sfx/d2/trompeta_lick.mp3",
+     "sfx/d2/lapiz_trazo.mp3",
+     "img/inter/d2_libreta_hoja.webp",
+     "img/inter/d2_lapiz.webp",
+     "img/inter/d2_trompeta_abierta.webp"
+    ]
    },
    "despues": [
     {
      "id": "d2_029",
      "quien": "TEDDY",
      "texto": "¿Lo oyes? Lo tuyo son las notas. Lo mío es cómo van. Eso no cabe en tu libreta.",
-     "voz": "voz/d2/d2_029.mp3"
+     "voz": "voz/d2/d2_029.mp3",
+     "var": "TEDDY_CERCA"
     },
     {
      "id": "d2_030",
@@ -403,19 +562,44 @@ BLUES.dia(2, {
    ],
    "nombre": "Esto no se escribe",
    "guion_sonido": {
-    "sfx": "Solo de trompeta con sordina («wa-wa»)."
+    "sfx": "Lápiz al escribir; después, el solo de trompeta abierta con swing."
+   },
+   "foco": {
+    "TEDDY": [
+     0.25,
+     0.15,
+     0.14
+    ],
+    "BUSTER": [
+     0.43,
+     0.24,
+     0.115
+    ],
+    "SLIM": [
+     0.546,
+     0.193,
+     0.134
+    ],
+    "RUBY": [
+     0.646,
+     0.42,
+     0.178
+    ],
+    "XAN": [
+     0.8,
+     0.395,
+     0.21
+    ]
+   },
+   "var": {
+    "RECURSO_LIBRETA": "img/d2/p2_3_recurso_libreta.webp",
+    "TEDDY_CERCA": "img/d2/p2_3_teddy_cerca.webp"
    }
   },
   {
    "id": "P2.4",
    "desc": "En el rincón del vagón, Ruby, sentada sobre una caja frente a Xan, da palmas; Buster marca con las escobillas en la maleta; los demás miran.",
    "img": "img/d2/p2_4.webp",
-   "var": {
-    "RUBY": "img/d2/p2_4_ruby.webp",
-    "XAN": "img/d2/p2_4_xan.webp",
-    "BUSTER": "img/d2/p2_4_buster.webp",
-    "TEDDY": "img/d2/p2_4_teddy.webp"
-   },
    "personajes": [
     "RUBY",
     "XAN",
@@ -425,8 +609,8 @@ BLUES.dia(2, {
    "pal": "ocre",
    "amb": [
     {
-     "src": "sfx/d2/tren_dentro.mp3",
-     "vol": 0.3
+     "src": "sfx/d2/vagon.mp3",
+     "vol": 0.8
     }
    ],
    "hechos": [
@@ -444,19 +628,31 @@ BLUES.dia(2, {
      "id": "d2_033",
      "quien": "XAN",
      "texto": "Pues… en el uno y en el tres. Como la banda de música en el Cantón.",
-     "voz": "voz/d2/d2_033.mp3"
+     "voz": "voz/d2/d2_033.mp3",
+     "var": "RECURSO_PALMAS"
     },
     {
      "id": "d2_034",
      "quien": "RUBY",
      "texto": "Aquí, en el dos y en el cuatro. Escucha a Buster.",
-     "voz": "voz/d2/d2_034.mp3"
+     "voz": "voz/d2/d2_034.mp3",
+     "var": "RUBY_CERCA",
+     "espera": 0.3
     },
     {
      "id": "d2_035",
      "quien": "BUSTER",
      "texto": "Un… ¡DOS!… tres… ¡CUATRO!",
-     "voz": "voz/d2/d2_035.mp3"
+     "voz": "voz/d2/d2_035.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/buster_cuenta.mp3",
+       "t": 0,
+       "vol": 0.75
+      }
+     ],
+     "var": "RECURSO_MALETA",
+     "espera": 1.6
     },
     {
      "id": "d2_036",
@@ -494,49 +690,22 @@ BLUES.dia(2, {
         "voz": "voz/d2/d2_r003.mp3"
        }
       ]
-     }
+     },
+     "recursos": [
+      "sfx/d2/tabla_golpe.mp3",
+      "sfx/d2/tabla_raspa_arriba.mp3",
+      "sfx/d2/tabla_raspa_abajo.mp3",
+      "img/inter/d2_tabla.webp",
+      "img/inter/d2_manos.webp",
+      "img/inter/d2_maleta.webp",
+      "sfx/d2/palma_1.mp3",
+      "sfx/d2/palma_2.mp3",
+      "sfx/d2/palma_3.mp3"
+     ]
     },
     {
      "tipo": "swing",
      "desc": "El primer compás del tema (sol fa sol si, sol sol): oírlo sin swing y con swing; luego el alumno lo toca en el teclado y se le dice, par a par de corcheas, si va «recto» o «con swing».",
-     "antes": [
-      {
-       "id": "d2_037",
-       "quien": "RUBY",
-       "texto": "Y ahora, lo importante. Cuando escribes dos corcheas, ¿cómo las tocas?",
-       "voz": "voz/d2/d2_037.mp3"
-      },
-      {
-       "id": "d2_038",
-       "quien": "XAN",
-       "texto": "Iguales. Ta-ta, ta-ta.",
-       "voz": "voz/d2/d2_038.mp3"
-      },
-      {
-       "id": "d2_039",
-       "quien": "RUBY",
-       "texto": "Qué aburrido. Aquí van así: taaa-ta, taaa-ta. Larga y corta.",
-       "voz": "voz/d2/d2_039.mp3"
-      },
-      {
-       "id": "d2_040",
-       "quien": "TEDDY",
-       "texto": "Más o menos como un tresillo con las dos primeras notas pegadas.",
-       "voz": "voz/d2/d2_040.mp3"
-      },
-      {
-       "id": "d2_041",
-       "quien": "XAN",
-       "texto": "O sea: se escriben dos corcheas… pero se tocan como un tresillo de negra y corchea. ¡Eso se puede escribir!",
-       "voz": "voz/d2/d2_041.mp3"
-      },
-      {
-       "id": "d2_042",
-       "quien": "TEDDY",
-       "texto": "Escribirlo, sí. Sentirlo, a ver si eres capaz.",
-       "voz": "voz/d2/d2_042.mp3"
-      }
-     ],
      "lineas": {
       "recto": [
        {
@@ -554,34 +723,92 @@ BLUES.dia(2, {
         "voz": "voz/d2/d2_r005.mp3"
        }
       ],
-      "fin": [
+      "explica": [
        {
-        "id": "d2_r006",
+        "id": "d2_037",
+        "quien": "RUBY",
+        "texto": "Y ahora, lo importante. Cuando escribes dos corcheas, ¿cómo las tocas?",
+        "voz": "voz/d2/d2_037.mp3"
+       },
+       {
+        "id": "d2_038",
+        "quien": "XAN",
+        "texto": "Iguales. Ta-ta, ta-ta.",
+        "voz": "voz/d2/d2_038.mp3"
+       },
+       {
+        "id": "d2_039",
+        "quien": "RUBY",
+        "texto": "Qué aburrido. Aquí van así: taaa-ta, taaa-ta. Larga y corta.",
+        "voz": "voz/d2/d2_039.mp3"
+       },
+       {
+        "id": "d2_040",
         "quien": "TEDDY",
-        "texto": "Bueno… no está mal para un gallego.",
-        "voz": "voz/d2/d2_r006.mp3"
+        "texto": "Más o menos como un tresillo con las dos primeras notas pegadas.",
+        "voz": "voz/d2/d2_040.mp3"
+       },
+       {
+        "id": "d2_041",
+        "quien": "XAN",
+        "texto": "O sea: se escriben dos corcheas… pero se tocan como un tresillo de negra y corchea. ¡Eso se puede escribir!",
+        "voz": "voz/d2/d2_041.mp3"
+       },
+       {
+        "id": "d2_042",
+        "quien": "TEDDY",
+        "texto": "Escribirlo, sí. Sentirlo, a ver si eres capaz.",
+        "voz": "voz/d2/d2_042.mp3"
        }
       ]
-     }
+     },
+     "recursos": [
+      "inst/d2/acordeon/64.mp3",
+      "inst/d2/acordeon/69.mp3"
+     ]
     }
    ],
    "nombre": "Larga y corta",
    "guion_sonido": {
     "amb": "Traqueteo del tren."
+   },
+   "foco": {
+    "RUBY": [
+     0.22,
+     0.29,
+     0.195
+    ],
+    "BUSTER": [
+     0.39,
+     0.27,
+     0.155
+    ],
+    "XAN": [
+     0.585,
+     0.3,
+     0.21
+    ],
+    "TEDDY": [
+     0.77,
+     0.06,
+     0.12
+    ],
+    "SLIM": [
+     0.93,
+     0.34,
+     0.135
+    ]
+   },
+   "var": {
+    "RECURSO_PALMAS": "img/d2/p2_4_recurso_palmas.webp",
+    "RUBY_CERCA": "img/d2/p2_2_ruby_cerca.webp",
+    "RECURSO_MALETA": "img/d2/p2_4_recurso_maleta.webp"
    }
   },
   {
    "id": "P2.5",
    "desc": "George entra en el vagón por la puerta corredera del fondo con una bandeja: pan blanco, tarta de nueces y dos periódicos. Detrás de él, por la puerta abierta, se ve el pasillo hacia los coches Pullman: luz cálida, caoba y latón.",
    "img": "img/d2/p2_5.webp",
-   "var": {
-    "GEORGE": "img/d2/p2_5_george.webp",
-    "BUSTER": "img/d2/p2_5_buster.webp",
-    "XAN": "img/d2/p2_5_xan.webp",
-    "TEDDY": "img/d2/p2_5_teddy.webp",
-    "SLIM": "img/d2/p2_5_slim.webp",
-    "RUBY": "img/d2/p2_5_ruby.webp"
-   },
    "personajes": [
     "GEORGE",
     "BUSTER",
@@ -593,8 +820,8 @@ BLUES.dia(2, {
    "pal": "caoba",
    "amb": [
     {
-     "src": "sfx/d2/tren_dentro.mp3",
-     "vol": 0.4
+     "src": "sfx/d2/vagon.mp3",
+     "vol": 0.8
     }
    ],
    "hechos": [
@@ -609,96 +836,194 @@ BLUES.dia(2, {
      "id": "d2_043",
      "quien": "GEORGE",
      "texto": "Servicio especial para el vagón del humo: lo que sobró en el coche restaurante.",
-     "voz": "voz/d2/d2_043.mp3"
+     "voz": "voz/d2/d2_043.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/puerta_corredera.mp3",
+       "t": 0,
+       "vol": 0.6
+      },
+      {
+       "src": "sfx/d2/vajilla.mp3",
+       "t": 1.6,
+       "vol": 0.5
+      }
+     ],
+     "var": "RECURSO_BANDEJA"
     },
     {
      "id": "d2_044",
      "quien": "BUSTER",
      "texto": "¡Pan blanco y tarta de nueces! Los ricos comen como reyes.",
-     "voz": "voz/d2/d2_044.mp3"
+     "voz": "voz/d2/d2_044.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/vajilla.mp3",
+       "t": 0.2,
+       "vol": 0.45
+      }
+     ],
+     "var": "RECURSO_BANDEJA"
     },
     {
      "id": "d2_045",
      "quien": "XAN",
      "texto": "Gracias, señor George.",
-     "voz": "voz/d2/d2_045.mp3"
+     "voz": "voz/d2/d2_045.mp3",
+     "var": "RECURSO_BANDEJA"
     },
     {
      "id": "d2_046",
      "quien": "GEORGE",
      "texto": "Me llamo Walter. Pero a todos los mozos nos llaman George, como al señor Pullman, el dueño.",
-     "voz": "voz/d2/d2_046.mp3"
+     "voz": "voz/d2/d2_046.mp3",
+     "var": "GEORGE_CERCA"
     },
     {
      "id": "d2_047",
      "quien": "GEORGE",
      "texto": "Hace tres años nos juntamos en un sindicato. Para empezar, que nos llamen por nuestro nombre.",
-     "voz": "voz/d2/d2_047.mp3"
+     "voz": "voz/d2/d2_047.mp3",
+     "var": "GEORGE_CERCA"
     },
     {
      "id": "d2_048",
      "quien": "GEORGE",
      "texto": "Y el periódico de ayer: un caballero del Pullman lo ha dejado entre las migas.",
-     "voz": "voz/d2/d2_048.mp3"
+     "voz": "voz/d2/d2_048.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/papel.mp3",
+       "t": 0.2,
+       "vol": 0.55
+      }
+     ],
+     "var": "RECURSO_PERIODICO"
     },
     {
      "id": "d2_080",
      "quien": "GEORGE",
      "texto": "Y este otro lo repartimos a escondidas: el Chicago Defender. Trabajos en el Norte.",
-     "voz": "voz/d2/d2_080.mp3"
-    },
-    {
-     "id": "d2_049",
-     "quien": "TEDDY",
-     "texto": "«Berlín. Otra vez abuchean la música de un tal Schoenberg: música sin tonalidad».",
-     "voz": "voz/d2/d2_049.mp3"
-    },
-    {
-     "id": "d2_050",
-     "quien": "SLIM",
-     "texto": "¿Sin tonalidad? ¿Y cómo saben cuándo se acaba?",
-     "voz": "voz/d2/d2_050.mp3"
-    },
-    {
-     "id": "d2_051",
-     "quien": "RUBY",
-     "texto": "«Alemania. Un inventor patenta una cinta que guarda el sonido».",
-     "voz": "voz/d2/d2_051.mp3"
-    },
-    {
-     "id": "d2_052",
-     "quien": "BUSTER",
-     "texto": "¿Sonido en papel? Que me guarden a mí la tarta.",
-     "voz": "voz/d2/d2_052.mp3"
-    },
-    {
-     "id": "d2_053",
-     "quien": "TEDDY",
-     "texto": "«El jueves, el señor Gershwin estrena en el Carnegie Hall una obra con bocinas de taxi de París».",
-     "voz": "voz/d2/d2_053.mp3"
-    },
-    {
-     "id": "d2_054",
-     "quien": "SLIM",
-     "texto": "¿Bocinas de taxi? ¡Eso lo tocamos nosotros en la calle, gratis!",
-     "voz": "voz/d2/d2_054.mp3"
+     "voz": "voz/d2/d2_080.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/papel.mp3",
+       "t": 0,
+       "vol": 0.45
+      }
+     ],
+     "var": "RECURSO_PERIODICO"
     }
    ],
    "nombre": "Las sobras del Pullman",
    "guion_sonido": {
     "sfx": "Puerta corredera, vajilla; el tren más fuerte al abrir."
+   },
+   "foco": {
+    "XAN": [
+     0.355,
+     0.153,
+     0.183
+    ],
+    "GEORGE": [
+     0.567,
+     0.16,
+     0.2
+    ],
+    "BUSTER": [
+     0.2,
+     0.4,
+     0.22
+    ],
+    "RUBY": [
+     0.34,
+     0.448,
+     0.175
+    ],
+    "TEDDY": [
+     0.8,
+     0.36,
+     0.17
+    ],
+    "SLIM": [
+     0.925,
+     0.467,
+     0.207
+    ]
+   },
+   "inter": {
+    "tipo": "periodico",
+    "desc": "El periódico de ayer sobre un baúl: el alumno elige qué recorte se lee (Schoenberg, la cinta de Pfleumer, Gershwin); cada uno con sus frases.",
+    "lineas": {
+     "schoenberg": [
+      {
+       "id": "d2_049",
+       "quien": "TEDDY",
+       "texto": "«Berlín. Otra vez abuchean la música de un tal Schoenberg: música sin tonalidad».",
+       "voz": "voz/d2/d2_049.mp3"
+      },
+      {
+       "id": "d2_050",
+       "quien": "SLIM",
+       "texto": "¿Sin tonalidad? ¿Y cómo saben cuándo se acaba?",
+       "voz": "voz/d2/d2_050.mp3"
+      }
+     ],
+     "cinta": [
+      {
+       "id": "d2_051",
+       "quien": "RUBY",
+       "texto": "«Alemania. Un inventor patenta una cinta que guarda el sonido».",
+       "voz": "voz/d2/d2_051.mp3"
+      },
+      {
+       "id": "d2_052",
+       "quien": "BUSTER",
+       "texto": "¿Sonido en papel? Que me guarden a mí la tarta.",
+       "voz": "voz/d2/d2_052.mp3"
+      },
+      {
+       "id": "d2_087",
+       "quien": "XAN",
+       "texto": "Aquella cinta era de papel, avoa. Años después la harían de plástico.",
+       "voz": "voz/d2/d2_087.mp3",
+       "var": "-"
+      }
+     ],
+     "gershwin": [
+      {
+       "id": "d2_053",
+       "quien": "TEDDY",
+       "texto": "«El jueves, el señor Gershwin estrena en el Carnegie Hall una obra con bocinas de taxi de París».",
+       "voz": "voz/d2/d2_053.mp3"
+      },
+      {
+       "id": "d2_054",
+       "quien": "SLIM",
+       "texto": "¿Bocinas de taxi? ¡Eso lo tocamos nosotros en la calle, gratis!",
+       "voz": "voz/d2/d2_054.mp3"
+      }
+     ]
+    },
+    "recursos": [
+     "sfx/d2/papel.mp3",
+     "img/inter/d2_periodico.webp",
+     "img/inter/d2_foto_schoenberg.webp"
+    ],
+    "fotos": {
+     "schoenberg": "img/inter/d2_foto_schoenberg.webp"
+    }
+   },
+   "var": {
+    "GEORGE_CERCA": "img/d2/p2_5_george_cerca.webp",
+    "RECURSO_BANDEJA": "img/d2/p2_5_recurso_bandeja.webp",
+    "RECURSO_PERIODICO": "img/d2/p2_5_recurso_periodico.webp"
    }
   },
   {
    "id": "P2.6",
    "desc": "Xan, animado, saca su acordeón de teclado (de tamaño medio) para tocar con ellos. Al fondo del vagón, en la penumbra, Slim, sin mirarle. Ruby, a su lado.",
    "img": "img/d2/p2_6.webp",
-   "var": {
-    "SLIM": "img/d2/p2_6_slim.webp",
-    "RUBY": "img/d2/p2_6_ruby.webp",
-    "XAN": "img/d2/p2_6_xan.webp",
-    "TEDDY": "img/d2/p2_6_teddy.webp"
-   },
    "personajes": [
     "XAN",
     "TEDDY",
@@ -708,8 +1033,8 @@ BLUES.dia(2, {
    "pal": "ocre",
    "amb": [
     {
-     "src": "sfx/d2/tren_dentro.mp3",
-     "vol": 0.4
+     "src": "sfx/d2/vagon.mp3",
+     "vol": 0.8
     }
    ],
    "lineas": [
@@ -723,7 +1048,15 @@ BLUES.dia(2, {
      "id": "d2_056",
      "quien": "TEDDY",
      "texto": "Venga, a ver ese cajón.",
-     "voz": "voz/d2/d2_056.mp3"
+     "voz": "voz/d2/d2_056.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/acordeon_nana.mp3",
+       "t": 1.2,
+       "vol": 0.6
+      }
+     ],
+     "espera": 3.5
     },
     {
      "id": "d2_057",
@@ -747,19 +1080,23 @@ BLUES.dia(2, {
      "id": "d2_060",
      "quien": "XAN",
      "texto": "Suena a mi abuela.",
-     "voz": "voz/d2/d2_060.mp3"
+     "voz": "voz/d2/d2_060.mp3",
+     "var": "XAN_CERCA",
+     "espera": 3.0
     },
     {
      "id": "d2_061",
      "quien": "RUBY",
      "texto": "Pues tu abuela suena bien.",
-     "voz": "voz/d2/d2_061.mp3"
+     "voz": "voz/d2/d2_061.mp3",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d2_062",
      "quien": "XAN",
      "texto": "¿Y esto está muy lejos de Harlem? «Hunterfly Road, Weeksville».",
-     "voz": "voz/d2/d2_062.mp3"
+     "voz": "voz/d2/d2_062.mp3",
+     "var": "RECURSO_NOTA"
     },
     {
      "id": "d2_063",
@@ -778,30 +1115,34 @@ BLUES.dia(2, {
    "hechos": [],
    "foco": {
     "XAN": [
-     0.37,
-     0.2,
-     0.113
+     0.367,
+     0.236,
+     0.195
     ],
     "RUBY": [
-     0.58,
+     0.554,
      0.28,
-     0.113
+     0.163
     ],
     "TEDDY": [
-     0.15,
-     0.22,
-     0.113
+     0.137,
+     0.218,
+     0.145
     ],
     "BUSTER": [
-     0.755,
-     0.28,
-     0.109
+     0.737,
+     0.276,
+     0.144
     ],
     "SLIM": [
-     0.89,
-     0.07,
-     0.113
+     0.87,
+     0.078,
+     0.141
     ]
+   },
+   "var": {
+    "RECURSO_NOTA": "img/d2/p2_6_recurso_nota.webp",
+    "XAN_CERCA": "img/d2/p2_6_xan_cerca.webp"
    }
   },
   {
@@ -862,7 +1203,7 @@ BLUES.dia(2, {
     "desde": "Nueva Orleans",
     "hasta": "Washington",
     "sub": "Treinta horas de vía después · cambio de vagón",
-    "dur": 6.5,
+    "dur": 7,
     "silbato": "sfx/d2/silbato_vapor.mp3",
     "etiq": {
      "desde": [
@@ -874,19 +1215,46 @@ BLUES.dia(2, {
       1.0
      ]
     },
-    "volSilbato": 0.5
+    "volSilbato": 0.5,
+    "arrastrar": "solo",
+    "paradas": [
+     {
+      "i": 2,
+      "n": "Birmingham"
+     },
+     {
+      "i": 3,
+      "n": "Atlanta"
+     },
+     {
+      "i": 5,
+      "n": "Charlotte"
+     },
+     {
+      "i": 7,
+      "n": "Lynchburg"
+     }
+    ],
+    "musA": {
+     "src": "mus/d2_armonica.mp3",
+     "vol": 0.55,
+     "bucle": true
+    },
+    "antes": {
+     "tit": "Rumbo a Washington",
+     "txt": "Treinta horas de vía por el Sur, en el vagón del humo: Misisipi, Alabama, Georgia, las Carolinas y Virginia. ¿Por qué Washington? Porque allí el tren cambia de vagones."
+    }
+   },
+   "mus": {
+    "src": "mus/musica_tren.mp3",
+    "vol": 0.45,
+    "bucle": true
    }
   },
   {
    "id": "P2.7",
    "desc": "Por la puerta corredera abierta del vagón, el andén de Washington: viajeros que se cambian de vagón. La cuadrilla, en su rincón, no se mueve.",
    "img": "img/d2/p2_7.webp",
-   "var": {
-    "RUBY": "img/d2/p2_7_ruby.webp",
-    "TEDDY": "img/d2/p2_7_teddy.webp",
-    "BUSTER": "img/d2/p2_7_buster.webp",
-    "XAN": "img/d2/p2_7_xan.webp"
-   },
    "personajes": [
     "RUBY",
     "TEDDY",
@@ -897,7 +1265,7 @@ BLUES.dia(2, {
    "amb": [
     {
      "src": "sfx/d2/estacion.mp3",
-     "vol": 0.4
+     "vol": 0.5
     }
    ],
    "hechos": [
@@ -908,7 +1276,21 @@ BLUES.dia(2, {
      "id": "d2_065",
      "quien": "RUBY",
      "texto": "¡Washington! Desde aquí cada uno se sienta donde quiere.",
-     "voz": "voz/d2/d2_065.mp3"
+     "voz": "voz/d2/d2_065.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/tren_frena.mp3",
+       "t": 0,
+       "vol": 0.45
+      },
+      {
+       "src": "sfx/d2/puerta_corredera.mp3",
+       "t": 1.2,
+       "vol": 0.55
+      }
+     ],
+     "var": "RECURSO_UNION",
+     "espera": 0.6
     },
     {
      "id": "d2_081",
@@ -948,36 +1330,39 @@ BLUES.dia(2, {
    "foco": {
     "TEDDY": [
      0.14,
-     0.27,
-     0.129
+     0.289,
+     0.149
     ],
     "RUBY": [
      0.25,
-     0.18,
-     0.107
+     0.181,
+     0.135
     ],
     "BUSTER": [
-     0.4,
-     0.16,
-     0.118
+     0.42,
+     0.149,
+     0.149
     ],
     "SLIM": [
-     0.56,
-     0.16,
-     0.093
+     0.57,
+     0.171,
+     0.135
     ],
     "XAN": [
-     0.53,
-     0.43,
-     0.118
+     0.56,
+     0.507,
+     0.162
     ]
+   },
+   "var": {
+    "RECURSO_UNION": "img/d2/p2_7_recurso_union.webp"
    }
   },
   {
    "id": "P2.7m",
    "nombre": "Mapa del tren: Washington → Nueva York",
    "desc": "El mapa ferroviario, más cerca: la vía sigue de Washington a Nueva York por Baltimore y Filadelfia.",
-   "img": "img/d2/mapa_tren.webp",
+   "img": "img/d2/mapa_ne.webp",
    "pal": "tren",
    "amb": [
     {
@@ -992,40 +1377,47 @@ BLUES.dia(2, {
     "tipo": "tren",
     "ruta": [
      [
-      0.685,
-      0.37
+      0.146,
+      0.77
      ],
      [
-      0.7,
-      0.34
+      0.233,
+      0.645
      ],
      [
-      0.715,
-      0.31
+      0.3,
+      0.585
      ],
      [
-      0.727,
+      0.363,
+      0.533
+     ],
+     [
+      0.442,
+      0.511
+     ],
+     [
+      0.5625,
+      0.382
+     ],
+     [
+      0.64,
       0.29
      ],
      [
-      0.74,
-      0.255
+      0.725,
+      0.18
      ],
      [
-      0.755,
-      0.222
+      0.758,
+      0.175
      ]
     ],
     "desde": "Washington",
     "hasta": "Nueva York",
     "sub": "Manhattan, al atardecer",
-    "dur": 5.5,
+    "dur": 7,
     "silbato": "sfx/d2/silbato_vapor.mp3",
-    "encuadre": [
-     2.3,
-     0.72,
-     0.3
-    ],
     "etiq": {
      "desde": [
       1.4,
@@ -1036,19 +1428,86 @@ BLUES.dia(2, {
       -1.6
      ]
     },
-    "volSilbato": 0.5
+    "volSilbato": 0.5,
+    "arrastrar": "solo",
+    "paradas": [
+     {
+      "i": 1,
+      "n": "Baltimore"
+     },
+     {
+      "i": 5,
+      "n": "Filadelfia"
+     }
+    ],
+    "musA": {
+     "src": "mus/d2_harlem.mp3",
+     "vol": 0.55,
+     "bucle": true
+    },
+    "antes": {
+     "tit": "Rumbo a Nueva York",
+     "txt": "Último tramo: Baltimore, Filadelfia y, al atardecer, Manhattan. ¿Por qué Nueva York? Porque en Harlem esperan los pases del Ivory Room… y Xan busca a su abuelo."
+    }
+   },
+   "mus": {
+    "src": "mus/d2_armonica.mp3",
+    "vol": 0.55,
+    "bucle": true
+   }
+  },
+  {
+   "id": "P2.8a",
+   "nombre": "El estor",
+   "desc": "El vagón al atardecer con el estor de la ventanilla bajado: el alumno lo sube y aparece Manhattan.",
+   "img": "img/d2/p2_8.webp",
+   "pal": "madrugada",
+   "amb": [
+    {
+     "src": "sfx/d2/vagon.mp3",
+     "vol": 0.8
+    }
+   ],
+   "espera": 0.2,
+   "hechos": [],
+   "personajes": [],
+   "inter": {
+    "tipo": "ventana",
+    "desc": "Subir el estor de la ventanilla arrastrando hacia arriba (o Espacio/clic): aparece el perfil de Manhattan.",
+    "zona": [
+     0.742,
+     0.19,
+     0.968,
+     0.665
+    ],
+    "recursos": [
+     "img/inter/d2_estor.webp",
+     "sfx/d2/tren_marcha.mp3"
+    ],
+    "quad": [
+     [
+      0.748,
+      0.21
+     ],
+     [
+      0.97,
+      0.12
+     ],
+     [
+      0.972,
+      0.7
+     ],
+     [
+      0.748,
+      0.675
+     ]
+    ]
    }
   },
   {
    "id": "P2.8",
    "desc": "Por la única ventanita del vagón, los rascacielos de Manhattan al atardecer; las caras de todos apretadas contra el cristal.",
    "img": "img/d2/p2_8.webp",
-   "var": {
-    "TEDDY": "img/d2/p2_8_teddy.webp",
-    "XAN": "img/d2/p2_8_xan.webp",
-    "RUBY": "img/d2/p2_8_ruby.webp",
-    "SLIM": "img/d2/p2_8_slim.webp"
-   },
    "personajes": [
     "XAN",
     "TEDDY",
@@ -1058,8 +1517,8 @@ BLUES.dia(2, {
    "pal": "madrugada",
    "amb": [
     {
-     "src": "sfx/d2/tren_frena.mp3",
-     "vol": 0.4
+     "src": "sfx/d2/vagon.mp3",
+     "vol": 0.8
     }
    ],
    "lineas": [
@@ -1067,13 +1526,15 @@ BLUES.dia(2, {
      "id": "d2_069",
      "quien": "XAN",
      "texto": "Avoa… si vieras esto. Edificios más altos que la Torre de Hércules… ¡y en fila!",
-     "voz": "voz/d2/d2_069.mp3"
+     "voz": "voz/d2/d2_069.mp3",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d2_070",
      "quien": "TEDDY",
      "texto": "¡Nueva York! Quitaos el polvo, que vamos a un sitio de mucho glamour.",
-     "voz": "voz/d2/d2_070.mp3"
+     "voz": "voz/d2/d2_070.mp3",
+     "var": "RECURSO_SKYLINE"
     },
     {
      "id": "d2_071",
@@ -1085,7 +1546,14 @@ BLUES.dia(2, {
      "id": "d2_084",
      "quien": "SLIM",
      "texto": "En la radio de Nashville hay uno que imita ese silbido con la armónica. ¡Tal cual!",
-     "voz": "voz/d2/d2_084.mp3"
+     "voz": "voz/d2/d2_084.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d2/silbato_vapor.mp3",
+       "t": 0.3,
+       "vol": 0.45
+      }
+     ]
     }
    ],
    "nombre": "Manhattan",
@@ -1097,30 +1565,34 @@ BLUES.dia(2, {
    },
    "foco": {
     "TEDDY": [
-     0.27,
-     0.32,
-     0.242
+     0.267,
+     0.265,
+     0.26
     ],
     "BUSTER": [
-     0.48,
-     0.2,
-     0.22
+     0.47,
+     0.16,
+     0.245
     ],
     "SLIM": [
-     0.63,
-     0.29,
-     0.187
+     0.62,
+     0.25,
+     0.26
     ],
     "RUBY": [
-     0.47,
-     0.47,
-     0.176
+     0.467,
+     0.418,
+     0.247
     ],
     "XAN": [
-     0.66,
-     0.64,
-     0.307
+     0.637,
+     0.56,
+     0.28
     ]
+   },
+   "var": {
+    "RECURSO_SKYLINE": "img/d2/p2_8_recurso_skyline.webp",
+    "XAN_CERCA": "img/d2/p2_8_xan_cerca.webp"
    }
   },
   {
@@ -1135,8 +1607,12 @@ BLUES.dia(2, {
    "pal": "neon",
    "amb": [
     {
+     "src": "sfx/d2/lluvia.mp3",
+     "vol": 0.75
+    },
+    {
      "src": "sfx/d2/calle_noche.mp3",
-     "vol": 0.5
+     "vol": 0.35
     }
    ],
    "lineas": [
@@ -1144,7 +1620,9 @@ BLUES.dia(2, {
      "id": "d2_073",
      "quien": "TEDDY",
      "texto": "Ahí lo tenéis. El Ivory Room.",
-     "voz": "voz/d2/d2_073.mp3"
+     "voz": "voz/d2/d2_073.mp3",
+     "var": "RECURSO_MARQUESINA",
+     "espera": 1.8
     },
     {
      "id": "d2_074",
@@ -1180,37 +1658,40 @@ BLUES.dia(2, {
    "guion_sonido": {
     "amb": "Calle de noche: coches antiguos, bocinas de época; música amortiguada que sale del club."
    },
-   "var": {
-    "TEDDY": "img/d2/p2_9_teddy.webp",
-    "SLIM": "img/d2/p2_9_slim.webp",
-    "RUBY": "img/d2/p2_9_ruby.webp"
-   },
    "foco": {
     "TEDDY": [
      0.12,
-     0.2,
-     0.073
+     0.186,
+     0.099
     ],
     "RUBY": [
      0.24,
-     0.23,
-     0.073
+     0.216,
+     0.099
     ],
     "SLIM": [
      0.36,
-     0.15,
-     0.073
+     0.136,
+     0.099
     ],
     "XAN": [
      0.31,
-     0.38,
-     0.073
+     0.366,
+     0.099
     ],
     "BUSTER": [
      0.43,
-     0.38,
-     0.073
+     0.366,
+     0.099
     ]
+   },
+   "mus": {
+    "src": "mus/d2_harlem.mp3",
+    "vol": 0.22,
+    "bucle": true
+   },
+   "var": {
+    "RECURSO_MARQUESINA": "img/d2/p2_9_recurso_marquesina.webp"
    }
   }
  ]
