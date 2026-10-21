@@ -28,7 +28,8 @@ BLUES.dia(3, {
     "texto": "Cóntocho todo, aínda que me custe. Ti ensináchesme que o que doe, cántase.",
     "voz": "voz/d3/d3_c03.mp3"
    }
-  ]
+  ],
+  "lado": "izq"
  },
  "planos": [
   {
@@ -38,24 +39,23 @@ BLUES.dia(3, {
    "pal": "neon",
    "amb": [
     {
-     "src": "sfx/d3/calle_noche.mp3",
-     "vol": 0.45
+     "src": "sfx/d3/calle_harlem.mp3",
+     "vol": 0.55
     }
    ],
    "lineas": [],
    "nombre": "Título",
-   "titulo": true
+   "titulo": true,
+   "mus": {
+    "src": "mus/d3_calle_jazz.mp3",
+    "vol": 0.5,
+    "bucle": true
+   }
   },
   {
    "id": "P3.1",
    "desc": "Noche en la Séptima Avenida: la marquesina del Teatro Lafayette; a su lado, la entrada del Ivory Room; en la acera, el Árbol de la Esperanza. Limusinas; ricos con pieles entrando por la puerta principal. La cuadrilla va hacia un callejón lateral; Xan, con su estuche grande.",
    "img": "img/d3/p3_1.webp",
-   "var": {
-    "TEDDY": "img/d3/p3_1_teddy.webp",
-    "RUBY": "img/d3/p3_1_ruby.webp",
-    "XAN": "img/d3/p3_1_xan.webp",
-    "SLIM": "img/d3/p3_1_slim.webp"
-   },
    "personajes": [
     "TEDDY",
     "RUBY",
@@ -65,8 +65,8 @@ BLUES.dia(3, {
    "pal": "neon",
    "amb": [
     {
-     "src": "sfx/d3/calle_noche.mp3",
-     "vol": 0.5
+     "src": "sfx/d3/calle_harlem.mp3",
+     "vol": 0.6
     }
    ],
    "hechos": [
@@ -79,19 +79,28 @@ BLUES.dia(3, {
      "id": "d3_001",
      "quien": "TEDDY",
      "texto": "La Séptima Avenida. Esto es Harlem: el centro del mundo.",
-     "voz": "voz/d3/d3_001.mp3"
+     "voz": "voz/d3/d3_001.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d3/coche_antiguo.mp3",
+       "t": 0.3,
+       "vol": 0.45
+      }
+     ]
     },
     {
      "id": "d3_002",
      "quien": "RUBY",
      "texto": "Mira: el Teatro Lafayette. Y ese árbol es el Árbol de la Esperanza.",
-     "voz": "voz/d3/d3_002.mp3"
+     "voz": "voz/d3/d3_002.mp3",
+     "var": "RECURSO_LAFAYETTE"
     },
     {
      "id": "d3_003",
      "quien": "XAN",
      "texto": "¿Un árbol con nombre?",
-     "voz": "voz/d3/d3_003.mp3"
+     "voz": "voz/d3/d3_003.mp3",
+     "var": "RECURSO_LAFAYETTE"
     },
     {
      "id": "d3_004",
@@ -115,19 +124,30 @@ BLUES.dia(3, {
      "id": "d3_007",
      "quien": "TEDDY",
      "texto": "Y como James Armistead, un esclavo que hizo de espía para él. Cuando lo liberaron, se puso su apellido.",
-     "voz": "voz/d3/d3_007.mp3"
+     "voz": "voz/d3/d3_007.mp3",
+     "var": "TEDDY_CERCA"
     },
     {
      "id": "d3_008",
      "quien": "SLIM",
      "texto": "Por ahí entran los de las pieles. Nosotros, por la puerta de la cocina.",
-     "voz": "voz/d3/d3_008.mp3"
+     "voz": "voz/d3/d3_008.mp3",
+     "espera": 0.4,
+     "var": "RECURSO_PIELES",
+     "sfx": [
+      {
+       "src": "sfx/d3/bocina_ford.mp3",
+       "t": 0.6,
+       "vol": 0.35
+      }
+     ]
     },
     {
      "id": "d3_009",
      "quien": "TEDDY",
      "texto": "Los músicos negros tocan dentro… pero no se pueden sentar a mirar.",
-     "voz": "voz/d3/d3_009.mp3"
+     "voz": "voz/d3/d3_009.mp3",
+     "var": "RECURSO_PIELES"
     }
    ],
    "nombre": "La Séptima Avenida",
@@ -135,44 +155,69 @@ BLUES.dia(3, {
     "amb": "Calle de noche: coches de época, bocinas, risas, puertas."
    },
    "foco": {
-    "XAN": [
-     0.28,
-     0.42,
-     0.098
-    ],
     "TEDDY": [
-     0.41,
-     0.34,
-     0.098
+     0.176,
+     0.17,
+     0.1
     ],
     "RUBY": [
-     0.565,
-     0.38,
-     0.093
+     0.333,
+     0.235,
+     0.09
     ],
     "BUSTER": [
-     0.71,
-     0.36,
-     0.102
+     0.486,
+     0.2,
+     0.1
     ],
     "SLIM": [
-     0.835,
-     0.32,
-     0.096
+     0.653,
+     0.21,
+     0.09
+    ],
+    "XAN": [
+     0.833,
+     0.2,
+     0.1
     ]
+   },
+   "salpica": {
+    "cada": [
+     7,
+     13
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d3/bocina_ford.mp3",
+      "vol": [
+       0.12,
+       0.25
+      ]
+     },
+     {
+      "src": "sfx/d3/coche_antiguo.mp3",
+      "vol": [
+       0.15,
+       0.3
+      ]
+     }
+    ]
+   },
+   "var": {
+    "RECURSO_LAFAYETTE": "img/d3/p3_1_recurso_lafayette.webp",
+    "TEDDY_CERCA": "img/d3/p3_1_teddy_cerca.webp",
+    "RECURSO_PIELES": "img/d3/p3_1_recurso_pieles.webp"
+   },
+   "mus": {
+    "src": "mus/d3_calle_jazz.mp3",
+    "vol": 0.55,
+    "bucle": true
    }
   },
   {
    "id": "P3.2",
    "desc": "Interior del Ivory Room: arañas de cristal, terciopelo rojo, público blanco elegante bebiendo en tazas de té, camareros que bailan con las bandejas. En el escenario, Miss Pearl Duval canta ante un micrófono de radio; detrás, la orquesta de la casa: piano, contrabajo, batería con escobillas, trompeta con sordina, trombón y clarinete. En primer término, en la puerta de la cocina, en penumbra, la cuadrilla y Xan con su estuche.",
    "img": "img/d3/p3_2.webp",
-   "var": {
-    "RUBY": "img/d3/p3_2_ruby.webp",
-    "TEDDY": "img/d3/p3_2_teddy.webp",
-    "XAN": "img/d3/p3_2_xan.webp",
-    "BUSTER": "img/d3/p3_2_buster.webp",
-    "PEARL": "img/d3/p3_2_pearl.webp"
-   },
    "personajes": [
     "RUBY",
     "TEDDY",
@@ -183,8 +228,8 @@ BLUES.dia(3, {
    "pal": "club",
    "amb": [
     {
-     "src": "sfx/d3/club.mp3",
-     "vol": 0.45
+     "src": "sfx/d3/club_gente.mp3",
+     "vol": 0.55
     }
    ],
    "mus": {
@@ -203,13 +248,22 @@ BLUES.dia(3, {
      "id": "d3_010",
      "quien": "RUBY",
      "texto": "Mira las tazas. Es champán, no té. Con la Ley Seca, aquí todo se disimula.",
-     "voz": "voz/d3/d3_010.mp3"
+     "voz": "voz/d3/d3_010.mp3",
+     "var": "RECURSO_TAZAS",
+     "sfx": [
+      {
+       "src": "sfx/d3/copas.mp3",
+       "t": 0.4,
+       "vol": 0.55
+      }
+     ]
     },
     {
      "id": "d3_011",
      "quien": "TEDDY",
      "texto": "Y los camareros bailan con las bandejas. Dicen que en el Small's van hasta en patines.",
-     "voz": "voz/d3/d3_011.mp3"
+     "voz": "voz/d3/d3_011.mp3",
+     "var": "RECURSO_TAZAS"
     },
     {
      "id": "d3_012",
@@ -233,25 +287,29 @@ BLUES.dia(3, {
      "id": "d3_015",
      "quien": "TEDDY",
      "texto": "Miss Pearl Duval, la reina del Ivory Room. Canta como un ángel… y muerde como un perro.",
-     "voz": "voz/d3/d3_015.mp3"
+     "voz": "voz/d3/d3_015.mp3",
+     "var": "PEARL_CERCA"
     },
     {
      "id": "d3_016",
      "quien": "RUBY",
      "texto": "Esta noche ella manda en la jam. Si le caes mal, no vuelves a tocar en Harlem.",
-     "voz": "voz/d3/d3_016.mp3"
+     "voz": "voz/d3/d3_016.mp3",
+     "var": "PEARL_CERCA"
     },
     {
      "id": "d3_017",
      "quien": "BUSTER",
      "texto": "¿Sabéis cuántos discos vendió Mamie Smith con «Crazy Blues»? ¡Setenta y cinco mil en dos meses!",
-     "voz": "voz/d3/d3_017.mp3"
+     "voz": "voz/d3/d3_017.mp3",
+     "var": "BUSTER_CERCA"
     },
     {
      "id": "d3_018",
      "quien": "TEDDY",
      "texto": "Y aquí hay pianistas que tocan con la izquierda como si fueran dos. Le llaman stride.",
-     "voz": "voz/d3/d3_018.mp3"
+     "voz": "voz/d3/d3_018.mp3",
+     "var": "RECURSO_STRIDE"
     },
     {
      "id": "d3_019",
@@ -263,13 +321,22 @@ BLUES.dia(3, {
      "id": "d3_020",
      "quien": "PEARL",
      "texto": "Thank you, darlings. Gracias. Y ahora, a casa, que les esperan sus limusinas.",
-     "voz": "voz/d3/d3_020.mp3"
+     "voz": "voz/d3/d3_020.mp3",
+     "var": "PEARL_HABLA_CERCA",
+     "sfx": [
+      {
+       "src": "sfx/d3/aplauso.mp3",
+       "t": 0,
+       "vol": 0.45
+      }
+     ]
     },
     {
      "id": "d3_021",
      "quien": "PEARL",
      "texto": "Y a los que el jueves vayan al Carnegie Hall a oír al señor Gershwin: díganle que Harlem le manda saludos.",
-     "voz": "voz/d3/d3_021.mp3"
+     "voz": "voz/d3/d3_021.mp3",
+     "var": "RECURSO_PUBLICO"
     }
    ],
    "nombre": "El rincón de la cocina",
@@ -290,49 +357,72 @@ BLUES.dia(3, {
     ]
    },
    "foco": {
-    "PEARL": [
-     0.775,
-     0.09,
-     0.144
-    ],
     "TEDDY": [
+     0.1,
      0.12,
-     0.27,
-     0.129
-    ],
-    "BUSTER": [
-     0.24,
-     0.21,
-     0.144
-    ],
-    "SLIM": [
-     0.36,
-     0.28,
-     0.182
+     0.09
     ],
     "RUBY": [
+     0.17,
+     0.235,
+     0.09
+    ],
+    "BUSTER": [
+     0.236,
+     0.18,
+     0.09
+    ],
+    "SLIM": [
+     0.326,
      0.21,
-     0.41,
-     0.127
+     0.09
     ],
     "XAN": [
-     0.36,
+     0.29,
      0.47,
-     0.144
+     0.09
+    ],
+    "PEARL": [
+     0.79,
+     0.1,
+     0.08
     ]
+   },
+   "salpica": {
+    "cada": [
+     5,
+     10
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d3/copas.mp3",
+      "vol": [
+       0.2,
+       0.4
+      ]
+     },
+     {
+      "src": "sfx/d3/risas_cortas.mp3",
+      "vol": [
+       0.08,
+       0.16
+      ]
+     }
+    ]
+   },
+   "var": {
+    "RECURSO_TAZAS": "img/d3/p3_2_recurso_tazas.webp",
+    "PEARL_CERCA": "img/d3/p3_2_pearl_cerca.webp",
+    "BUSTER_CERCA": "img/d3/p3_2_buster_cerca.webp",
+    "RECURSO_STRIDE": "img/d3/p3_2_recurso_stride.webp",
+    "PEARL_HABLA_CERCA": "img/d3/p3_2_pearl_habla.webp",
+    "RECURSO_PUBLICO": "img/d3/p3_2_pearl_publico.webp"
    }
   },
   {
    "id": "P3.3",
    "desc": "Las dos de la madrugada. Los ricos se han ido; sillas sobre las mesas, humo. En el escenario quedan el pianista, el contrabajista y el batería de la casa; músicos de Harlem esperan turno con sus instrumentos en la mano. Pearl, sentada en el borde del escenario como una reina. Slim agarra el brazo de Xan y se lo levanta.",
    "img": "img/d3/p3_3.webp",
-   "var": {
-    "RUBY": "img/d3/p3_3_ruby.webp",
-    "XAN": "img/d3/p3_3_xan.webp",
-    "SLIM": "img/d3/p3_3_slim.webp",
-    "TEDDY": "img/d3/p3_3_teddy.webp",
-    "PEARL": "img/d3/p3_3_pearl.webp"
-   },
    "personajes": [
     "RUBY",
     "XAN",
@@ -341,7 +431,12 @@ BLUES.dia(3, {
     "PEARL"
    ],
    "pal": "club",
-   "amb": [],
+   "amb": [
+    {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.5
+    }
+   ],
    "hechos": [
     "h25",
     "h55",
@@ -370,13 +465,15 @@ BLUES.dia(3, {
      "id": "d3_023",
      "quien": "RUBY",
      "texto": "Así lo llaman ahora los músicos. Suben y tocan juntos, sin ensayar. Uno empieza y los demás le siguen.",
-     "voz": "voz/d3/d3_023.mp3"
+     "voz": "voz/d3/d3_023.mp3",
+     "var": "RECURSO_JAM"
     },
     {
      "id": "d3_024",
      "quien": "RUBY",
      "texto": "Y a veces es un duelo, un cutting contest: a ver quién corta a quién.",
-     "voz": "voz/d3/d3_024.mp3"
+     "voz": "voz/d3/d3_024.mp3",
+     "var": "RECURSO_JAM"
     },
     {
      "id": "d3_025",
@@ -401,13 +498,150 @@ BLUES.dia(3, {
      "quien": "PEARL",
      "texto": "A ver, trompeta de Nueva Orleans. Sorpréndeme.",
      "voz": "voz/d3/d3_028.mp3"
-    },
+    }
+   ],
+   "nombre": "Después del cierre",
+   "mus": {
+    "src": "mus/d3_jam.mp3",
+    "vol": 0.34,
+    "bucle": false
+   },
+   "foco": {
+    "TEDDY": [
+     0.09,
+     0.205,
+     0.09
+    ],
+    "RUBY": [
+     0.17,
+     0.28,
+     0.09
+    ],
+    "BUSTER": [
+     0.25,
+     0.22,
+     0.09
+    ],
+    "SLIM": [
+     0.333,
+     0.26,
+     0.09
+    ],
+    "XAN": [
+     0.285,
+     0.53,
+     0.09
+    ],
+    "PEARL": [
+     0.695,
+     0.21,
+     0.09
+    ]
+   },
+   "var": {
+    "RECURSO_JAM": "img/d3/p3_3_recurso_jam.webp",
+    "XAN_BRAZO": "img/d3/p3_3_xan_brazo.webp"
+   }
+  },
+  {
+   "id": "P3.3b",
+   "desc": "Teddy toca su chorus con la trompeta con sordina; detrás, el trío de la casa.",
+   "nombre": "El chorus de Teddy",
+   "img": "img/d3/p3_3_teddy_trompeta.webp",
+   "pal": "club",
+   "personajes": [
+    "TEDDY"
+   ],
+   "amb": [
+    {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.35
+    }
+   ],
+   "lineas": [
     {
      "id": "d3_055",
      "quien": "TEDDY",
      "texto": "Esto va por Louis Armstrong, que también es de Nueva Orleans.",
-     "voz": "voz/d3/d3_055.mp3"
-    },
+     "voz": "voz/d3/d3_055.mp3",
+     "espera": 18.39
+    }
+   ],
+   "hechos": [],
+   "espera": 0.3,
+   "foco": {
+    "TEDDY": [
+     0.493,
+     0.148,
+     0.09
+    ]
+   },
+   "mus": {
+    "src": "mus/d3_chorus.mp3",
+    "vol": 0.85,
+    "bucle": false
+   }
+  },
+  {
+   "id": "P3.3c",
+   "desc": "Las dos de la madrugada. Los ricos se han ido; sillas sobre las mesas, humo. En el escenario quedan el pianista, el contrabajista y el batería de la casa; músicos de Harlem esperan turno con sus instrumentos en la mano. Pearl, sentada en el borde del escenario como una reina. Slim agarra el brazo de Xan y se lo levanta.",
+   "nombre": "¿Quién más se atreve?",
+   "img": "img/d3/p3_3.webp",
+   "pal": "club",
+   "personajes": [
+    "RUBY",
+    "XAN",
+    "TEDDY",
+    "SLIM",
+    "PEARL"
+   ],
+   "var": {
+    "XAN_BRAZO": "img/d3/p3_3_xan_brazo.webp"
+   },
+   "foco": {
+    "TEDDY": [
+     0.09,
+     0.205,
+     0.09
+    ],
+    "RUBY": [
+     0.17,
+     0.28,
+     0.09
+    ],
+    "BUSTER": [
+     0.25,
+     0.22,
+     0.09
+    ],
+    "SLIM": [
+     0.333,
+     0.26,
+     0.09
+    ],
+    "XAN": [
+     0.285,
+     0.53,
+     0.09
+    ],
+    "PEARL": [
+     0.695,
+     0.21,
+     0.09
+    ]
+   },
+   "amb": [
+    {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.5
+    }
+   ],
+   "mus": {
+    "src": "mus/d3_trio.mp3",
+    "vol": 0.3,
+    "bucle": true
+   },
+   "lineas": [
     {
      "id": "d3_029",
      "quien": "PEARL",
@@ -417,26 +651,36 @@ BLUES.dia(3, {
     {
      "id": "d3_030",
      "quien": "TEDDY",
-     "texto": "¿Lo ves, gallego? Esto no se escribe.",
+     "texto": "¿Lo ves? Esto no se escribe.",
      "voz": "voz/d3/d3_030.mp3"
     },
     {
      "id": "d3_031",
      "quien": "SLIM",
      "texto": "¡Eh, Miss Pearl! ¡El gallego quiere tocar!",
-     "voz": "voz/d3/d3_031.mp3"
+     "voz": "voz/d3/d3_031.mp3",
+     "espera": 0.9,
+     "var": "XAN_BRAZO"
     },
     {
      "id": "d3_032",
      "quien": "XAN",
      "texto": "¡¿Qué?! ¡No, no, yo no…!",
-     "voz": "voz/d3/d3_032.mp3"
+     "voz": "voz/d3/d3_032.mp3",
+     "var": "XAN_BRAZO"
     },
     {
      "id": "d3_033",
      "quien": "PEARL",
      "texto": "¿Un gallego? ¿Eso qué es? ¿Se come?",
-     "voz": "voz/d3/d3_033.mp3"
+     "voz": "voz/d3/d3_033.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d3/risas_cortas.mp3",
+       "t": 1.2,
+       "vol": 0.45
+      }
+     ]
     },
     {
      "id": "d3_034",
@@ -451,57 +695,12 @@ BLUES.dia(3, {
      "voz": "voz/d3/d3_035.mp3"
     }
    ],
-   "nombre": "Después del cierre",
-   "guion_sonido": {
-    "amb": "La banda de jazz preparándose (acordes sueltos de piano, unas notas de contrabajo, un toque de escobillas, una trompeta que calienta), sillas, risas; un golpe de platillo. Nada de cuerda clásica.",
-    "mus": "Fondo de la jam (Suno: piano, contrabajo y batería con escobillas); encima, el chorus de Teddy con la trompeta con sordina."
-   },
-   "mus": {
-    "src": "mus/trio_club.mp3",
-    "vol": 0.38,
-    "bucle": true
-   },
-   "foco": {
-    "TEDDY": [
-     0.14,
-     0.16,
-     0.122
-    ],
-    "RUBY": [
-     0.2,
-     0.22,
-     0.104
-    ],
-    "XAN": [
-     0.31,
-     0.3,
-     0.122
-    ],
-    "SLIM": [
-     0.43,
-     0.18,
-     0.122
-    ],
-    "BUSTER": [
-     0.56,
-     0.38,
-     0.122
-    ],
-    "PEARL": [
-     0.83,
-     0.2,
-     0.111
-    ]
-   }
+   "hechos": []
   },
   {
    "id": "P3.4",
    "desc": "Xan sube al escenario con las manos vacías; al fondo, su estuche negro y grande, olvidado en una mesa. Pearl le mira de arriba abajo.",
    "img": "img/d3/p3_4.webp",
-   "var": {
-    "PEARL": "img/d3/p3_4_pearl.webp",
-    "XAN": "img/d3/p3_4_xan.webp"
-   },
    "personajes": [
     "PEARL",
     "XAN"
@@ -509,17 +708,65 @@ BLUES.dia(3, {
    "pal": "club",
    "amb": [
     {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.45
+    },
+    {
      "src": "sfx/d3/risas.mp3",
-     "vol": 0.4
+     "vol": 0.3
     }
    ],
-   "lineas": [
-    {
-     "id": "d3_036",
-     "quien": "PEARL",
-     "texto": "Muchacho, ¿has venido sin instrumento?",
-     "voz": "voz/d3/d3_036.mp3"
-    },
+   "lineas": [],
+   "nombre": "Sin instrumento",
+   "hechos": [
+    "h26"
+   ],
+   "guion_sonido": {
+    "sfx": "Pasos en la tarima; risas sueltas."
+   },
+   "mus": {
+    "src": "mus/d3_trio.mp3",
+    "vol": 0.3,
+    "bucle": true
+   },
+   "foco": {
+    "XAN": [
+     0.417,
+     0.108,
+     0.08
+    ],
+    "PEARL": [
+     0.754,
+     0.404,
+     0.09
+    ]
+   },
+   "var": {
+    "RECURSO_PARTITURA": "img/d3/p3_4_recurso_partitura.webp"
+   },
+   "inter": {
+    "tipo": "acordeonDecide",
+    "desc": "Xan mira su acordeón: ¿sube con él o sin él? Con él, Pearl lo manda al piano; sin él, «¿has venido sin instrumento?».",
+    "lineas": {
+     "si": [
+      {
+       "id": "d3_068",
+       "quien": "PEARL",
+       "texto": "¿Y esa caja? ¿Un acordeón? Nada, nada, muchacho: tú, al piano. Esa caja déjala ahí, que luego me sirve para guardar el abrigo.",
+       "voz": "voz/d3/d3_068.mp3"
+      }
+     ],
+     "no": [
+      {
+       "id": "d3_036",
+       "quien": "PEARL",
+       "texto": "Muchacho, ¿has venido sin instrumento?",
+       "voz": "voz/d3/d3_036.mp3"
+      }
+     ]
+    }
+   },
+   "despues": [
     {
      "id": "d3_037",
      "quien": "XAN",
@@ -530,13 +777,21 @@ BLUES.dia(3, {
      "id": "d3_038",
      "quien": "PEARL",
      "texto": "Pues ahí lo tienes. Tócame algo.",
-     "voz": "voz/d3/d3_038.mp3"
+     "voz": "voz/d3/d3_038.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d3/tapa_piano.mp3",
+       "t": 2.55,
+       "vol": 0.7
+      }
+     ]
     },
     {
      "id": "d3_039",
      "quien": "XAN",
      "texto": "Pero aquí no hay notas… Solo letras. G7… C7… D7…",
-     "voz": "voz/d3/d3_039.mp3"
+     "voz": "voz/d3/d3_039.mp3",
+     "var": "RECURSO_PARTITURA"
     },
     {
      "id": "d3_040",
@@ -544,60 +799,12 @@ BLUES.dia(3, {
      "texto": "¿Letras? Cariño, eso es cifrado americano. Lo lee hasta el camarero.",
      "voz": "voz/d3/d3_040.mp3"
     }
-   ],
-   "nombre": "Sin instrumento",
-   "hechos": [
-    "h26"
-   ],
-   "guion_sonido": {
-    "sfx": "Pasos en la tarima; risas sueltas."
-   },
-   "mus": {
-    "src": "mus/trio_club.mp3",
-    "vol": 0.38,
-    "bucle": true
-   },
-   "foco": {
-    "XAN": [
-     0.61,
-     0.14,
-     0.109
-    ],
-    "PEARL": [
-     0.8,
-     0.33,
-     0.109
-    ],
-    "TEDDY": [
-     0.07,
-     0.36,
-     0.116
-    ],
-    "RUBY": [
-     0.15,
-     0.4,
-     0.104
-    ],
-    "SLIM": [
-     0.24,
-     0.35,
-     0.107
-    ],
-    "BUSTER": [
-     0.33,
-     0.55,
-     0.109
-    ]
-   }
+   ]
   },
   {
    "id": "P3.5",
    "desc": "Pearl, apoyada en la tapa del piano con la boquilla; Xan, sentado en la banqueta, rígido. Detrás, los músicos miran.",
    "img": "img/d3/p3_5.webp",
-   "var": {
-    "PEARL": "img/d3/p3_5_pearl.webp",
-    "XAN": "img/d3/p3_5_xan.webp"
-   },
    "personajes": [
     "PEARL",
     "XAN"
@@ -611,41 +818,54 @@ BLUES.dia(3, {
      "id": "d3_041",
      "quien": "PEARL",
      "texto": "¿Has tocado blues alguna vez, muchacho?",
-     "voz": "voz/d3/d3_041.mp3"
+     "voz": "voz/d3/d3_041.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d3/encendedor.mp3",
+       "t": 0.2,
+       "vol": 0.5
+      }
+     ]
     },
     {
      "id": "d3_042",
      "quien": "XAN",
      "texto": "No… Bueno, un fogonero me enseñó a contestar a una armónica.",
-     "voz": "voz/d3/d3_042.mp3"
+     "voz": "voz/d3/d3_042.mp3",
+     "espera": 0.3,
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_043",
      "quien": "PEARL",
      "texto": "Un fogonero. Escucha, que lo digo una vez: doce compases.",
      "voz": "voz/d3/d3_043.mp3",
-     "atril": "vacio"
+     "atril": "vacio",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_063",
      "quien": "PEARL",
      "texto": "Cuatro compases sobre el uno. Dos sobre el cuatro. Dos sobre el uno.",
      "voz": "voz/d3/d3_063.mp3",
-     "atril": "fila2"
+     "atril": "fila2",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_044",
      "quien": "PEARL",
      "texto": "Luego el cinco, el cuatro, el uno… y el cinco para volver a empezar.",
      "voz": "voz/d3/d3_044.mp3",
-     "atril": "fila3"
+     "atril": "fila3",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_064",
      "quien": "PEARL",
      "texto": "Eso vale para cualquier blues, en cualquier tono. Aquí, en Sol: el uno es G7, el cuatro es C7 y el cinco es D7.",
      "voz": "voz/d3/d3_064.mp3",
-     "atril": "sol"
+     "atril": "sol",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_045",
@@ -667,40 +887,67 @@ BLUES.dia(3, {
     }
    ],
    "nombre": "Doce compases",
-   "amb": [],
+   "amb": [
+    {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.4
+    }
+   ],
    "mus": {
-    "src": "mus/trio_club.mp3",
-    "vol": 0.38,
+    "src": "mus/d3_trio.mp3",
+    "vol": 0.3,
     "bucle": true
    },
    "foco": {
-    "PEARL": [
-     0.77,
-     0.2,
-     0.14
-    ],
     "XAN": [
-     0.37,
-     0.31,
-     0.14
+     0.264,
+     0.36,
+     0.11
+    ],
+    "PEARL": [
+     0.68,
+     0.151,
+     0.1
     ]
+   },
+   "salpica": {
+    "cada": [
+     8,
+     14
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d3/risas_cortas.mp3",
+      "vol": [
+       0.06,
+       0.12
+      ]
+     },
+     {
+      "src": "sfx/d3/copas.mp3",
+      "vol": [
+       0.1,
+       0.2
+      ]
+     }
+    ]
+   },
+   "var": {
+    "XAN_CERCA": "img/d3/p3_5_xan_cerca.webp"
    }
   },
   {
    "id": "P3.6",
    "desc": "Primer plano del atril con el cifrado; detrás, borrosos, los músicos y el público de la jam. Las manos de Xan sobre el teclado.",
-   "img": "img/d3/p3_6.webp",
-   "var": {
-    "PEARL": "img/d3/p3_6_pearl.webp"
-   },
+   "img": "img/d3/p3_5_xan_cerca.webp",
    "personajes": [
     "PEARL"
    ],
    "pal": "club",
    "amb": [
     {
-     "src": "sfx/d3/murmullo_club.mp3",
-     "vol": 0.3
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.35
     }
    ],
    "lineas": [],
@@ -814,30 +1061,23 @@ BLUES.dia(3, {
        "voz": "voz/d3/d3_r014.mp3"
       }
      ]
-    }
+    },
+    "recursos": [
+     "sfx/d3/reloj.mp3",
+     "sfx/d3/badumtss.mp3"
+    ]
    },
    "nombre": "El atril",
    "hechos": [],
    "guion_sonido": {
     "amb": "Murmullo que va subiendo; risas; un reloj."
    },
-   "foco": {
-    "PEARL": [
-     0.8,
-     0.16,
-     0.14
-    ]
-   }
+   "foco": {}
   },
   {
    "id": "P3.7",
-   "desc": "Xan se levanta del piano; risas, algún silbido. Pearl, de espaldas, ya mirando a otro músico. Ruby, al fondo, con el estuche grande de Xan en las manos.",
-   "img": "img/d3/p3_7.webp",
-   "var": {
-    "PEARL": "img/d3/p3_7_pearl.webp",
-    "SLIM": "img/d3/p3_7_slim.webp",
-    "RUBY": "img/d3/p3_7_ruby.webp"
-   },
+   "desc": "Pearl despacha a Xan en el piano; risas.",
+   "img": "img/d3/p3_5.webp",
    "personajes": [
     "PEARL",
     "SLIM",
@@ -846,8 +1086,12 @@ BLUES.dia(3, {
    "pal": "club",
    "amb": [
     {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.45
+    },
+    {
      "src": "sfx/d3/risas.mp3",
-     "vol": 0.4
+     "vol": 0.35
     }
    ],
    "lineas": [
@@ -855,25 +1099,38 @@ BLUES.dia(3, {
      "id": "d3_048",
      "quien": "PEARL",
      "texto": "Vuelve cuando sepas lo que es un blues, cariño.",
-     "voz": "voz/d3/d3_048.mp3"
+     "voz": "voz/d3/d3_048.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d3/risas_cortas.mp3",
+       "t": 2.67,
+       "vol": 0.5
+      },
+      {
+       "src": "sfx/d3/badumtss.mp3",
+       "t": 3.07,
+       "vol": 0.6
+      }
+     ]
     },
     {
      "id": "d3_049",
      "quien": "SLIM",
      "texto": "¡Te lo dije! ¡Te han comido!",
-     "voz": "voz/d3/d3_049.mp3"
+     "voz": "voz/d3/d3_049.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d3/abucheo.mp3",
+       "t": 0,
+       "vol": 0.35
+      }
+     ]
     },
     {
      "id": "d3_050",
      "quien": "RUBY",
      "texto": "¡Slim, cállate de una vez!",
      "voz": "voz/d3/d3_050.mp3"
-    },
-    {
-     "id": "d3_051",
-     "quien": "RUBY",
-     "texto": "¡Xan! ¡Tu acordeón!",
-     "voz": "voz/d3/d3_051.mp3"
     }
    ],
    "nombre": "Las risas",
@@ -882,30 +1139,20 @@ BLUES.dia(3, {
     "sfx": "Risas, abucheo suave, un platillo burlón."
    },
    "mus": {
-    "src": "mus/trio_club.mp3",
-    "vol": 0.38,
+    "src": "mus/d3_trio.mp3",
+    "vol": 0.3,
     "bucle": true
    },
    "foco": {
     "XAN": [
-     0.43,
-     0.16,
-     0.111
+     0.264,
+     0.36,
+     0.11
     ],
     "PEARL": [
-     0.74,
-     0.08,
-     0.111
-    ],
-    "RUBY": [
-     0.07,
-     0.19,
-     0.122
-    ],
-    "SLIM": [
-     0.21,
-     0.12,
-     0.078
+     0.68,
+     0.151,
+     0.1
     ]
    }
   },
@@ -913,18 +1160,14 @@ BLUES.dia(3, {
    "id": "P3.8",
    "desc": "Fuera, de madrugada, frío. Xan llora apoyado en el tronco del Árbol de la Esperanza; le asoma de la chaqueta el billete de barco. Un hombre maduro y alto, de pelo y bigote entrecanos, con abrigo y gorra, le pone una mano en el hombro.",
    "img": "img/d3/p3_8.webp",
-   "var": {
-    "ELI": "img/d3/p3_8_eli.webp"
-   },
    "personajes": [
-    "XAN",
-    "ELI"
+    "XAN"
    ],
    "pal": "madrugada",
    "amb": [
     {
-     "src": "sfx/d3/viento_calle.mp3",
-     "vol": 0.45
+     "src": "sfx/d3/amanecer_lluvia.mp3",
+     "vol": 0.6
     }
    ],
    "lineas": [
@@ -938,33 +1181,126 @@ BLUES.dia(3, {
      "id": "d3_053",
      "quien": "XAN",
      "texto": "Non sei que é un blues. Non sei nin quen son aquí.",
-     "voz": "voz/d3/d3_053.mp3",
-     "sfx": [
-      {
-       "src": "mus/nana_xan_arbol.mp3",
-       "t": 5.18,
-       "vol": 0.85
-      }
-     ],
-     "espera": 34.39
-    },
+     "voz": "voz/d3/d3_053.mp3"
+    }
+   ],
+   "espera": 0.6,
+   "nombre": "El Árbol de la Esperanza",
+   "hechos": [
+    "h20"
+   ],
+   "guion_sonido": {
+    "amb": "Calle vacía, viento, un tren elevado a lo lejos.",
+    "mus": "La nana cantada por Xan, a capela y muy bajito (Suno «Blues · Nana cantada por Xan (E)»)."
+   },
+   "foco": {
+    "XAN": [
+     0.345,
+     0.45,
+     0.08
+    ]
+   }
+  },
+  {
+   "id": "P3.8b",
+   "desc": "La nana",
+   "nombre": "La nana",
+   "img": "img/d3/p3_8_xan_cerca.webp",
+   "pal": "madrugada",
+   "amb": [
+    {
+     "src": "sfx/d3/amanecer_lluvia.mp3",
+     "vol": 0.6
+    }
+   ],
+   "mus": {
+    "src": "mus/nana_xan_arbol.mp3",
+    "vol": 0.85,
+    "bucle": false
+   },
+   "lineas": [],
+   "hechos": [],
+   "espera": 11.5
+  },
+  {
+   "id": "P3.8c",
+   "desc": "El billete",
+   "nombre": "El billete",
+   "img": "img/d3/p3_8_recurso_billete.webp",
+   "pal": "madrugada",
+   "amb": [
+    {
+     "src": "sfx/d3/amanecer_lluvia.mp3",
+     "vol": 0.6
+    }
+   ],
+   "mus": {
+    "src": "mus/nana_xan_arbol.mp3",
+    "vol": 0.85,
+    "bucle": false
+   },
+   "lineas": [],
+   "hechos": [],
+   "espera": 10.5
+  },
+  {
+   "id": "P3.8d",
+   "desc": "Amanece",
+   "nombre": "Amanece",
+   "img": "img/d3/p3_8_recurso_calle.webp",
+   "pal": "madrugada",
+   "amb": [
+    {
+     "src": "sfx/d3/amanecer_lluvia.mp3",
+     "vol": 0.6
+    }
+   ],
+   "mus": {
+    "src": "mus/nana_xan_arbol.mp3",
+    "vol": 0.85,
+    "bucle": false
+   },
+   "lineas": [],
+   "hechos": [],
+   "espera": 11.8
+  },
+  {
+   "id": "P3.8e",
+   "desc": "Eli, el hombre del abrigo, se acerca a Xan bajo el Árbol de la Esperanza.",
+   "nombre": "Eli",
+   "pal": "madrugada",
+   "amb": [
+    {
+     "src": "sfx/d3/amanecer_lluvia.mp3",
+     "vol": 0.6
+    }
+   ],
+   "personajes": [
+    "XAN",
+    "ELI"
+   ],
+   "lineas": [
     {
      "id": "d3_065",
      "quien": "ELI",
      "texto": "Ese billete que te asoma… A Coruña, ¿verdad?",
-     "voz": "voz/d3/d3_065.mp3"
+     "voz": "voz/d3/d3_065.mp3",
+     "espera": 0.9,
+     "var": "ELI_CERCA"
     },
     {
      "id": "d3_056",
      "quien": "XAN",
      "texto": "¿Quién… quién es usted?",
-     "voz": "voz/d3/d3_056.mp3"
+     "voz": "voz/d3/d3_056.mp3",
+     "var": "ELI_CERCA"
     },
     {
      "id": "d3_057",
      "quien": "ELI",
      "texto": "Alguien que te ha visto ahí dentro. Y lo has hecho bien.",
-     "voz": "voz/d3/d3_057.mp3"
+     "voz": "voz/d3/d3_057.mp3",
+     "var": "ELI_CERCA"
     },
     {
      "id": "d3_058",
@@ -988,24 +1324,32 @@ BLUES.dia(3, {
      "id": "d3_060",
      "quien": "ELI",
      "texto": "Lo demás se aprende. Ven conmigo, chaval: te voy a enseñar lo que un día me enseñaron a mí.",
-     "voz": "voz/d3/d3_060.mp3"
+     "voz": "voz/d3/d3_060.mp3",
+     "var": "ELI_CERCA"
     }
    ],
+   "hechos": [],
    "espera": 3,
-   "nombre": "El Árbol de la Esperanza",
-   "hechos": [
-    "h20"
-   ],
-   "guion_sonido": {
-    "amb": "Calle vacía, viento, un tren elevado a lo lejos.",
-    "mus": "La nana cantada por Xan, a capela y muy bajito (Suno «Blues · Nana cantada por Xan (E)»)."
+   "img": "img/d3/p3_8_dos.webp",
+   "var": {
+    "ELI_CERCA": "img/d3/p3_8_eli.webp"
    },
    "foco": {
+    "ELI": [
+     0.368,
+     0.139,
+     0.09
+    ],
     "XAN": [
-     0.34,
-     0.43,
-     0.329
+     0.66,
+     0.472,
+     0.085
     ]
+   },
+   "mus": {
+    "src": "mus/nana_xan_arbol.mp3",
+    "vol": 0.85,
+    "bucle": false
    }
   }
  ]
