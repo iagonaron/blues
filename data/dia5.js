@@ -8,7 +8,7 @@ BLUES.dia(5, {
  "carta": {
   "encabezado": "A Coruña, 1929",
   "firma": "Xan",
-  "texto": "Querido Eli: la avoa ya canta la nana con swing. Dice que no se la toque nadie más. Menos yo. Dale recuerdos a Ruby, a Teddy y a Mr. Odell. Y guárdame el sitio en el porche… …o mejor, déjaselo a quien llegue con un instrumento y ganas de contestar.",
+  "texto": "Querido Eli: la avoa ya canta la nana con swing. Dice que no se la toque nadie más. Menos yo. Dale recuerdos a Ruby, a Teddy y a Mr. Odell. Y guárdame el sitio en el porche… …o mejor, déjaselo a quien llegue con un instrumento y ganas de improvisar.",
   "lineas": [
    {
     "id": "d5_c03",
@@ -25,7 +25,7 @@ BLUES.dia(5, {
    {
     "id": "d5_c05",
     "quien": "XAN",
-    "texto": "…o mejor, déjaselo a quien llegue con un instrumento y ganas de contestar.",
+    "texto": "…o mejor, déjaselo a quien llegue con un instrumento y ganas de improvisar.",
     "voz": "voz/d5/d5_c05.mp3"
    }
   ]
@@ -39,7 +39,11 @@ BLUES.dia(5, {
    "amb": [
     {
      "src": "sfx/d5/grillos.mp3",
-     "vol": 0.45
+     "vol": 0.4
+    },
+    {
+     "src": "sfx/d5/porche.mp3",
+     "vol": 0.35
     }
    ],
    "lineas": [],
@@ -51,10 +55,8 @@ BLUES.dia(5, {
    "desc": "El porche de noche con farolillos: la banda de cuatro —Eli (guitarra), Ruby (tabla de lavar), Mr. Odell (contrabajo) y Teddy (trompeta con sordina)— espera. Un hueco libre en el centro del porche: el sitio de Xan.",
    "img": "img/d5/p5_1.webp",
    "var": {
-    "ELI": "img/d5/p5_1_eli.webp",
-    "RUBY": "img/d5/p5_1_ruby.webp",
-    "TEDDY": "img/d5/p5_1_teddy.webp",
-    "ODELL": "img/d5/p5_1_odell.webp"
+    "ELI_CERCA": "img/d5/p5_1_eli_cerca.webp",
+    "RECURSO_SILLA": "img/d5/p5_1_recurso_silla.webp"
    },
    "personajes": [
     "ELI"
@@ -63,6 +65,10 @@ BLUES.dia(5, {
    "amb": [
     {
      "src": "sfx/d5/grillos.mp3",
+     "vol": 0.28
+    },
+    {
+     "src": "sfx/d5/porche.mp3",
      "vol": 0.3
     }
    ],
@@ -71,43 +77,71 @@ BLUES.dia(5, {
      "id": "d5_003",
      "quien": "ELI",
      "texto": "Bienvenidos al porche. Esta es la banda.",
-     "voz": "voz/d5/d5_003.mp3"
+     "voz": "voz/d5/d5_003.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d5/pres_guitarra.mp3",
+       "vol": 0.3,
+       "t": 2.9
+      }
+     ]
     },
     {
      "id": "d5_004",
      "quien": "ELI",
      "texto": "Ruby, a la tabla. Mr. Odell, al contrabajo. Teddy, a la trompeta. Y yo, a la guitarra.",
-     "voz": "voz/d5/d5_004.mp3"
+     "voz": "voz/d5/d5_004.mp3",
+     "sfx": [
+      {
+       "src": "sfx/d5/pres_tabla.mp3",
+       "vol": 0.5,
+       "t": 1.15
+      },
+      {
+       "src": "sfx/d5/pres_contrabajo.mp3",
+       "vol": 0.6,
+       "t": 3.05
+      },
+      {
+       "src": "sfx/d5/pres_guitarra.mp3",
+       "vol": 0.55,
+       "t": 6.45
+      }
+     ]
     },
     {
      "id": "d5_009",
      "quien": "ELI",
      "texto": "Ese hueco es vuestro.",
-     "voz": "voz/d5/d5_009.mp3"
+     "voz": "voz/d5/d5_009.mp3",
+     "var": "RECURSO_SILLA",
+     "fijo": true
     },
     {
      "id": "d5_006",
      "quien": "ELI",
      "texto": "«¡Tema!»: todos el tema. «¡Solo!»: os toca a vosotros.",
-     "voz": "voz/d5/d5_006.mp3"
+     "voz": "voz/d5/d5_006.mp3",
+     "var": "RECURSO_SILLA"
     },
     {
      "id": "d5_007",
      "quien": "ELI",
-     "texto": "¿Tu instrumento va en si bemol o en mi bemol? Elígelo abajo.",
+     "texto": "Vamos a tocar para instrumentos en Do. Pero si tu instrumento va en si bemol o en mi bemol, selecciónalo abajo.",
      "voz": "voz/d5/d5_007.mp3"
     },
     {
      "id": "d5_008",
      "quien": "ELI",
      "texto": "La banda cambia de tono; la partitura sigue en Sol. Y ahora… a practicar.",
-     "voz": "voz/d5/d5_008.mp3"
+     "voz": "voz/d5/d5_008.mp3",
+     "var": "ELI_CERCA"
     }
    ],
    "inter": {
     "tipo": "practica",
     "pestana": "paso1",
-    "desc": "Sala de práctica: Paso 1 · El tema, Paso 2 · Notas largas, Paso 3 · Finales y Concierto (TEMA/SOLO). Selector Do / Si♭ / Mi♭. Orden de salida por instrumentos.",
+    "desc": "Sala de práctica: Paso 1 · El tema, Paso 2 · Notas largas, Paso 3 · Finales y Concierto (TEMA e IMPRO alternándose). Selector Do / Si♭ / Mi♭. Orden de salida por transpositor (Do → Si♭ → Mi♭) con sorteo a tiza en la pizarra del porche y carrusel «Te toca / Después».",
     "lineas": {
      "tema": [
       {
@@ -223,34 +257,47 @@ BLUES.dia(5, {
        "voz": "voz/d5/d5_r016.mp3"
       }
      ]
-    }
+    },
+    "recursos": [
+     "img/inter/d5_pizarra.webp",
+     "sfx/d5/tiza.mp3",
+     "sfx/d5/tabla_raspa.mp3",
+     "sfx/d5/tabla_golpe.mp3",
+     "sfx/d5/aplauso.mp3",
+     "mus/d5_porche_v4_G.mp3",
+     "mus/d5_porche_v4_G_fin.mp3",
+     "mus/d5_porche_v4_F.mp3",
+     "mus/d5_porche_v4_F_fin.mp3",
+     "mus/d5_porche_v4_Bb.mp3",
+     "mus/d5_porche_v4_Bb_fin.mp3"
+    ]
    },
    "nombre": "A túa vez",
    "hechos": [],
    "guion_sonido": {
     "amb": "Grillos; farolillos que zumban.",
-    "mus": "La banda de cuatro (guitarra, tabla de lavar, contrabajo y trompeta con sordina; sin acordeón)."
+    "mus": "La banda del porche (Suno, cover de nuestra guía de 12 compases, remezclada desde sus stems: guitarra, contrabajo, tabla de lavar, bombo y trompeta con sordina; sin piano). Una base por tono (Sol, Fa, Si♭)."
    },
    "foco": {
     "ELI": [
-     0.27,
-     0.29,
-     0.14
+     0.278,
+     0.4,
+     0.075
     ],
     "RUBY": [
      0.4,
-     0.21,
-     0.14
+     0.356,
+     0.075
     ],
     "TEDDY": [
-     0.66,
-     0.17,
-     0.14
+     0.64,
+     0.285,
+     0.075
     ],
     "ODELL": [
-     0.82,
-     0.17,
-     0.14
+     0.785,
+     0.3,
+     0.075
     ]
    }
   }
