@@ -315,7 +315,7 @@
     if (B.inst && B.inst.rutas) r.push.apply(r, B.inst.rutas());
     /* (20-oct) el chisporroteo de verdad del cilindro, si el día tiene cilindro (líneas «cilindro» o la interacción del fonógrafo) */
     if (d.planos.some(p => B.arr(p.lineas).concat(B.arr(p.despues)).some(l => l.cilindro) || B.arr(p.inter).some(it => it.tipo === 'fonografo'))) r.push('sfx/d4/cilindro.mp3');
-    if (B.banda && B.banda.rutas && d.banda) r.push.apply(r, B.banda.rutas(d.banda));
+    if (B.banda && B.banda.rutas && d.banda && d.banda.precarga !== false) r.push.apply(r, B.banda.rutas(d.banda));   // (21-oct) «banda»: {…, «precarga»: false} = no bajar las pistas de banda/ con el acto
     return r.filter(Boolean);
   }
   /* imágenes: img/dN/p1_1.webp (1920) y, si existe, img/dN/1280/p1_1.webp para pantallas pequeñas */
