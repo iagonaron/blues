@@ -18,7 +18,29 @@
       '<circle cx="290" cy="190" r="48" fill="none" stroke="#E9CD8A" stroke-dasharray="4 6" opacity=".5"/></svg>' +
       '<div class="cuerda" style="position:absolute;left:12%;right:12%;bottom:-8%;height:calc(var(--u)*.5);border:1px solid var(--oro-a);border-radius:2px"><i style="display:block;height:100%;width:0;background:var(--oro)"></i></div>';
     caja.appendChild(f);
+    /* (C4, 20-oct; Iago: «interacciones con texturas pintadas») si el plano trae la lámina del fonógrafo (op.textura), se pinta
+       en el marco y la manivela dorada queda a la derecha; sin lámina, el dibujo de antes */
+    const tex = op.textura && (B.img[op.textura] || B.img[B.motor.resImg(op.textura)]);
+    if (tex) {
+      const sv = f.querySelector('svg');
+      B.$$('rect, path', sv).forEach(x => x.remove());
+      sv.insertAdjacentHTML('afterbegin', '<defs><clipPath id="fm-clip"><rect x="0" y="8" width="236" height="244" rx="10"/></clipPath></defs>' +
+        '<image href="' + tex + '" x="-60" y="8" width="356" height="244" preserveAspectRatio="xMidYMid slice" clip-path="url(#fm-clip)"/>' +
+        '<rect x="0" y="8" width="236" height="244" rx="10" fill="none" stroke="#C9A45C" stroke-width="2"/>' +
+        '<g class="manivela-eje"><rect x="236" y="182" width="54" height="16" rx="4" fill="#5a3a1c" stroke="#C9A45C"/></g>');
+      f.style.width = 'calc(var(--u)*50)'; f.style.height = 'calc(var(--u)*38)';
+      const ci = sv.querySelector('circle[stroke-dasharray]'); if (ci) { ci.setAttribute('opacity', '.85'); ci.setAttribute('stroke-width', '2'); }
+      const g = sv.querySelector('.manivela'); g.innerHTML = '<circle cx="290" cy="190" r="10" fill="#C9A45C"/><rect x="286" y="146" width="8" height="44" rx="3" fill="#C9A45C"/><circle cx="290" cy="146" r="12" fill="#E9CD8A" stroke="#8a6a3a"/>';
+    }
     const man = f.querySelector('.manivela'), barra = f.querySelector('.cuerda i');
+    /* sonido de la manivela de verdad (Splice, sfx/d4/manivela.mp3): suena mientras se gira y se apaga al parar */
+    const SFX = op.sfxManivela || 'sfx/d4/manivela.mp3';
+    let girando = null, tPara = 0;
+    const suenaGiro = () => {
+      if (!B.buf[SFX]) { if (Math.random() < .2) B.sint.tabla(B.ahora(), 'raspa', .15); return; }
+      if (!girando) { girando = B.suena(SFX, { vol: .85, bucle: true, fade: .05 }); ctl.alMorir.push(() => { if (girando) { girando.parar(.1); girando = null; } }); }
+      clearTimeout(tPara); tPara = setTimeout(() => { if (girando) { girando.parar(.15); girando = null; } }, 180);
+    };
     const VUELTAS = 3;
     let total = 0;
     await new Promise(res => {
@@ -32,8 +54,8 @@
         total += Math.abs(d);
         man.style.transform = 'rotate(' + (total * 180 / Math.PI) + 'deg)';
         barra.style.width = Math.min(100, total / (VUELTAS * 2 * Math.PI) * 100) + '%';
-        if (Math.random() < .2) B.sint.tabla(B.ahora(), 'raspa', .15);
-        if (total >= VUELTAS * 2 * Math.PI) { ang0 = null; res(); }
+        suenaGiro();
+        if (total >= VUELTAS * 2 * Math.PI) { ang0 = null; clearTimeout(tPara); if (girando) { girando.parar(.3); girando = null; } res(); }
       });
       f.addEventListener('pointerup', () => { ang0 = null; });
       ctl.alMorir.push(res);
@@ -45,14 +67,26 @@
     if (conGuion) {
       /* el guion trae las líneas de John (despues, "cilindro": true): suenan por el mismo cilindro, con su guitarra debajo */
       const cil = B.motor.cilindro();
-      f.querySelector('.cil').classList.add('brilla');
+      { const ci = f.querySelector('.cil'); if (ci) ci.classList.add('brilla'); }
       const t0 = B.ahora() + .6, p = .62;
       B.TEMA.slice(0, 4).forEach((cp, i) => cp.forEach(e => { if (e.n) B.inst.toca('guitarra', e.n.midi - 12, { t: t0 + (i * 4 + Math.floor(e.t) + (e.t % 1 ? .67 : 0)) * p, dur: e.dur * p, vel: .45, dest: cil.entrada }); }));
+      /* (Iago, 20-oct) el chisporroteo del cilindro se calla cuando se acaba la voz de John: en cuanto el motor va a decir
+         la primera frase SIN cilindro (Eli: «Ahí se acaba…»), se para el cilindro. Se envuelve B.motor.di solo mientras dura este plano. */
+      const di = B.motor.di; let hubo = false;
+      const suelta = () => { if (B.motor.di === envuelto) B.motor.di = di; };
+      const plano = op.plano, enPlano = () => { try { const d = B.motor.dia(); const q = d && d.planos[B.motor.indice()]; return !!(q && plano && q.id === plano.id); } catch (e) { return false; } };
+      const envuelto = function (l) {
+        if (!enPlano()) { suelta(); return di.apply(this, arguments); }   // ya en otro plano: fuera el envoltorio
+        if (l && l.cilindro) hubo = true;
+        else if (l && hubo) { suelta(); if (B.motor.paraCilindro) B.motor.paraCilindro(); }
+        return di.apply(this, arguments);
+      };
+      B.motor.di = envuelto;   // (no con ctl.alMorir: el control de la interacción muere antes de las frases de John)
       await B.espera(1.4, ctl);
       return;
     }
     const cil = B.sint.cilindro(); ctl.alMorir.push(() => cil.parar());
-    f.querySelector('.cil').classList.add('brilla');
+    { const ci = f.querySelector('.cil'); if (ci) ci.classList.add('brilla'); }
     /* la guitarra de John (provisional: los primeros compases del tema) */
     const t0 = B.ahora() + 1.2, p = .62;
     B.TEMA.slice(0, 2).forEach((cp, i) => cp.forEach(e => { if (e.n) B.inst.toca('guitarra', e.n.midi - 12, { t: t0 + 3 + (i * 4 + Math.floor(e.t) + (e.t % 1 ? .67 : 0)) * p, dur: e.dur * p, vel: .8, dest: cil.entrada }); }));

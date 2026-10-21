@@ -22,30 +22,53 @@
     const ctl = op.ctl;
     const claves = op.lineas ? Object.keys(op.lineas).filter(k => k !== 'fin') : SIN_GUION;
     const lista = op.objetos || claves.map((k, i) => Object.assign({ k, t: k, x: 12 + (i * 13) % 76, y: 30 + (i % 3) * 18 }, OBJ[k] || {}, { k }));
-    const enun = U.panel(caja, { left: '50%', top: '4%', transform: 'translateX(-50%)', textAlign: 'center' });
-    enun.innerHTML = '<div class="i-tit">La casa de John</div><div class="i-enun">Mira las cosas de la casa: haz clic en cada una.</div><div class="i-marcas" style="justify-content:center;margin-top:calc(var(--u)*.6)">' + lista.map(() => '<i></i>').join('') + '</div>';
+    const enun = U.panel(caja, { left: '3%', bottom: 'calc(var(--u)*10.8)', textAlign: 'left', maxWidth: '40%' });   // (C4) abajo a la izquierda, sobre la tira: ni caras ni fotos de la pared
+    enun.innerHTML = '<div class="i-tit">La casa de John</div><div class="i-enun">Mira las cosas de la casa: pulsa cada una.</div><div class="i-marcas" style="justify-content:flex-start;margin-top:calc(var(--u)*.6)">' + lista.map(() => '<i></i>').join('') + '</div>';
     const mk = B.$$('.i-marcas i', enun), vistos = new Set();
     let resolver; const todo = new Promise(r => resolver = r); ctl.alMorir.push(() => resolver());
     let ocupado = false;
+    /* (C4, 21-oct; Iago 20-oct 22:48 en el acto 1: «nada de iconos encima de la escena») cada objeto se resalta por su BORDE en la
+       propia lámina (o.x, o.y = centro; o.w, o.h = tamaño, en % del plano) y los nombres van en una tira abajo; vale tocar cualquiera de
+       los dos. Sin animaciones que se repitan: el borde es fijo y, ya visto, se apaga. */
+    const ORO = '#F0D696';
+    const tira = B.el('div', 'obj-tira');
+    tira.style.cssText = 'position:absolute;left:3%;bottom:calc(var(--u)*7.2);display:flex;gap:calc(var(--u)*.8);flex-wrap:wrap;justify-content:flex-start;max-width:56%;z-index:3';   // abajo a la izquierda: no tapa los objetos
+    caja.appendChild(tira);
+    const marca = (z, ch, visto) => {
+      z.style.borderColor = visto ? 'rgba(240,214,150,.28)' : ORO;
+      z.style.boxShadow = visto ? 'none' : '0 0 calc(var(--u)*1) rgba(240,214,150,.55), inset 0 0 calc(var(--u)*.8) rgba(240,214,150,.28)';
+      ch.innerHTML = (visto ? '✓ ' : '') + B.esc(ch.dataset.t);
+    };
+    const tapa = vis => { [tira, enun].concat(B.$$('.obj-zona', caja)).forEach(x => { x.style.transition = 'opacity .4s'; x.style.opacity = vis ? '' : 0; x.style.pointerEvents = vis ? '' : 'none'; }); };
     lista.forEach((o, i) => {
-      const b = B.el('button', 'chapa brilla', '◆ ' + B.esc(o.t));
-      b.style.cssText += ';position:absolute;left:' + o.x + '%;top:' + o.y + '%;transform:translate(-50%,-50%);cursor:pointer;font-size:calc(var(--u)*.85)';
-      b.dataset.k = o.k;
-      b.addEventListener('click', async e => {
+      const z = B.el('button', 'obj-zona'); z.setAttribute('aria-label', o.t); z.dataset.k = o.k;
+      z.style.cssText = 'position:absolute;left:' + o.x + '%;top:' + o.y + '%;width:' + (o.w || 9) + '%;height:' + (o.h || 12) + '%;transform:translate(-50%,-50%);' +
+        'background:transparent;border:2px solid ' + ORO + ';border-radius:calc(var(--u)*.7);cursor:pointer;padding:0;z-index:2;touch-action:manipulation';
+      const ch = B.el('button', 'chapa'); ch.dataset.t = o.t; ch.dataset.k = o.k;
+      ch.style.cssText += ';cursor:pointer;font-size:calc(var(--u)*.9)';
+      marca(z, ch, false);
+      const toca = async e => {
         e.stopPropagation(); if (ocupado) return;
-        ocupado = true; b.classList.remove('brilla'); b.classList.add('habla'); b.style.setProperty('--c', '#C9A45C');
-        B.$$('button.chapa', caja).forEach(x => { if (x !== b) x.style.opacity = .45; });
+        ocupado = true;
+        z.style.background = 'rgba(240,214,150,.16)';
+        setTimeout(() => { if (ocupado) tapa(false); }, 450);   // durante el primer plano del objeto, nada encima
+        /* (C4, 20-oct) cada objeto suena al tocarlo (o.sfx: Splice) */
+        if (o.sfx && B.buf[o.sfx]) B.suena(o.sfx, { vol: o.vol == null ? .8 : o.vol });
+        if (o.var && B.motor.ponVariante) B.motor.ponVariante(o.var);   // (Iago, 15:08) su primer plano en el mismo instante del clic
         if (U.hay(op, o.k)) await U.dice(op, o.k, ctl);
         else if (o.l) await U.di(o.l, ctl);
+        if (B.motor.ponVariante) B.motor.ponVariante(null);   // vuelve la casa entera para elegir otro
         if (o.hecho) B.motor.abreHecho(o.hecho);
-        B.$$('button.chapa', caja).forEach(x => { x.style.opacity = ''; });
-        ocupado = false;
-        vistos.add(o.k); mk[i].classList.add('ok');
+        z.style.background = 'transparent';
+        vistos.add(o.k); mk[i].classList.add('ok'); marca(z, ch, true);
+        tapa(true); ocupado = false;
         if (vistos.size === lista.length) resolver();
-      });
-      caja.appendChild(b);
+      };
+      z.addEventListener('click', toca); ch.addEventListener('click', toca);
+      caja.appendChild(z); tira.appendChild(ch);
     });
     await todo; if (ctl.muerto) return;
+    tapa(false);   // vistos todos: fuera bordes, tira y enunciado antes de la última frase
     if (!await U.dice(op, 'fin', ctl)) return;
     await U.seguir(caja, ctl, 'Seguir');
   };
