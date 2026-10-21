@@ -840,7 +840,6 @@ BLUES.dia(3, {
      "quien": "PEARL",
      "texto": "Un fogonero. Escucha, que lo digo una vez: doce compases.",
      "voz": "voz/d3/d3_043.mp3",
-     "atril": "vacio",
      "var": "XAN_CERCA"
     },
     {
@@ -848,7 +847,6 @@ BLUES.dia(3, {
      "quien": "PEARL",
      "texto": "Cuatro compases sobre el uno. Dos sobre el cuatro. Dos sobre el uno.",
      "voz": "voz/d3/d3_063.mp3",
-     "atril": "fila2",
      "var": "XAN_CERCA"
     },
     {
@@ -856,7 +854,6 @@ BLUES.dia(3, {
      "quien": "PEARL",
      "texto": "Luego el cinco, el cuatro, el uno… y el cinco para volver a empezar.",
      "voz": "voz/d3/d3_044.mp3",
-     "atril": "fila3",
      "var": "XAN_CERCA"
     },
     {
@@ -864,7 +861,6 @@ BLUES.dia(3, {
      "quien": "PEARL",
      "texto": "Eso vale para cualquier blues, en cualquier tono. Aquí, en Sol: el uno es G7, el cuatro es C7 y el cinco es D7.",
      "voz": "voz/d3/d3_064.mp3",
-     "atril": "sol",
      "var": "XAN_CERCA"
     },
     {
@@ -1064,7 +1060,9 @@ BLUES.dia(3, {
     },
     "recursos": [
      "sfx/d3/reloj.mp3",
-     "sfx/d3/badumtss.mp3"
+     "sfx/d3/tension_fondo.mp3",
+     "sfx/d3/latido.mp3",
+     "sfx/d3/tension_sube.mp3"
     ]
    },
    "nombre": "El atril",
