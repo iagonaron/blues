@@ -163,18 +163,23 @@
         '.d2p-hoja{position:absolute;background:center/100% 100% no-repeat;box-shadow:calc(var(--u)*-1.4) 0 calc(var(--u)*1.8) rgba(0,0,0,.75);will-change:transform}' +
         '.d2p-luz{position:absolute;pointer-events:none;background:radial-gradient(50% 60% at 50% 40%,rgba(255,190,110,.55),rgba(255,150,60,0) 70%);mix-blend-mode:screen;opacity:0}';
       document.head.appendChild(s); }
-    const vista = B.el('div', 'd2p-vista'); caja.appendChild(vista);
+    /* (Iago, 22-oct: «justo al ponerse ese plano… como si la foto de detrás de la puerta cargase y generase un frame por delante»)
+       el plano arranca con la lámina de la puerta cerrada (op.previa, la pone el motor) y la escena 3D, que en reposo es idéntica,
+       se monta invisible y solo se enseña cuando sus tres imágenes están descodificadas y ha terminado el fundido del plano */
+    const t0m = performance.now(), url = r => B.img[r] || r;
+    const SRC = { dentro: op.dentro || 'img/d2/p2_2.webp', muro: op.muro || 'img/inter/d2_puerta_muro.webp', hoja: op.hoja || 'img/inter/d2_puerta_hoja.webp' };
+    const vista = B.el('div', 'd2p-vista'); vista.style.opacity = '0'; caja.appendChild(vista);
     const W = () => vista.clientWidth, Hh = () => vista.clientHeight;
-    const dentro = B.el('div', 'd2p-capa'); dentro.style.backgroundImage = 'url(' + (op.dentro || 'img/d2/p2_2.webp') + ')'; vista.appendChild(dentro);
+    const dentro = B.el('div', 'd2p-capa'); dentro.style.backgroundImage = 'url(' + url(SRC.dentro) + ')'; vista.appendChild(dentro);
     const sombra = B.el('div', 'd2p-sombra'); dentro.appendChild(sombra);
     const bordes = ['t', 'b', 'l', 'r'].map(k => { const d = B.el('div', 'd2p-borde ' + k); dentro.appendChild(d); return d; });   // el borde del interior se funde con la oscuridad del vagón
-    const muro = B.el('div', 'd2p-capa'); muro.style.backgroundImage = 'url(' + (op.muro || 'img/inter/d2_puerta_muro.webp') + ')'; vista.appendChild(muro);
+    const muro = B.el('div', 'd2p-capa'); muro.style.backgroundImage = 'url(' + url(SRC.muro) + ')'; vista.appendChild(muro);
     const pct = v => (v * 100) + '%';
     const enHueco = cls => { const d = B.el('div', cls); d.style.left = pct(H[0]); d.style.top = pct(H[1]); d.style.width = pct(H[2] - H[0]); d.style.height = pct(H[3] - H[1]); vista.appendChild(d); return d; };
     const marco = enHueco('d2p-marco');
-    const hoja = enHueco('d2p-hoja'); hoja.style.backgroundImage = 'url(' + (op.hoja || 'img/inter/d2_puerta_hoja.webp') + ')';
+    const hoja = enHueco('d2p-hoja'); hoja.style.backgroundImage = 'url(' + url(SRC.hoja) + ')';
     const luz = B.el('div', 'd2p-luz'); luz.style.left = pct(H[0] - .05); luz.style.top = pct(H[1]); luz.style.width = pct(H[2] - H[0] + .1); luz.style.height = pct(Math.min(1, H[3] - H[1] + .25)); vista.appendChild(luz);
-    const pista = B.el('div', 'd2-pista'); pista.textContent = op.pista || 'Arrastra la puerta para subir al vagón'; caja.appendChild(pista);
+    const pista = B.el('div', 'd2-pista'); pista.textContent = op.pista || 'Arrastra la puerta para subir al vagón'; pista.style.opacity = '0'; caja.appendChild(pista);
     let abierto = 0, cam = 0;
     const cx = (.5 - (H[0] + H[2]) / 2), cy = (.5 - (H[1] + H[3]) / 2);
     /* un plano a profundidad z, desplazado (dx, dy) en su propio plano: escala y posición vistas desde la cámara */
@@ -198,6 +203,13 @@
       muro.style.opacity = hoja.style.opacity = marco.style.opacity = fuera;
     }
     pinta(); const rz = () => pinta(); addEventListener('resize', rz); ctl.alMorir.push(() => removeEventListener('resize', rz));
+    await Promise.all(Object.values(SRC).map(r => { const im = new Image(); im.src = url(r); return im.decode ? im.decode().catch(() => { }) : Promise.resolve(); }));
+    if (ctl.muerto) return;
+    const falta = 950 - (performance.now() - t0m);                 // el fundido del plano (.plano: .9 s) tiene que haber acabado
+    if (falta > 0 && !await B.espera(falta / 1000, ctl)) return;
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));   // dos cuadros: las capas ya pintadas
+    if (ctl.muerto) return;
+    vista.style.opacity = '1'; pista.style.opacity = '';
     let ruido = null;
     const suenaPuerta = () => { if (!ruido) ruido = suena('sfx/d2/puerta_corredera.mp3', { vol: .85 }); };
     /* (Iago, 20-oct 14:32) al abrir, entra con fade in la música que tocan ellos dentro; sigue sin corte en P2.2 (misma pista) */

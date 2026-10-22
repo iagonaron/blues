@@ -59,9 +59,11 @@
     s.textContent = '.d2-instr{display:flex;justify-content:center;align-items:flex-end;gap:calc(var(--u)*2.6);margin:calc(var(--u)*1.1) 0 calc(var(--u)*.3)}' +
       '.d2-obj{background:center/contain no-repeat;transition:transform .08s ease-out,filter .12s;filter:drop-shadow(0 calc(var(--u)*.35) calc(var(--u)*.5) rgba(0,0,0,.6))}' +
       '.d2-tabla{width:calc(var(--u)*8.5);height:calc(var(--u)*11);background-image:url(img/inter/d2_tabla.webp)}' +
-      '.d2-manos{width:calc(var(--u)*10);height:calc(var(--u)*7.5);background-image:url(img/inter/d2_manos.webp)}' +
+      '.d2-manos{width:calc(var(--u)*13);height:calc(var(--u)*9.75);background-image:url(img/inter/d2_manos.webp)}' +
       '.d2-maleta{width:calc(var(--u)*12);height:calc(var(--u)*9.5);background-image:url(img/inter/d2_maleta.webp)}' +
       '.d2-obj.golpe{transform:translateY(calc(var(--u)*.4)) scale(1.05,.95)}.d2-obj.raspa{transform:rotate(-2.5deg)}' +
+      '.d2-manos.activa{cursor:pointer;filter:drop-shadow(0 0 calc(var(--u)*.12) var(--oro-hi,#f2c46a)) drop-shadow(0 0 calc(var(--u)*.12) var(--oro-hi,#f2c46a)) drop-shadow(0 calc(var(--u)*.35) calc(var(--u)*.5) rgba(0,0,0,.6))}' +
+      '.icaja-toca{cursor:pointer}' +
       '.d2-manos.palma{transform:scale(1.13)}.d2-manos.tuya{filter:drop-shadow(0 0 calc(var(--u)*1.1) rgba(255,214,140,.9))}';
     document.head.appendChild(s);
   }
@@ -69,7 +71,7 @@
     const ctl = op.ctl;
     U.fondo(caja); estilo();
     const pnl = U.panel(caja, { left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center', padding: 'calc(var(--u)*2) calc(var(--u)*3)' });
-    pnl.innerHTML = '<div class="i-tit">Palmas en el 2 y el 4</div><div class="i-enun">Primero Ruby da las palmas contigo. Luego, tú solo. Espacio o clic.</div>' +
+    pnl.innerHTML = '<div class="i-tit">Palmas en el 2 y el 4</div><div class="i-enun">Primero Ruby da las palmas contigo. Luego, tú solo. <b style="color:var(--oro-hi)">Toca las manos</b> (o pulsa Espacio).</div>' +
       '<div class="d2-instr"><div class="d2-obj d2-tabla"></div><div class="d2-obj d2-manos"></div><div class="d2-obj d2-maleta"></div></div>' +
       '<div class="pulsos" style="justify-content:center;margin:calc(var(--u)*1.2) 0"><div class="pl">1</div><div class="pl marca">2</div><div class="pl">3</div><div class="pl marca">4</div></div>' +
       '<div class="i-marcas" style="justify-content:center">' + '<i></i>'.repeat(8) + '</div><div class="i-estado" style="margin-top:calc(var(--u)*.8)">Escucha el groove…</div>';
@@ -78,9 +80,9 @@
     /* micrófono (si lo hay y se deja): palmas de verdad */
     est.textContent = 'Si te lo pide, dale permiso al micrófono: darás palmas de verdad.';
     let mic = await abreMic(ctl); if (ctl.muerto) return;
-    if (mic && !await calibra(mic, est, ctl)) { if (ctl.muerto) return; mic.cierra(); mic = null; est.textContent = 'No te oigo bien: da las palmas con Espacio o clic.'; await B.espera(1.6, ctl); }
+    if (mic && !await calibra(mic, est, ctl)) { if (ctl.muerto) return; mic.cierra(); mic = null; est.textContent = 'No te oigo bien: da las palmas tocando las manos (o con Espacio).'; await B.espera(1.6, ctl); }
     if (ctl.muerto) return;
-    if (mic) enun.innerHTML = 'Primero Ruby da las palmas contigo. Luego, tú solo. <b style="color:var(--oro-hi)">Palmas de verdad</b>: el micrófono te escucha.';
+    if (mic) enun.innerHTML = 'Primero Ruby da las palmas contigo. Luego, tú solo. <b style="color:var(--oro-hi)">Palmas de verdad</b>: el micrófono te escucha (también vale tocar las manos).';
     const MARGEN = mic ? .13 : .09;
     B.inter.palmas.mic = !!mic;
     const ronda = async () => {
@@ -88,8 +90,12 @@
       mks.forEach(m => m.classList.remove('ok', 'mal', 'act'));
       const palma = () => { const t = B.ahora(); golpes.push(t); toca('palma', t, 1, () => B.sint.palma(t, .9)); destello(oManos, 'palma'); destello(oManos, 'tuya', 220); };
       const quita = B.captura.poner(e => { if (e.key === ' ' || e.key === 'Enter') { if (!e.repeat) palma(); return true; } return false; });
-      const zona = B.el('div', ''); zona.style.cssText = 'position:absolute;inset:0;z-index:0'; caja.insertBefore(zona, pnl);
-      zona.addEventListener('pointerdown', e => { e.preventDefault(); palma(); });
+      /* (Iago, 22-oct: «no sé dónde tengo que pulsar… en la imagen de las palmas no funciona») vale tocar en cualquier sitio
+         de la interacción, manos incluidas (la capa de antes quedaba debajo del panel); los botones no cuentan */
+      const alTocar = e => { if (e.target.closest && e.target.closest('button, .i-pie')) return; e.preventDefault(); palma(); };
+      caja.addEventListener('pointerdown', alTocar, true); caja.classList.add('icaja-toca'); oManos.classList.add('activa');
+      const zona = { remove: () => { caja.removeEventListener('pointerdown', alTocar, true); caja.classList.remove('icaja-toca'); oManos.classList.remove('activa'); } };
+      ctl.alMorir.push(() => zona.remove());
       const sinMic = mic ? mic.oye(t => { golpes.push(t - mic.lat); destello(oManos, 'palma'); destello(oManos, 'tuya', 220); pls.forEach(x => x.classList.contains('on') && x.classList.add('golpe')); setTimeout(() => pls.forEach(x => x.classList.remove('golpe')), 140); }) : null;
       if (sinMic) ctl.alMorir.push(sinMic);
       B.inter.palmas.palma = palma; B.inter.palmas.t0 = t0; B.inter.palmas.p = p;
@@ -107,7 +113,7 @@
       let ok = 0, enUno = false;
       for (let k = 0; k < 8; k++) {
         const c = 2 + Math.floor(k / 2), b = k % 2 ? 3 : 1, obj = t0 + (c * 4 + b) * p;
-        if (!await B.espera(obj + .2 - B.ahora(), ctl)) { quita(); if (sinMic) sinMic(); return 0; }
+        if (!await B.espera(obj + .2 - B.ahora(), ctl)) { quita(); zona.remove(); if (sinMic) sinMic(); return 0; }
         const bien = golpes.some(g => Math.abs(g - obj) <= MARGEN);
         mks[k].classList.add(bien ? 'ok' : 'mal'); if (bien) ok++;
         if (golpes.some(g => Math.abs(g - (obj - p)) <= MARGEN)) enUno = true;     // palmas en el 1 o en el 3
