@@ -161,14 +161,14 @@ BLUES.dia(2, {
    },
    "foco": {
     "XAN": [
-     0.375,
-     0.133,
-     0.135
+     0.42,
+     0.12,
+     0.15
     ],
     "GEORGE": [
-     0.662,
-     0.112,
-     0.149
+     0.76,
+     0.088,
+     0.175
     ]
    },
    "var": {
@@ -1013,10 +1013,14 @@ BLUES.dia(2, {
     "recursos": [
      "sfx/d2/papel.mp3",
      "img/inter/d2_periodico.webp",
-     "img/inter/d2_foto_schoenberg.webp"
+     "img/inter/d2_foto_schoenberg.webp",
+     "img/inter/d2_foto_cinta.webp",
+     "img/inter/d2_foto_gershwin.webp"
     ],
     "fotos": {
-     "schoenberg": "img/inter/d2_foto_schoenberg.webp"
+     "schoenberg": "img/inter/d2_foto_schoenberg.webp",
+     "cinta": "img/inter/d2_foto_cinta.webp",
+     "gershwin": "img/inter/d2_foto_gershwin.webp"
     }
    },
    "var": {
@@ -1665,29 +1669,29 @@ BLUES.dia(2, {
    },
    "foco": {
     "TEDDY": [
-     0.12,
-     0.186,
-     0.099
+     0.135,
+     0.19,
+     0.18
     ],
     "RUBY": [
-     0.24,
-     0.216,
-     0.099
+     0.26,
+     0.243,
+     0.157
     ],
     "SLIM": [
-     0.36,
-     0.136,
-     0.099
+     0.45,
+     0.41,
+     0.16
     ],
     "XAN": [
-     0.31,
-     0.366,
-     0.099
+     0.34,
+     0.42,
+     0.155
     ],
     "BUSTER": [
-     0.43,
-     0.366,
-     0.099
+     0.38,
+     0.17,
+     0.16
     ]
    },
    "mus": {
