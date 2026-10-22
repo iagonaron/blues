@@ -29,7 +29,6 @@
     return /^[0-9a-f-]{36}$/i.test(c || '') ? c : null;
   }
   B.inter.practica_cuenta = leeCuenta;
-  const PESTANAS = [['paso1', 'Paso 1 · El tema'], ['paso2', 'Paso 2 · Notas largas'], ['paso3', 'Paso 3 · Finales'], ['concierto', 'Concierto']];
   B.inter.practica = async function (caja, op) {
     const ctl = op.ctl;
     /* (Iago, 20-oct, 14:10) también en Paso 1–3 suena la base de Suno de cada tono, SIN melodía (nada de trompeta MIDI):
@@ -46,33 +45,21 @@
     };
     ctl.alMorir.push(() => { B.banda.tocar = tocarOrig; });
     U.fondo(caja);
-    const tabs = B.el('div', 'pestanas'); tabs.style.cssText = 'position:absolute;left:5%;top:2.2%;z-index:6';
-    caja.appendChild(tabs);
+    /* (Iago, 22-oct, 22:56) en el acto 5 SOLO el concierto: «ni paso 1 ni leches», tema y solo en bucle (sin pestañas).
+       Copia de la versión con los pasos: herramientas/practica_con_pasos.js (fuera de la web) */
     const zona = B.el('div', ''); zona.style.cssText = 'position:absolute;inset:0;top:7.5%'; caja.appendChild(zona);
     let sub = null;
-    /* (C5, 21-oct) los pasos usan la vista de los hitos del acto 4 (común); en el porche toca la banda de cuatro, sin Xan */
-    const retoca = (v, z) => {
-      const t = v.papel.querySelector('.i-tit'); if (t) t.textContent = t.textContent.replace(/^Hito (\d)/, 'Paso $1');
-      const e = v.papel.querySelector('.i-enun'); if (e) e.textContent = e.textContent.replace('junto a Eli y Xan', 'junto a la banda');
-      const d = z.querySelector('.i-pie-izq .dialogo'); if (!d) return;
-      d.innerHTML = '';
-      ['ELI', 'RUBY', 'ODELL', 'TEDDY'].forEach(q => { const P = B.personaje(q); const c = B.el('span', 'chapa', P.corto); c.style.setProperty('--c', P.color); c.style.fontSize = 'calc(var(--u)*.75)'; d.appendChild(c); });
-    };
-    const abre = k => {
+    const abre = () => {
       if (sub) sub.matar(); B.banda.parar();
       sub = B.control(); ctl.alMorir.push(() => sub && sub.matar());
       zona.innerHTML = '';
-      B.$$('button', tabs).forEach(b => b.classList.toggle('sel', b.dataset.k === k));
-      if (k === 'concierto') concierto(zona, sub, op);
-      else { const v = U.vistaHito(zona, +k.slice(-1), sub, { vueltas: 0, arriba: '1%' }); v.papel.style.maxHeight = '74%'; retoca(v, zona); }
-      B.guarda('blues5_pestana', k);
+      concierto(zona, sub, op);
     };
-    PESTANAS.forEach(([k, t]) => { const b = U.boton(t, 'peq', () => abre(k)); b.dataset.k = k; tabs.appendChild(b); });
-    abre(op.pestana || 'paso1');
+    abre();
     if (!enVivo()) {      // solo en el artifact de revisión, nunca en blues.gp.lmathome.es
       const vv = B.el('div', 'i-transp'); vv.style.cssText = 'position:absolute;right:calc(var(--u)*11.5);top:2.2%;z-index:6;opacity:.85';
       [['alumno', 'Vista alumno'], ['profe', 'Vista Protester (prueba)']].forEach(([k, t]) => {
-        const b = U.boton(t, 'peq' + (B.lee('blues5_vista', 'profe') === k ? ' sel' : ''), () => { B.guarda('blues5_vista', k); B.$$('button', vv).forEach(x => x.classList.toggle('sel', x === b)); abre('concierto'); });
+        const b = U.boton(t, 'peq' + (B.lee('blues5_vista', 'profe') === k ? ' sel' : ''), () => { B.guarda('blues5_vista', k); B.$$('button', vv).forEach(x => x.classList.toggle('sel', x === b)); abre(); });
         vv.appendChild(b);
       });
       caja.appendChild(vv);
