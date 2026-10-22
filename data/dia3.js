@@ -640,9 +640,6 @@ BLUES.dia(3, {
     "SLIM",
     "PEARL"
    ],
-   "var": {
-    "XAN_BRAZO": "img/d3/p3_3_xan_brazo.webp"
-   },
    "foco": {
     "TEDDY": [
      0.09,
@@ -698,21 +695,79 @@ BLUES.dia(3, {
      "quien": "TEDDY",
      "texto": "¿Lo ves? Esto no se escribe.",
      "voz": "voz/d3/d3_030.mp3"
-    },
+    }
+   ],
+   "hechos": []
+  },
+  {
+   "id": "P3.3d",
+   "desc": "Slim levanta el brazo de Xan: «¡El gallego quiere tocar!».",
+   "nombre": "¡El gallego quiere tocar!",
+   "img": "img/d3/p3_3_xan_brazo.webp",
+   "pal": "club",
+   "personajes": [
+    "SLIM",
+    "XAN",
+    "PEARL",
+    "RUBY",
+    "TEDDY",
+    "BUSTER"
+   ],
+   "amb": [
+    {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.5
+    }
+   ],
+   "mus": {
+    "src": "mus/d3_trio.mp3",
+    "vol": 0.3,
+    "bucle": true
+   },
+   "foco": {
+    "TEDDY": [
+     0.1,
+     0.18,
+     0.09
+    ],
+    "RUBY": [
+     0.18,
+     0.28,
+     0.08
+    ],
+    "XAN": [
+     0.3,
+     0.245,
+     0.09
+    ],
+    "SLIM": [
+     0.465,
+     0.18,
+     0.09
+    ],
+    "BUSTER": [
+     0.585,
+     0.27,
+     0.09
+    ],
+    "PEARL": [
+     0.885,
+     0.12,
+     0.08
+    ]
+   },
+   "lineas": [
     {
      "id": "d3_031",
      "quien": "SLIM",
      "texto": "¡Eh, Miss Pearl! ¡El gallego quiere tocar!",
-     "voz": "voz/d3/d3_031.mp3",
-     "espera": 0.9,
-     "var": "XAN_BRAZO"
+     "voz": "voz/d3/d3_031.mp3"
     },
     {
      "id": "d3_032",
      "quien": "XAN",
      "texto": "¡¿Qué?! ¡No, no, yo no…!",
-     "voz": "voz/d3/d3_032.mp3",
-     "var": "XAN_BRAZO"
+     "voz": "voz/d3/d3_032.mp3"
     },
     {
      "id": "d3_033",
@@ -849,7 +904,7 @@ BLUES.dia(3, {
   {
    "id": "P3.5",
    "desc": "Pearl, apoyada en la tapa del piano con la boquilla; Xan, sentado en la banqueta, rígido. Detrás, los músicos miran.",
-   "img": "img/d3/p3_5.webp",
+   "img": "img/d3/p3_5_xan_cerca.webp",
    "personajes": [
     "PEARL",
     "XAN"
@@ -877,8 +932,7 @@ BLUES.dia(3, {
      "quien": "XAN",
      "texto": "No… Bueno, un fogonero me enseñó a contestar a una armónica.",
      "voz": "voz/d3/d3_042.mp3",
-     "espera": 0.3,
-     "var": "XAN_CERCA"
+     "espera": 0.3
     },
     {
      "id": "d3_043",
@@ -903,15 +957,13 @@ BLUES.dia(3, {
      "id": "d3_064",
      "quien": "PEARL",
      "texto": "Eso vale para cualquier blues, en cualquier tono. Aquí, en Sol: el uno es G7, el cuatro es C7 y el cinco es D7.",
-     "voz": "voz/d3/d3_064.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d3/d3_064.mp3"
     },
     {
      "id": "d3_045",
      "quien": "PEARL",
      "texto": "G es Sol, C es Do, D es Re. Y el siete, la séptima menor encima. ¿Fácil? Fácil.",
-     "voz": "voz/d3/d3_045.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d3/d3_045.mp3"
     },
     {
      "id": "d3_046",
@@ -941,14 +993,9 @@ BLUES.dia(3, {
    },
    "foco": {
     "XAN": [
-     0.264,
-     0.36,
-     0.11
-    ],
-    "PEARL": [
-     0.68,
-     0.151,
-     0.1
+     0.34,
+     0.33,
+     0.28
     ]
    },
    "salpica": {
@@ -974,7 +1021,6 @@ BLUES.dia(3, {
     ]
    },
    "var": {
-    "XAN_CERCA": "img/d3/p3_5_xan_cerca.webp",
     "PEARL_CERCA": "img/d3/p3_5_pearl_cerca.webp"
    }
   },
@@ -1231,8 +1277,8 @@ BLUES.dia(3, {
    "pal": "madrugada",
    "amb": [
     {
-     "src": "sfx/d3/amanecer_lluvia.mp3",
-     "vol": 0.6
+     "src": "sfx/d3/lluvia_calle.mp3",
+     "vol": 0.8
     }
    ],
    "lineas": [
@@ -1274,8 +1320,8 @@ BLUES.dia(3, {
    "pal": "madrugada",
    "amb": [
     {
-     "src": "sfx/d3/amanecer_lluvia.mp3",
-     "vol": 0.6
+     "src": "sfx/d3/lluvia_calle.mp3",
+     "vol": 0.8
     }
    ],
    "mus": {
@@ -1295,8 +1341,8 @@ BLUES.dia(3, {
    "pal": "madrugada",
    "amb": [
     {
-     "src": "sfx/d3/amanecer_lluvia.mp3",
-     "vol": 0.6
+     "src": "sfx/d3/lluvia_calle.mp3",
+     "vol": 0.8
     }
    ],
    "mus": {
@@ -1316,8 +1362,8 @@ BLUES.dia(3, {
    "pal": "madrugada",
    "amb": [
     {
-     "src": "sfx/d3/amanecer_lluvia.mp3",
-     "vol": 0.6
+     "src": "sfx/d3/lluvia_calle.mp3",
+     "vol": 0.8
     }
    ],
    "mus": {
@@ -1336,8 +1382,8 @@ BLUES.dia(3, {
    "pal": "madrugada",
    "amb": [
     {
-     "src": "sfx/d3/amanecer_lluvia.mp3",
-     "vol": 0.6
+     "src": "sfx/d3/lluvia_calle.mp3",
+     "vol": 0.8
     }
    ],
    "personajes": [
