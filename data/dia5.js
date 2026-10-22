@@ -140,8 +140,7 @@ BLUES.dia(5, {
    ],
    "inter": {
     "tipo": "practica",
-    "pestana": "paso1",
-    "desc": "Sala de práctica: Paso 1 · El tema, Paso 2 · Notas largas, Paso 3 · Finales y Concierto (TEMA e IMPRO alternándose). Selector Do / Si♭ / Mi♭. Orden de salida por transpositor (Do → Si♭ → Mi♭) con sorteo a tiza en la pizarra del porche y carrusel «Te toca / Después».",
+    "desc": "Sala de práctica: SOLO el Concierto (Iago, 22-oct): TEMA e IMPRO alternándose en bucle con la banda del porche. Selector Do / Si♭ / Mi♭. Con Protester: orden de salida por transpositor (Do → Si♭ → Mi♭) con sorteo a tiza en la pizarra del porche y carrusel «Te toca / Después».",
     "lineas": {
      "tema": [
       {
