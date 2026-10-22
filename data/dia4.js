@@ -32,21 +32,51 @@ BLUES.dia(4, {
    "pal": "otono",
    "amb": [
     {
-     "src": "sfx/d4/ciudad_manana.mp3",
-     "vol": 0.4
+     "src": "sfx/d4/locomotora.mp3",
+     "vol": 0.32
     },
     {
-     "src": "sfx/d4/tren_lejos.mp3",
+     "src": "sfx/d4/vagon.mp3",
      "vol": 0.3
     },
     {
+     "src": "sfx/d4/tren_elevado.mp3",
+     "vol": 0.4
+    },
+    {
+     "src": "sfx/d4/ciudad_manana.mp3",
+     "vol": 0.25
+    },
+    {
      "src": "sfx/d4/pajaros.mp3",
-     "vol": 0.15
+     "vol": 0.08
     }
    ],
    "lineas": [],
    "nombre": "Título",
-   "titulo": true
+   "titulo": true,
+   "salpica": {
+    "cada": [
+     9,
+     15
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d4/silbato_vapor.mp3",
+      "vol": [
+       0.22,
+       0.35
+      ]
+     },
+     {
+      "src": "sfx/d4/tren_llega.mp3",
+      "vol": [
+       0.18,
+       0.28
+      ]
+     }
+    ]
+   }
   },
   {
    "id": "P4.1",
@@ -60,11 +90,19 @@ BLUES.dia(4, {
    "amb": [
     {
      "src": "sfx/d4/tren_dentro.mp3",
-     "vol": 0.45
+     "vol": 0.4
+    },
+    {
+     "src": "sfx/d4/vagon.mp3",
+     "vol": 0.35
+    },
+    {
+     "src": "sfx/d4/locomotora.mp3",
+     "vol": 0.22
     },
     {
      "src": "sfx/d4/tren_elevado.mp3",
-     "vol": 0.35
+     "vol": 0.25
     }
    ],
    "lineas": [
@@ -125,6 +163,21 @@ BLUES.dia(4, {
      0.3
     ]
    },
+   "salpica": {
+    "cada": [
+     14,
+     22
+    ],
+    "sonidos": [
+     {
+      "src": "sfx/d4/silbato_vapor.mp3",
+      "vol": [
+       0.15,
+       0.25
+      ]
+     }
+    ]
+   },
    "var": {
     "RECURSO_BILLETE": "img/d4/p4_1_recurso_billete.webp",
     "ELI_CERCA": "img/d4/p4_1_eli_cerca.webp",
@@ -139,12 +192,16 @@ BLUES.dia(4, {
    "pal": "otono",
    "amb": [
     {
-     "src": "sfx/d4/tren_elevado.mp3",
-     "vol": 0.45
+     "src": "sfx/d4/locomotora.mp3",
+     "vol": 0.5
     },
     {
-     "src": "sfx/d4/tren_dentro.mp3",
-     "vol": 0.22
+     "src": "sfx/d4/vagon.mp3",
+     "vol": 0.35
+    },
+    {
+     "src": "sfx/d4/tren_elevado.mp3",
+     "vol": 0.3
     }
    ],
    "espera": 2,
@@ -216,6 +273,8 @@ BLUES.dia(4, {
       -2.8
      ]
     },
+    "silbato": "sfx/d4/silbato_vapor.mp3",
+    "volSilbato": 0.5,
     "antes": {
      "tit": "Rumbo a Weeksville",
      "txt": "A la mañana siguiente, Eli lleva a Xan en el tren elevado desde Harlem, donde lo encontró la noche antes en el club, hasta Weeksville, en Brooklyn: el barrio donde vivió John."
