@@ -116,7 +116,7 @@
     escena.addEventListener('contextmenu', e => { if (!(e.target && /^(input|textarea|select)$/i.test(e.target.tagName))) e.preventDefault(); });
     escena.addEventListener('selectstart', e => { if (!(e.target && /^(input|textarea)$/i.test(e.target.tagName))) e.preventDefault(); });
     escena.classList.remove('arrancando');
-    preparaPortada().then(() => M.portada());
+    preparaPortada().then(puerta).then(() => M.portada());
   };
   /* (21-oct, Iago: «un vídeo de barco para la portada… mi pantalla del aula es limitada: que cargue ANTES de entrar en la
      portada… y el sonido coherente: mar, gaviotas, barco») el vídeo (de C2, Runway: Coruña → Nueva York → Coruña, día y noche, en
@@ -128,7 +128,8 @@
     amb: [{ src: 'sfx/d1/mar_gaviotas.mp3', vol: .42 }, { src: 'sfx/d1/gaviotas_coruna.mp3', vol: .3 }, { src: 'sfx/d1/motor_lejos.mp3', vol: .32 }], sirena: 'sfx/d1/sirena_vapor.mp3' };
   M.PORT = PORT;
   async function preparaPortada() {
-    const rutas = [PORT.poster, PORT.video].filter(r => B.existe(r) && !B.vid[r] && !B.img[r]);
+    /* (22-oct) con el mar, las gaviotas y el barco: así la portada suena desde el primer segundo */
+    const rutas = [PORT.poster, PORT.video].concat(PORT.amb.map(a => a.src), PORT.sirena).filter(r => B.existe(r) && !B.vid[r] && !B.img[r] && !B.buf[r]);
     if (!rutas.length) return;
     escena.classList.add('precargando');
     const pc = $('#precarga');
@@ -140,6 +141,29 @@
       $('.pc-mb', pc).textContent = pr.total ? B.fmtMB(pr.bytes) + ' de ' + B.fmtMB(pr.total) : '';
     });
     escena.classList.remove('precargando');
+  }
+  /* (22-oct, Iago: «me faltan sonidos ambiente en la portada: barco, gaviotas, mar») el navegador no deja sonar nada hasta el
+     primer toque, y si ese toque era ya en un billete la portada no llegaba a sonar nunca. Ahora, la primera vez, la pantalla
+     de carga acaba en un botón «Entrar»: ese toque abre el sonido y la portada entra ya con el mar. Si el sonido ya estaba
+     abierto (volver de un acto), no sale. Quitarlo: que puerta() devuelva Promise.resolve(). */
+  const sonidoListo = () => { try { return B.hayAudio() && B.bus.master.context.state === 'running'; } catch (e) { return false; } };
+  function puerta() {
+    if (sonidoListo()) return Promise.resolve();
+    return new Promise(res => {
+      const pc = $('#precarga');
+      pc.innerHTML = '<div class="pc-caja"><div class="pc-dia">A CORUÑA · NUEVA YORK · 1928</div><div class="pc-tit">Blues</div>' +
+        '<button class="bt prim pc-entrar">' + ICO.play + ' Entrar</button><div class="pc-det">con sonido</div></div>';
+      escena.classList.add('precargando');
+      let hecho = false;
+      const entra = () => {
+        if (hecho) return; hecho = true; removeEventListener('keydown', tecla);
+        B.ac(); try { B.bus.master.context.resume(); } catch (e) { }
+        escena.classList.remove('precargando'); res();
+      };
+      const tecla = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); entra(); } };
+      $('.pc-entrar', pc).addEventListener('click', entra);
+      addEventListener('keydown', tecla);
+    });
   }
   /* el vídeo del barco en un contenedor (portada o plano), en el punto del bucle donde se quedó */
   M._tBarco = 0;
