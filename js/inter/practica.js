@@ -202,7 +202,7 @@
      último ciclo de Suno), que sustituye a los dos últimos compases del tema final. Suenan dentro de la banda (r.gp.guitarra)
      para que «Parar» las funda; la banda sintetizada no suena (pistas vacías: solo la claqueta y el reloj de compases). */
   /* la base de cada tono: mus/d5_porche_<versión>_<tono>.mp3 (y _fin). Al cambiar la grabación se cambia la versión. */
-  const BASE_V = 'v4';
+  const BASE_V = 'v5';
   const BASE = (ton, fin) => 'mus/d5_porche_' + BASE_V + '_' + ton + (fin ? '_fin' : '') + '.mp3';
   B.inter.practica.base = BASE;
   function base(r, ton) {
