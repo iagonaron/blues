@@ -564,7 +564,7 @@ BLUES.dia(3, {
      "quien": "TEDDY",
      "texto": "Esto va por Louis Armstrong, que también es de Nueva Orleans.",
      "voz": "voz/d3/d3_055.mp3",
-     "espera": 18.39
+     "espera": 6.93
     }
    ],
    "hechos": [],
@@ -576,6 +576,51 @@ BLUES.dia(3, {
      0.09
     ]
    },
+   "mus": {
+    "src": "mus/d3_chorus.mp3",
+    "vol": 0.85,
+    "bucle": false
+   }
+  },
+  {
+   "id": "P3.3b2",
+   "desc": "Pearl escucha el solo: medio convencida, sin querer demostrarlo.",
+   "nombre": "Pearl escucha",
+   "img": "img/d3/p3_3_pearl_reaccion.webp",
+   "pal": "club",
+   "amb": [
+    {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.35
+    }
+   ],
+   "mus": {
+    "src": "mus/d3_chorus.mp3",
+    "vol": 0.85,
+    "bucle": false
+   },
+   "lineas": [],
+   "hechos": [],
+   "espera": 4.9
+  },
+  {
+   "id": "P3.3b3",
+   "desc": "Teddy toca su chorus con la trompeta con sordina; detrás, el trío de la casa.",
+   "nombre": "El final del chorus",
+   "img": "img/d3/p3_3_teddy_trompeta.webp",
+   "pal": "club",
+   "personajes": [
+    "TEDDY"
+   ],
+   "amb": [
+    {
+     "src": "sfx/d3/club_tarde.mp3",
+     "vol": 0.35
+    }
+   ],
+   "lineas": [],
+   "hechos": [],
+   "espera": 6.87,
    "mus": {
     "src": "mus/d3_chorus.mp3",
     "vol": 0.85,
@@ -840,21 +885,19 @@ BLUES.dia(3, {
      "quien": "PEARL",
      "texto": "Un fogonero. Escucha, que lo digo una vez: doce compases.",
      "voz": "voz/d3/d3_043.mp3",
-     "var": "XAN_CERCA"
+     "var": "PEARL_CERCA"
     },
     {
      "id": "d3_063",
      "quien": "PEARL",
      "texto": "Cuatro compases sobre el uno. Dos sobre el cuatro. Dos sobre el uno.",
-     "voz": "voz/d3/d3_063.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d3/d3_063.mp3"
     },
     {
      "id": "d3_044",
      "quien": "PEARL",
      "texto": "Luego el cinco, el cuatro, el uno… y el cinco para volver a empezar.",
-     "voz": "voz/d3/d3_044.mp3",
-     "var": "XAN_CERCA"
+     "voz": "voz/d3/d3_044.mp3"
     },
     {
      "id": "d3_064",
@@ -867,13 +910,15 @@ BLUES.dia(3, {
      "id": "d3_045",
      "quien": "PEARL",
      "texto": "G es Sol, C es Do, D es Re. Y el siete, la séptima menor encima. ¿Fácil? Fácil.",
-     "voz": "voz/d3/d3_045.mp3"
+     "voz": "voz/d3/d3_045.mp3",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_046",
      "quien": "PEARL",
      "texto": "A es La, B es Si… ¿o eso también es secreto en Europa?",
-     "voz": "voz/d3/d3_046.mp3"
+     "voz": "voz/d3/d3_046.mp3",
+     "var": "PEARL_CERCA"
     },
     {
      "id": "d3_047",
@@ -929,7 +974,8 @@ BLUES.dia(3, {
     ]
    },
    "var": {
-    "XAN_CERCA": "img/d3/p3_5_xan_cerca.webp"
+    "XAN_CERCA": "img/d3/p3_5_xan_cerca.webp",
+    "PEARL_CERCA": "img/d3/p3_5_pearl_cerca.webp"
    }
   },
   {
@@ -1074,8 +1120,8 @@ BLUES.dia(3, {
   },
   {
    "id": "P3.7",
-   "desc": "Pearl despacha a Xan en el piano; risas.",
-   "img": "img/d3/p3_5.webp",
+   "desc": "Xan se levanta del piano; risas, algún silbido. Pearl, de espaldas, ya mirando a otro músico. Ruby, al fondo, con el estuche grande de Xan en las manos.",
+   "img": "img/d3/p3_7.webp",
    "personajes": [
     "PEARL",
     "SLIM",
@@ -1109,7 +1155,8 @@ BLUES.dia(3, {
        "t": 3.07,
        "vol": 0.6
       }
-     ]
+     ],
+     "var": "-"
     },
     {
      "id": "d3_049",
@@ -1143,14 +1190,34 @@ BLUES.dia(3, {
    },
    "foco": {
     "XAN": [
-     0.264,
-     0.36,
-     0.11
+     0.68,
+     0.215,
+     0.08
     ],
     "PEARL": [
-     0.68,
-     0.151,
-     0.1
+     0.855,
+     0.1,
+     0.07
+    ],
+    "RUBY": [
+     0.183,
+     0.245,
+     0.07
+    ],
+    "SLIM": [
+     0.43,
+     0.21,
+     0.07
+    ],
+    "TEDDY": [
+     0.088,
+     0.19,
+     0.07
+    ],
+    "BUSTER": [
+     0.325,
+     0.19,
+     0.07
     ]
    }
   },

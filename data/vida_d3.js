@@ -30,3 +30,6 @@ window.BLUES.VIDA = Object.assign(window.BLUES.VIDA || {}, {
   'P3.8e': [{ t: 'bruma', zona: [0, .1, 1, .95], alfa: 0.035 }, { t: 'lluvia', n: 60, zona: [0, 0, 1, 1], alfa: .14 }, { t: 'hojas', zona: [0, 0, .45, .6], n: 4 }],
 });
 window.BLUES.VIDA['P3.3c'] = window.BLUES.VIDA['P3.3'];   /* (C3) la misma lámina que P3.3 */
+window.BLUES.VIDA['P3.3b3'] = window.BLUES.VIDA['P3.3b'];   /* (C3, 22-oct) el final del chorus: la misma lámina de Teddy */
+window.BLUES.VIDA['P3.3b2'] = [{ t: 'bruma', zona: [0, .1, 1, .95], alfa: 0.035 }, { t: 'polvo', n: 10, zona: [.45, 0, 1, .6] }];   /* Pearl escucha el solo */
+window.BLUES.VIDA['P3.7'] = [{ t: 'bruma', zona: [0, .1, 1, .95], alfa: 0.035 }, { t: 'polvo', n: 12, zona: [.3, 0, .95, .5] }, { t: 'luz', x: .275, y: .83, r: .03, k: .8 }];   /* (C3, 22-oct) lámina nueva: la lamparita de la mesa de delante */
