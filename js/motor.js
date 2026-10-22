@@ -21,6 +21,7 @@
      actos; los demás, apagados y con candado («se abre en clase»). Lo deciden Supabase (suite_hitos_de) y lo que Iago marca en
      el Diario. El profe (#c=, Protester): todo abierto y puede saltarse los viajes del mapa. Sin cuenta guardada (el ordenador de
      clase, quien llega por la dirección sin más): todo abierto, como hasta hoy. Quitarlo: que HIT devuelva siempre «todo abierto». */
+  const BONUS = 5;   // (22-oct) el acto que queda como «Bonus» tras la historia principal (actos 1–4)
   const HIT = (function () {
     const K = 'lm_blues_hitos', UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     let st = null, ir = 0, prof = false;
@@ -43,7 +44,9 @@
       }
     } catch (e) { }
     const ab = (st && Array.isArray(st.dias) && st.dias.length) ? st.dias.map(Number) : null;   // null = todo abierto
-    return { activo: () => !!ab, abierto: n => !ab || ab.indexOf(+n) >= 0, ir: () => { const n = ir; ir = 0; return n; }, prof };
+    /* (21-oct, Iago, vía C4) el acto 5 es el «Bonus»: se abre solo en cuanto este navegador ha acabado el acto 4 (fin de la historia principal) */
+    const bonus = n => { try { return +n === BONUS && !!B.progreso.leer().dias[BONUS - 1]; } catch (e) { return false; } };
+    return { activo: () => !!ab, abierto: n => !ab || ab.indexOf(+n) >= 0 || bonus(n), ir: () => { const n = ir; ir = 0; return n; }, prof };
   })();
   B.hitos = HIT; B.prof = HIT.prof;
   const CANDADO = '<svg class="bi-candado-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>';
@@ -255,7 +258,8 @@
         '<div class="bi-cuerpo"><div class="bi-dia">ACTO ' + n + '</div><div class="bi-tit">' + B.esc(d.titulo || TIT_DIA[n]) + '</div>' +
         '<div class="bi-lug">' + B.esc(d.lugar || '') + '</div></div>' +
         '<div class="bi-perf"></div><div class="bi-talon"><div class="bi-adm">ADMITE UNO</div><div class="bi-num">Nº 1928·0' + n + '</div></div>' +
-        '<div class="bi-sello">' + (n === 5 && vio5 ? 'A PRACTICAR' : 'VISTO') + '</div>' + (cerrado ? '<div class="bi-cerrado">' + CANDADO + '<span>Se abre en clase</span></div>' : '') + '</div></button>';
+        '<div class="bi-sello">' + (n === 5 && vio5 ? 'A PRACTICAR' : 'VISTO') + '</div>' + (n === BONUS ? '<div class="bi-bonus">BONUS</div>' : '') +
+        (cerrado ? '<div class="bi-cerrado">' + CANDADO + '<span>' + (n === BONUS ? 'Se abre al acabar el acto ' + (BONUS - 1) : 'Se abre en clase') + '</span></div>' : '') + '</div></button>';
     }
     h += '</div><div class="port-pie">';
     if (pr.ultimo && B.DIAS[pr.ultimo.dia] && !(pr.ultimo.fin === 5) && HIT.abierto(pr.ultimo.dia)) {
@@ -265,9 +269,10 @@
     h += '</div>';
     p.innerHTML = h;
     const vb = videoBarco('port-vid'); if (vb) p.querySelector('.port-fondo').appendChild(vb);
+    if (M._estrenaBonus) { M._estrenaBonus = false; const b5 = p.querySelector('.billete[data-dia="' + BONUS + '"]'); if (b5) b5.classList.add('estreno'); }   // recién abierto: se destaca una vez
     B.$$('.billete', p).forEach(b => b.addEventListener('click', () => {
       B.ac(); const n = +b.dataset.dia;
-      if (!HIT.abierto(n)) { M.aviso('El acto ' + n + ' se abre al acabar la clase en que lo veáis.', 3.2); return; }
+      if (!HIT.abierto(n)) { M.aviso(n === BONUS ? 'El acto ' + n + ' (bonus) se abre al acabar el acto ' + (BONUS - 1) + '.' : 'El acto ' + n + ' se abre al acabar la clase en que lo veáis.', 3.2); return; }
       M.empezarDia(n, n === 5 && vio5 ? iPrac : 0, n === 5 && vio5);
     }));
     /* desde el aviso de la campana («&dia=N»): un botón grande para entrar en ESE acto (el clic hace falta para el sonido) */
@@ -393,7 +398,7 @@
     limpiaPlano();
     B.silencioTotal();
     hechosBox.innerHTML = '';
-    $('#findia').classList.remove('on');
+    $('#findia').classList.remove('on', 'fin-historia'); clearTimeout(M._finH);
     if (B.pausado) B.pausa(false);
     pelicula.innerHTML = ''; planoEl = null; planoAct = null;
     if (!sinPortada) dia = null;
@@ -1007,8 +1012,20 @@
     limpiaPlano();
     B.progreso.dia(n);
     pintaPuntos();
-    const f = $('#findia');
+    const f = $('#findia'); f.classList.remove('fin-historia'); clearTimeout(M._finH);
     const sig = B.DIAS[n + 1];
+    /* (21-oct 19:51, Iago, vía C4) al acabar el acto 4: fundido a negro, «Fin de la historia principal» y vuelta sola a la portada,
+       con el acto 5 ya abierto y marcado como «Bonus». Quitarlo: borrar este bloque (vuelve la tarjeta de siempre). */
+    if (n === BONUS - 1 && sig) {
+      f.innerHTML = '<div class="fd-caja"><div class="fd-et">BLUES · A CORUÑA · NUEVA YORK · 1928</div><div class="fd-tit">Fin de la historia principal</div>' +
+        '<div class="fd-sig">Se abre el acto ' + BONUS + ' · <b>Bonus</b> · ' + B.esc(sig.titulo || TIT_DIA[BONUS]) + '</div>' +
+        '<div class="fd-bt"><button class="bt prim" data-a="port">' + ICO.casa + ' Portada</button></div></div>';
+      f.classList.add('fin-historia', 'on');
+      const vuelve = () => { clearTimeout(M._finH); if (!f.classList.contains('fin-historia')) return; M._estrenaBonus = true; M.salir(); M.portada(); };
+      f.querySelector('[data-a=port]').addEventListener('click', vuelve);
+      M._finH = setTimeout(vuelve, 9000);
+      return;
+    }
     f.innerHTML = '<div class="fd-caja"><div class="fd-et">FIN DEL ACTO ' + n + '</div><div class="fd-tit">' + B.esc(dia.titulo) + '</div>' +
       '<div class="fd-sig">' + (sig ? 'Próxima sesión: Acto ' + (n + 1) + ' · ' + B.esc(sig.titulo) : 'Fin de la historia. La sala de práctica sigue abierta.') + '</div>' +
       '<div class="fd-bt"><button class="bt" data-a="port">' + ICO.casa + ' Portada</button>' +

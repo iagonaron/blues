@@ -159,7 +159,7 @@
       g += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + (man ? 'url(#viejo' + uid + ')' : papel) + '"/>';
       if (man) g += '<rect x="0" y="0" width="' + W + '" height="' + H + '" filter="url(#manchas' + uid + ')" opacity=".55" pointer-events="none"/>';
       if (cab) {
-        const tit = o.titulo ? B.esc(o.titulo) : '<tspan text-decoration="line-through" opacity=".7">Blues de John</tspan>  <tspan fill="#24406e">A nana de Xan</tspan> · para o meu neto John · 1912';   /* John tachó su título cuando supo que al niño le llamaban Xan */
+        const tit = o.titulo ? B.esc(o.titulo) : '<tspan text-decoration="line-through" opacity=".7">Blues de John</tspan>  <tspan fill="#24406e">A nana de Xan</tspan> · 1912';   /* John tachó su título cuando supo que al niño le llamaban Xan */
         g += '<text class="pt-txt" x="' + (W / 2) + '" y="' + f2(cab * .7) + '" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-style="italic" font-weight="600" font-size="' + f2(s * 1.9) + '">' + tit + '</text>';
       }
       const rnd = semilla(31);
