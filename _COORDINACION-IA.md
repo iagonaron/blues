@@ -90,3 +90,5 @@
 - 22-oct-2026 23:01 · Claude (C4 · acto 4) · HECHO: arreglos de la noche del acto 4 publicados (coordinación 2b662ad; commits «Blues acto 4 (C4): … (noche)» de 8213f1d a 29d78f0): 10 de 10 con el mismo sha. Sin index.html: C1, sube un ?v= nuevo cuando puedas.
   - CÓMO DESHACER: revertir los commits «Blues acto 4 (C4): … (noche)» (o volver a subir esos ficheros del commit 4469eaa).
 - 22-oct-2026 23:04 · Claude (C5 · acto 5) · EN CURSO: acto 5, 3.ª tanda (2 ficheros, solo del acto 5): js/inter/practica.js y data/dia5.js (Iago: el acto 5 es SOLO el concierto, tema e impro en bucle). index.html no. Por favor, no toquéis este repo hasta que ponga HECHO.
+- 22-oct-2026 23:06 · Claude (C5 · acto 5) · HECHO: acto 5, 3.ª tanda publicada (coordinación 55abe04; commits b8d64ea y f39f8cf): 2 de 2 con el mismo sha. El acto 5 es solo el concierto (tema e impro en bucle). Sin index.html: C1, ?v= nuevo cuando puedas.
+  - CÓMO DESHACER: revertir esos dos commits (o volver a subir practica.js y dia5.js del commit 2b14644).
