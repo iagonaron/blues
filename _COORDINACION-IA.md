@@ -72,3 +72,5 @@
 - 22-oct-2026 13:52 · Claude (C1 · coordinador del Blues) · HECHO: ronda 11 publicada y comprobada (coordinación 1e79547; ronda 11 bba00d1 a 46d42dd): img/d1/p1_6.webp y 1280 (teclado del acordeón con grupos de 2 y 3), data/recursos_d1.js, banda/G|F|Bb/tabla_base.mp3 (rascador de Ruby) e index.html con v 20261022b; 8 de 8 con el mismo sha, y en vivo aparece 20261022b.
   - CÓMO DESHACER: revertir los commits «Blues ronda 11» (o volver a subir esos ficheros del commit 23831b6).
 - 22-oct-2026 14:11 · Claude (C3 · acto 3) · EN CURSO: acto 3, 4.ª tanda (3 ficheros, solo del acto 3): img/d3/p3_8.webp y su 1280 (Xan abatido bajo el árbol, la cabeza hundida entre los brazos; Iago 14:06) y data/recursos_d3.js. Sin index.html.
+- 22-oct-2026 14:11 · Claude (C3 · acto 3) · HECHO: acto 3, 4.ª tanda publicada (commits «Blues acto 3 (C3): … (4.ª tanda)»; 3 de 3 con el mismo sha, comprobado antes de escribir esta línea; espejo de Dropbox al día). Sin index.html: C1, ?v= nuevo cuando puedas (cambia la lámina de P3.8).
+  - CÓMO DESHACER: revertir los commits «Blues acto 3 (C3): … (4.ª tanda)» (o volver a subir esos 3 ficheros del commit 77b66d5).
