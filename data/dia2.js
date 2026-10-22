@@ -208,7 +208,8 @@ BLUES.dia(2, {
      "sfx/d2/puerta_corredera.mp3",
      "sfx/d2/tren_arranca.mp3",
      "sfx/d2/tabla_golpe.mp3",
-     "mus/musica_tren.mp3"
+     "mus/musica_tren.mp3",
+     "img/d2/p2_2a.webp"
     ],
     "muro": "img/inter/d2_puerta_muro.webp",
     "hoja": "img/inter/d2_puerta_hoja.webp",
@@ -222,7 +223,11 @@ BLUES.dia(2, {
     "musica": {
      "src": "mus/musica_tren.mp3",
      "vol": 0.7
-    }
+    },
+    "previa": "PUERTA"
+   },
+   "var": {
+    "PUERTA": "img/d2/p2_2a.webp"
    }
   },
   {
