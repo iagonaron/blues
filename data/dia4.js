@@ -609,6 +609,12 @@ BLUES.dia(4, {
    "id": "P4.5",
    "desc": "Porche de la casa de John, mañana dorada de otoño. Eli, en una silla con la guitarra; Xan, en los escalones con el acordeón pequeño de John.",
    "img": "img/d4/p4_5.webp",
+   "var": {
+    "ELI_PENA_CERCA": "img/d4/p4_5_eli_pena.webp",
+    "ELI_CERCA": "img/d4/p4_5_eli_cerca.webp",
+    "RECURSO_GUITARRA": "img/d4/p4_5_recurso_guitarra.webp",
+    "RECURSO_TECLAS": "img/d4/p4_5_recurso_teclas.webp"
+   },
    "personajes": [
     "ELI",
     "XAN"
@@ -724,7 +730,9 @@ BLUES.dia(4, {
      "id": "d4_037",
      "quien": "ELI",
      "texto": "¡Eso era lo que quería tocarte en el cilindro!",
-     "voz": "voz/d4/d4_037.mp3"
+     "voz": "voz/d4/d4_037.mp3",
+     "var": "ELI_PENA_CERCA",
+     "fijo": true
     }
    ],
    "nombre": "El porche",
@@ -756,11 +764,6 @@ BLUES.dia(4, {
      0.34,
      0.104
     ]
-   },
-   "var": {
-    "ELI_CERCA": "img/d4/p4_5_eli_cerca.webp",
-    "RECURSO_GUITARRA": "img/d4/p4_5_recurso_guitarra.webp",
-    "RECURSO_TECLAS": "img/d4/p4_5_recurso_teclas.webp"
    }
   },
   {
@@ -962,7 +965,7 @@ BLUES.dia(4, {
   {
    "id": "P4.7",
    "desc": "El manuscrito medio borrado ocupa la pantalla. Detrás, el porche: Eli con la guitarra y Xan con el acordeón pequeño de John.",
-   "img": "img/d4/p4_5.webp",
+   "img": "img/d4/p4_7.webp",
    "personajes": [
     "ELI",
     "RUBY",
@@ -1446,6 +1449,10 @@ BLUES.dia(4, {
    "id": "P4.10",
    "desc": "Atardecer en el porche: la banda completa —Eli (guitarra), Xan (acordeón pequeño de John), Ruby (tabla de lavar), Mr. Odell (contrabajo) y Teddy (trompeta con sordina)—. En primer plano, el fonógrafo grabando un cilindro nuevo.",
    "img": "img/d4/p4_10.webp",
+   "var": {
+    "CAMARA": "img/d4/p4_10_camara.webp",
+    "RECURSO_BILLETE": "img/d4/p4_1_recurso_billete.webp"
+   },
    "personajes": [
     "ELI",
     "XAN"
@@ -1491,7 +1498,8 @@ BLUES.dia(4, {
      "id": "d4_085",
      "quien": "ELI",
      "texto": "Y vosotros, los de ahí delante: el porche se queda abierto.",
-     "voz": "voz/d4/d4_085.mp3"
+     "voz": "voz/d4/d4_085.mp3",
+     "var": "CAMARA"
     },
     {
      "id": "d4_078",
@@ -1537,9 +1545,6 @@ BLUES.dia(4, {
     "src": "mus/d4_banda_porche.mp3",
     "vol": 0.45,
     "bucle": false
-   },
-   "var": {
-    "RECURSO_BILLETE": "img/d4/p4_1_recurso_billete.webp"
    }
   },
   {
@@ -1629,14 +1634,14 @@ BLUES.dia(4, {
    "espera": 1,
    "foco": {
     "XAN": [
-     0.547,
-     0.19,
-     0.18
+     0.545,
+     0.22,
+     0.17
     ],
     "AVOA": [
-     0.656,
-     0.15,
-     0.22
+     0.66,
+     0.17,
+     0.2
     ]
    }
   },
