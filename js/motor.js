@@ -43,7 +43,10 @@
         history.replaceState(history.state, '', location.pathname + location.search + (resto ? '#' + resto : ''));
       }
     } catch (e) { }
-    const ab = (st && Array.isArray(st.dias) && st.dias.length) ? st.dias.map(Number) : null;   // null = todo abierto
+    /* (22-oct, Iago: «no quiero que avancen en casa más rápido que lo que hacemos en clase») sin cuenta del portal y sin ser el
+       profe, ya NO está todo abierto: solo el acto 1 (antes, quien abría la dirección a pelo lo tenía todo). El profe sigue con
+       todo abierto: entra por Protester (#c=) y ese navegador lo recuerda (lm_vol_cuenta). Deshacer: volver a «: null». */
+    const ab = prof ? null : (st && Array.isArray(st.dias) && st.dias.length) ? st.dias.map(Number) : [1];   // null = todo abierto
     /* (21-oct, Iago, vía C4) el acto 5 es el «Bonus»: se abre solo en cuanto este navegador ha acabado el acto 4 (fin de la historia principal) */
     const bonus = n => { try { return +n === BONUS && !!B.progreso.leer().dias[BONUS - 1]; } catch (e) { return false; } };
     return { activo: () => !!ab, abierto: n => !ab || ab.indexOf(+n) >= 0 || bonus(n), ir: () => { const n = ir; ir = 0; return n; }, prof };
