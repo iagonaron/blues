@@ -8,12 +8,12 @@ BLUES.dia(5, {
  "carta": {
   "encabezado": "A Coruña, 1929",
   "firma": "Xan",
-  "texto": "Querido Eli: la avoa ya canta la nana con swing. Dice que no se la toque nadie más. Menos yo. Dale recuerdos a Ruby, a Teddy y a Mr. Odell. Y guárdame el sitio en el porche… …o mejor, déjaselo a quien llegue con un instrumento y ganas de improvisar.",
+  "texto": "Querido Eli: la avoa ya canta la nana con swing. ¡Hasta lleva el compás con el pie! Dale recuerdos a Ruby, a Teddy y a Mr. Odell. Y guárdame el sitio en el porche… …o mejor, déjaselo a quien llegue con un instrumento y ganas de improvisar.",
   "lineas": [
    {
     "id": "d5_c03",
     "quien": "XAN",
-    "texto": "Querido Eli: la avoa ya canta la nana con swing. Dice que no se la toque nadie más. Menos yo.",
+    "texto": "Querido Eli: la avoa ya canta la nana con swing. ¡Hasta lleva el compás con el pie!",
     "voz": "voz/d5/d5_c03.mp3"
    },
    {
@@ -33,7 +33,7 @@ BLUES.dia(5, {
  "planos": [
   {
    "id": "P5.0",
-   "desc": "Título del día 5 + la carta de Xan a Eli, desde Coruña: el porche de Weeksville al anochecer, con los farolillos encendidos y un hueco libre en el centro.",
+   "desc": "Título del día 5 + la carta de Xan a Eli, desde Coruña: el porche de Weeksville al anochecer, vacío, con los farolillos encendidos y los instrumentos esperando (la misma lámina que P5.1, sin los músicos).",
    "img": "img/d5/p5_0.webp",
    "pal": "farol",
    "amb": [
@@ -264,19 +264,19 @@ BLUES.dia(5, {
      "sfx/d5/tabla_raspa.mp3",
      "sfx/d5/tabla_golpe.mp3",
      "sfx/d5/aplauso.mp3",
-     "mus/d5_porche_v4_G.mp3",
-     "mus/d5_porche_v4_G_fin.mp3",
-     "mus/d5_porche_v4_F.mp3",
-     "mus/d5_porche_v4_F_fin.mp3",
-     "mus/d5_porche_v4_Bb.mp3",
-     "mus/d5_porche_v4_Bb_fin.mp3"
+     "mus/d5_porche_v5_G.mp3",
+     "mus/d5_porche_v5_G_fin.mp3",
+     "mus/d5_porche_v5_F.mp3",
+     "mus/d5_porche_v5_F_fin.mp3",
+     "mus/d5_porche_v5_Bb.mp3",
+     "mus/d5_porche_v5_Bb_fin.mp3"
     ]
    },
    "nombre": "A túa vez",
    "hechos": [],
    "guion_sonido": {
     "amb": "Grillos; farolillos que zumban.",
-    "mus": "La banda del porche (Suno, cover de nuestra guía de 12 compases, remezclada desde sus stems: guitarra, contrabajo, tabla de lavar, bombo y trompeta con sordina; sin piano). Una base por tono (Sol, Fa, Si♭)."
+    "mus": "La banda del porche (Suno, cover de nuestra guía de 12 compases, remezclada desde sus stems: guitarra, contrabajo, tabla de lavar, bombo y trompeta con sordina; sin piano) y, encima, el rascador de Ruby (tabla de lavar de Splice, sutil, pegado a los platillos de la banda). Una base por tono (Sol, Fa, Si♭)."
    },
    "foco": {
     "ELI": [
