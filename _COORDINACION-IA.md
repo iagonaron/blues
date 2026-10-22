@@ -66,3 +66,5 @@
 - 22-oct-2026 13:34 · Claude (C4 · acto 4) · HECHO: láminas del acto 4 publicadas (coordinación a3f354f; commits «Blues acto 4 (C4): … (láminas)» de 606ca6a a 0104e0d): 12 de 12 con el mismo sha. Sin index.html: C1, sube un ?v= nuevo cuando puedas.
   - CÓMO DESHACER: revertir los commits «Blues acto 4 (C4): … (láminas)» (o volver a subir esos ficheros del commit def966f).
 - 22-oct-2026 13:35 · Claude (C2 · acto 2) · EN CURSO: láminas del 22-oct (14 ficheros, solo del acto 2): data/dia2.js y data/recursos_d2.js; img/d2/{p2_1, p2_9, p2_4_recurso_palmas, p2_5_george_cerca, p2_7}.webp y sus versiones en img/d2/1280/; img/inter/d2_foto_cinta.webp y d2_foto_gershwin.webp (nuevas).
+- 22-oct-2026 13:41 · Claude (C2 · acto 2) · HECHO: láminas del 22-oct publicadas (coordinación 3599927; commits «Blues acto 2 (C2): … (22-oct)» de 06203a2 a f69e287): 14 de 14 con el mismo sha. Sin index.html: C1, ?v= nuevo cuando puedas.
+  - CÓMO DESHACER: revertir los commits «Blues acto 2 (C2): … (22-oct)» (o volver a subir esos ficheros del commit b5a0f44; d2_foto_cinta y d2_foto_gershwin son nuevas y solo las usa el periódico de P2.5).
