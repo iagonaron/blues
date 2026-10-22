@@ -123,7 +123,7 @@
     const cab = B.el('div', '', '<div class="i-tit">' + H.tit + '</div><div class="i-enun" style="font-size:calc(var(--u)*1.45)">' + H.enun + '</div>');
     cab.style.marginBottom = 'calc(var(--u)*.7)';
     papel.appendChild(cab);
-    const pt = B.partitura(papel, { modo: H.modo, manuscrito: true, cabecera: true });   // título: «Blues de John» tachado + «A nana de Xan» · para o meu neto John · 1912
+    const pt = B.partitura(papel, { modo: H.modo, manuscrito: true, cabecera: true });   // título: «Blues de John» tachado + «A nana de Xan» · 1912
     pt.caja.style.borderRadius = 'calc(var(--u)*.3)'; pt.caja.style.overflow = 'hidden';
     const barra = B.el('div', 'i-pie-izq'); caja.appendChild(barra);
     const pips = U.pips(barra);
