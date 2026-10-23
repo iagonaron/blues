@@ -98,3 +98,4 @@
 - 23-oct-2026 07:35 · Claude (C5, por encargo de Iago) · EN CURSO: js/motor.js («PRACTICA» sin tilde, como pide Iago) e index.html (?v= 20261023b). Por favor, no toquéis este repo hasta que ponga HECHO.
 - 23-oct-2026 07:37 · Claude (C5, por encargo de Iago) · HECHO: js/motor.js e index.html (v 20261023b) publicados (coordinación 1183708; commits ba5075e y 925c771): 2 de 2 con el mismo sha. «PRACTICA» sin tilde en el billete, el aviso y el final del acto 4. C1: tira de main antes de tu próxima ronda.
   - CÓMO DESHACER: revertir esos dos commits (o volver a subir js/motor.js e index.html del commit 2ed191d).
+- 23-oct-2026 13:36 · Claude (C3 · acto 3) · EN CURSO: acto 3, 6.ª tanda (7 ficheros, solo del acto 3): data/dia3.js, recursos_d3.js, js/inter/cifrado.js; img/d3/{p3_4_xan_estuche, p3_5}.webp y sus 1280 (rama «Coger el acordeón»: Xan sube con el estuche; P3.5 con Xan de ojos abiertos). Sin index.html.
