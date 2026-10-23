@@ -842,7 +842,8 @@ BLUES.dia(3, {
     ]
    },
    "var": {
-    "RECURSO_PARTITURA": "img/d3/p3_4_recurso_partitura.webp"
+    "RECURSO_PARTITURA": "img/d3/p3_4_recurso_partitura.webp",
+    "XAN_CON_ESTUCHE": "img/d3/p3_4_xan_estuche.webp"
    },
    "inter": {
     "tipo": "acordeonDecide",
@@ -853,7 +854,8 @@ BLUES.dia(3, {
        "id": "d3_068",
        "quien": "PEARL",
        "texto": "¿Y esa caja? ¿Un acordeón? Nada, nada, muchacho: tú, al piano. Esa caja déjala ahí, que luego me sirve para guardar el abrigo.",
-       "voz": "voz/d3/d3_068.mp3"
+       "voz": "voz/d3/d3_068.mp3",
+       "var": "XAN_CON_ESTUCHE"
       }
      ],
      "no": [
@@ -904,7 +906,7 @@ BLUES.dia(3, {
   {
    "id": "P3.5",
    "desc": "Pearl, apoyada en la tapa del piano con la boquilla; Xan, sentado en la banqueta, rígido. Detrás, los músicos miran.",
-   "img": "img/d3/p3_5_xan_cerca.webp",
+   "img": "img/d3/p3_5.webp",
    "personajes": [
     "PEARL",
     "XAN"
@@ -932,7 +934,8 @@ BLUES.dia(3, {
      "quien": "XAN",
      "texto": "No… Bueno, un fogonero me enseñó a contestar a una armónica.",
      "voz": "voz/d3/d3_042.mp3",
-     "espera": 0.3
+     "espera": 0.3,
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_043",
@@ -957,13 +960,15 @@ BLUES.dia(3, {
      "id": "d3_064",
      "quien": "PEARL",
      "texto": "Eso vale para cualquier blues, en cualquier tono. Aquí, en Sol: el uno es G7, el cuatro es C7 y el cinco es D7.",
-     "voz": "voz/d3/d3_064.mp3"
+     "voz": "voz/d3/d3_064.mp3",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_045",
      "quien": "PEARL",
      "texto": "G es Sol, C es Do, D es Re. Y el siete, la séptima menor encima. ¿Fácil? Fácil.",
-     "voz": "voz/d3/d3_045.mp3"
+     "voz": "voz/d3/d3_045.mp3",
+     "var": "XAN_CERCA"
     },
     {
      "id": "d3_046",
@@ -993,9 +998,14 @@ BLUES.dia(3, {
    },
    "foco": {
     "XAN": [
-     0.34,
-     0.33,
-     0.28
+     0.295,
+     0.37,
+     0.11
+    ],
+    "PEARL": [
+     0.68,
+     0.151,
+     0.1
     ]
    },
    "salpica": {
@@ -1021,6 +1031,7 @@ BLUES.dia(3, {
     ]
    },
    "var": {
+    "XAN_CERCA": "img/d3/p3_5_xan_cerca.webp",
     "PEARL_CERCA": "img/d3/p3_5_pearl_cerca.webp"
    }
   },
