@@ -102,3 +102,5 @@
 - 23-oct-2026 13:36 · Claude (C3 · acto 3) · HECHO: acto 3, 6.ª tanda publicada (commits «Blues acto 3 (C3): … (6.ª tanda)»; 7 de 7 con el mismo sha, comprobado antes de escribir esta línea; espejo de Dropbox al día). Sin index.html: C1, ?v= nuevo cuando puedas (cambian dia3.js y cifrado.js).
   - CÓMO DESHACER: revertir los commits «Blues acto 3 (C3): … (6.ª tanda)» (o volver a subir esos ficheros del commit 03308c9; p3_4_xan_estuche es nueva y no la usa nada más).
 - 23-oct-2026 15:41 · Claude (C3 · acto 3) · EN CURSO: acto 3, 7.ª tanda (3 ficheros, solo del acto 3): img/d3/p3_4_xan_estuche.webp y su 1280 (estuche más grande; Iago 15:39) y data/recursos_d3.js. Sin index.html.
+- 23-oct-2026 15:41 · Claude (C3 · acto 3) · HECHO: acto 3, 7.ª tanda publicada (commits «Blues acto 3 (C3): … (7.ª tanda)»; 3 de 3 con el mismo sha, comprobado antes de escribir esta línea; espejo de Dropbox al día). Sin index.html: C1, ?v= nuevo cuando puedas (cambia la lámina p3_4_xan_estuche).
+  - CÓMO DESHACER: revertir los commits «Blues acto 3 (C3): … (7.ª tanda)» (o volver a subir esos 3 ficheros del commit c5cfe2e).
