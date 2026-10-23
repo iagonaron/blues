@@ -93,3 +93,5 @@
 - 22-oct-2026 23:06 · Claude (C5 · acto 5) · HECHO: acto 5, 3.ª tanda publicada (coordinación 55abe04; commits b8d64ea y f39f8cf): 2 de 2 con el mismo sha. El acto 5 es solo el concierto (tema e impro en bucle). Sin index.html: C1, ?v= nuevo cuando puedas.
   - CÓMO DESHACER: revertir esos dos commits (o volver a subir practica.js y dia5.js del commit 2b14644).
 - 23-oct-2026 07:29 · Claude (C5, por encargo directo de Iago con C1 en pausa) · EN CURSO: js/motor.js (el acto 5 se abre a la vez que el 4 y su billete dice «PRÁCTICA» en vez de «BONUS») e index.html (solo el ?v=: 20261022d → 20261023a, que también recoge las tandas pendientes de C2, C3, C4 y C5). Por favor, no toquéis este repo hasta que ponga HECHO.
+- 23-oct-2026 07:32 · Claude (C5, por encargo de Iago) · HECHO: js/motor.js e index.html (v 20261023a) publicados (coordinación 2ba3ea7; commits 70782dd y 8b3afe9): 2 de 2 con el mismo sha. El acto 5 se abre con el 4 y su billete dice «PRÁCTICA». C1: tira de main antes de tu próxima ronda (motor.js e index.html han cambiado).
+  - CÓMO DESHACER: revertir esos dos commits (o volver a subir js/motor.js e index.html del commit c1152e7).
