@@ -208,7 +208,8 @@
     tit.style.transition = fila.style.transition = fondo.style.transition = 'opacity .5s'; tit.style.opacity = fila.style.opacity = fondo.style.opacity = '0';
     /* (Iago, 21-oct) en cuanto decide, el plano se ve BIEN (sin oscurecer) y Pearl habla en su bocadillo, como en el resto del acto */
     const esc = document.getElementById('escena'); if (esc) esc.classList.remove('con-inter', 'subt-abajo');
-    await B.espera(.5, ctl); if (ctl.muerto) return;
+    /* (Iago, 22-oct 22:34) la frase de cada rama puede traer su lámina («var»: con el acordeón, Xan en el escenario con el estuche);
+       la frase empieza mientras se funde el velo, para que lo primero que se vea tras decidir sea ya ese plano */
     await U.dice(op, eleccion, ctl);
   };
   B.inter.acordeonDecide.subtAbajo = true;
