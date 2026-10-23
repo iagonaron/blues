@@ -96,3 +96,5 @@
 - 23-oct-2026 07:32 · Claude (C5, por encargo de Iago) · HECHO: js/motor.js e index.html (v 20261023a) publicados (coordinación 2ba3ea7; commits 70782dd y 8b3afe9): 2 de 2 con el mismo sha. El acto 5 se abre con el 4 y su billete dice «PRÁCTICA». C1: tira de main antes de tu próxima ronda (motor.js e index.html han cambiado).
   - CÓMO DESHACER: revertir esos dos commits (o volver a subir js/motor.js e index.html del commit c1152e7).
 - 23-oct-2026 07:35 · Claude (C5, por encargo de Iago) · EN CURSO: js/motor.js («PRACTICA» sin tilde, como pide Iago) e index.html (?v= 20261023b). Por favor, no toquéis este repo hasta que ponga HECHO.
+- 23-oct-2026 07:37 · Claude (C5, por encargo de Iago) · HECHO: js/motor.js e index.html (v 20261023b) publicados (coordinación 1183708; commits ba5075e y 925c771): 2 de 2 con el mismo sha. «PRACTICA» sin tilde en el billete, el aviso y el final del acto 4. C1: tira de main antes de tu próxima ronda.
+  - CÓMO DESHACER: revertir esos dos commits (o volver a subir js/motor.js e index.html del commit 2ed191d).
